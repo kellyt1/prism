@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.legacySystem.inventory.Vendr"
+        table="vendfle_dbf"
+        lazy="true">
+
+        <id name="idNbr"
+            column="IDNBR"
+            type="string" >
+        </id>
+
+        <property name="name"
+            type="string"
+            column="NAME"
+            />
+        <property name="addr"
+            type="string"
+            column="ADDR"/>
+        <property name="city"
+            type="string"
+            column="CITY"/>
+        <property name="state"
+            type="string"
+            column="ST" />
+        <property name="zip"
+            type="string"
+            column="ZIP" />
+        <property name="phone"
+            type="string"
+            column="TELE" />
+
+        <property name="fax"
+            type="string"
+            column="FAX" />
+    </class>
+
+</hibernate-mapping>

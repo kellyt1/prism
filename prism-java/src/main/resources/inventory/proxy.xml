@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="inventoryReportsFacade"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <property name="target" ref="inventoryReportsFacadeTarget"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="store*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="stockItemFacade" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <property name="target" ref="stockItemFacadeTarget"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="store*">PROPAGATION_REQUIRED</prop>
+                <prop key="activateOnHoldStockItems">PROPAGATION_REQUIRES_NEW</prop>
+                <prop key="activateOnHoldStockItemsAndNotifyContacts">PROPAGATION_REQUIRED</prop>
+                <prop key="notify*">PROPAGATION_REQUIRED,readOnly</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="fillStockRequestsFacade" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <property name="target" ref="fillStockRequestsFacadeTarget"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="advancedSearchOpenRequests">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="store*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="editStockItemFacadeTargetWithAdvices" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames">
+            <list>
+                <value>updateIcnbrAdvisor</value>
+                <value>insertStockItemHistoryAdvisor</value>
+                <value>qtyAdjustmentHistoryAdvisor</value>
+            </list>
+        </property>
+        <property name="target">
+            <ref bean="editStockItemFacadeTarget"/>
+        </property>
+    </bean>
+
+    <bean id="editStockItemFacade" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <property name="target" ref="editStockItemFacadeTargetWithAdvices"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="detach*">PROPAGATION_REQUIRES_NEW,readOnly</prop>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="set*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="add*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="attach*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="editStockItemFacadeWithoutAdvices"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <property name="target" ref="editStockItemFacadeTarget"/>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="detach*">PROPAGATION_REQUIRES_NEW,readOnly</prop>
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="set*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="add*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="attach*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+
+</beans>

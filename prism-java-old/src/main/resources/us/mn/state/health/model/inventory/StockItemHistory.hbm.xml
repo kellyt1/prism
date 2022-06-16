@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.StockItemHistory"
+           table="STOCK_ITEM_HISTORY_TBL"
+           lazy="true">
+
+        <!-- id property. -->
+        <id name="stockItemHistoryId"
+            type="long"
+            column="STOCK_ITEM_HISTORY_ID"
+            unsaved-value="null" access="field">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+
+        <many-to-one name="stockItem" column="STOCK_ITEM_ID" not-null="false" cascade="none" update="false"/>
+        <property name="description" column="DESCRIPTION" type="string" not-null="false"/>
+        <property name="category" column="CATEGORY" not-null="false"/>
+        <property name="icnbr" type="string" column="ICNBR" unique="false" not-null="false"/>
+        <property name="hazardous" type="string" column="HAZARDOUS" not-null="false"/>
+        <property name="reorderPoint" type="string" column="REORDER_POINT" not-null="false"/>
+        <property name="reorderQty" type="string" column="REORDER_QTY" not-null="false"/>
+        <property name="safetyStock" type="string" column="SAFETY_STOCK" not-null="false"/>
+        <property name="cycleCountPriority" column="CYCLE_COUNT_PRIORITY" type="string" not-null="false"/>
+        <property name="estimatedAnnualUsage" column="ESTIMATED_ANNUAL_USAGE" type="string" not-null="false"/>
+        <property name="reviewDate" type="string" column="REVIEW_DATE" not-null="false"/>
+        <property name="seasonal" type="yes_no" column="SEASONAL" not-null="false"/>
+        <property name="dispenseUnit" column="DISPENSE_UNIT" not-null="false"/>
+        <property name="orgBudget" column="ORG_BDGT" not-null="false"/>
+        <many-to-one name="primaryContact" class="us.mn.state.health.model.common.Person" column="PRIMARY_CONTACT_ID"
+                     cascade="none" not-null="false"/>
+        <many-to-one name="secondaryContact" class="us.mn.state.health.model.common.Person"
+                     column="SECONDARY_CONTACT_ID"
+                     cascade="none" not-null="false"/>
+        <property name="status" type="string" not-null="false" column="STATUS"/>
+        <property name="holdUntilDate" column="HOLD_UNTIL_DATE" not-null="false" type="string"/>
+        <property name="fillUntilDepleted" type="yes_no" column="FILL_UNTIL_DEPLETED" not-null="false"/>
+        <property name="instructions" type="string" column="INSTRUCTIONS" not-null="false"/>
+        <property name="historyComments" type="string" column="HISTORY_COMMENTS" not-null="false"/>
+
+        <!-- insertedBy.  The username of person who inserted this record -->
+        <property name="insertedBy" column="INSERTED_BY" type="string" update="false"/>
+
+        <!-- insertionDate. We can't change the creation time, so map it with update="false". -->
+        <property name="insertionDate" column="INSERTION_DATE" type="date" update="false"/>
+    </class>
+</hibernate-mapping>

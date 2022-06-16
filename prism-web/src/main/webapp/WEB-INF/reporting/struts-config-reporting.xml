@@ -1,0 +1,90 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!-- 
+	This is the Struts config file for Reporting actions
+-->
+<struts-config>
+  <action-mappings>
+    
+    <action path="/viewCreateToBeStockedReport"
+            type="us.mn.state.health.matmgmt.action.ReportingAction"
+            name="generalReportingForm"
+            scope="session"
+            parameter="viewCreateToBeStockedReport"
+            validate="false">
+        <forward name="success" path="/receiving/reports/searchStockItemsToBeStocked.jsp"/>
+    </action>
+       
+    <action path="/printToBeStockedReport" 
+            parameter="printToBeStockedReport" 
+            type="us.mn.state.health.matmgmt.action.ReportingAction"
+            scope="session"
+            name="generalReportingForm"
+            validate="false">
+        <forward name="success" path="/receiving/reports/searchStockItemsToBeStocked.jsp"  redirect="true" />
+    </action>
+    
+    <action path="/viewCreateDeliveryReceipt"
+            type="us.mn.state.health.matmgmt.action.ReportingAction"
+            name="generalReportingForm"
+            scope="session"
+            parameter="viewCreateDeliveryReceipt"
+            validate="false">
+        <forward name="success" path="/receiving/reports/viewCreateDeliveryReceipt.jsp"/>
+    </action>
+    
+    <action path="/printDeliveryReceiptReport" 
+            parameter="printDeliveryReceiptReport" 
+            type="us.mn.state.health.matmgmt.action.ReportingAction"
+            scope="session"
+            name="generalReportingForm"
+            validate="false">
+        <forward name="success" path="/viewCreateDeliveryReceipt.do" redirect="true"/>
+        <forward name="error" path="/receiving/reports/missingDates.jsp" redirect="true"/>
+    </action>
+
+
+<!--
+      <action path="/viewDynamicPrismReport"
+              type="us.mn.state.health.matmgmt.action.ReportingAction"
+              name="generalReportingForm"
+              scope="session"
+              parameter="viewDynamicPrismReport"
+              validate="false">
+          <forward name="success" path="/receiving/reports/viewDynamicPrismReport.jsp"/>
+      </action>
+-->
+
+
+      <action path="/printDynamicPrismReport"
+              parameter="printDynamicPrismReport"
+              type="us.mn.state.health.matmgmt.action.ReportingAction"
+              scope="session"
+              
+              validate="false">
+          <!--<forward name="success" path="/viewCreateDeliveryReceipt.do" redirect="true"/>-->
+      </action>
+
+      <action path="/readyAssetsViewReport"
+              type="us.mn.state.health.matmgmt.action.ReportingAction"
+              name="assetsViewReportForm"
+              scope="session"
+              validate="false"
+              parameter="readyAssetsViewReport">
+          <forward name="success" path="/requests/reports/assetViewReport.jsp"/>
+      </action>
+
+      <action path="/displayAssetsViewReport"
+              type="us.mn.state.health.matmgmt.action.ReportingAction"
+              name="assetsViewReportForm"
+              scope="session"
+              validate="false"
+              parameter="generateAssetsViewReport"
+              input="/requests/reports/assetViewReport.jsp">
+          <forward name="success" path="/requests/reports/assetViewReport.jsp" redirect="true"/>
+      </action>
+
+
+
+  </action-mappings>
+  <message-resources parameter="ApplicationResources_reporting" key="reportingMessages"/>
+</struts-config>

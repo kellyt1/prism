@@ -1,0 +1,261 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ Mapping file for the Person class - INCOMPLETE AS OF 1/25/05.
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="Person"
+           table="PERSON_TBL"
+           lazy="true">
+
+        <cache usage="read-write"/>
+
+        <!-- Common id property. -->
+        <id name="personId"
+            type="long"
+            column="PERSON_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="employeeId"
+                  column="EMP_ID"
+                  type="string"/>
+
+        <property name="firstName"
+                  column="FIRST_NAME"
+                  type="string"/>
+
+        <property name="lastName"
+                  column="LAST_NAME"
+                  type="string"/>
+
+        <property name="middleName"
+                  column="MID_NAME"
+                  type="string"/>
+
+        <property name="insertedBy"
+                  column="PERSON_INSERTED_BY"
+                  type="string"/>
+
+        <property name="insertionDate"
+                  column="PERSON_INSERTION_DATE"
+                  type="date"/>
+
+        <!-- endDate property does not exist in production database -->
+        <property name="endDate"
+                  column="PERSON_END_DATE"
+                  type="date"/>
+
+        <property name="salutation"
+                  column="SALUTATION"
+                  type="string"/>
+
+        <property name="nameType"
+                  column="NAME_TYPE"
+                  type="string"/>
+
+        <!-- nameStartDate -->
+        <property name="nameStartDate"
+                  column="NAME_START_DATE"
+                  type="date"/>
+
+        <!-- gender -->
+        <property name="gender"
+                  column="GENDER"
+                  type="string"/>
+
+        <!-- terminatedBy.  The username of person who terminated this record -->
+        <property name="terminatedBy"
+                  column="TERMINATED_BY"
+                  type="string"/>
+
+        <!-- terminationDate -->
+        <property name="terminationDate"
+                  column="TERMINATION_DATE"
+                  type="date"/>
+
+        <!-- namePrefix -->
+        <property name="namePrefix"
+                  column="NAME_PREFIX"
+                  type="string"/>
+
+        <!-- changedBy -->
+        <property name="changedBy"
+                  column="CHANGED_BY"
+                  type="string"/>
+
+        <!-- changeDate -->
+        <property name="changeDate"
+                  column="CHANGE_DATE"
+                  type="date"/>
+
+        <!-- changedBy -->
+        <property name="ndsUserId"
+                  column="NDS_USER_ID"
+                  type="string"/>
+
+        <property name="personType"
+                  column="PERSON_TYPE"
+                  type="string"/>
+
+
+        <set name="personGroupLinks"
+             cascade="save-update"
+             inverse="true"
+             lazy="true" where="((end_date is null) or (END_DATE > sysdate))">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="us.mn.state.health.model.common.PersonGroupLink"/>
+        </set>
+
+        <set name="personEmailAddressLinks"
+             cascade="save-update"
+             inverse="false"
+             lazy="true"
+             where="(select count(*) from EMAIL_TBL e where e.email_ID=CONTACT_MECHANISM_ID)>0 and DEVICE_TYPE='GRP_WISE'">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="PersonEmailAddressLink"/>
+        </set>
+
+        <set name="personPositionLinks"
+             cascade="all,delete-orphan"
+             inverse="false"
+             lazy="true"
+             where="((end_date is null) or (END_DATE > sysdate)) and RELATIONSHIP_TYPE = 'PERSON_POS_ASGN' and RESOURCE_ID in (select distinct p.POSITION_ID from POSITION_TBL p)">
+            <key column="PARTY_ID"/>
+            <one-to-many class="us.mn.state.health.model.common.PartyResource"/>
+        </set>
+
+        <set name="personMailingAddresses"
+             cascade="save-update"
+             inverse="false"
+             lazy="true"
+             where="CONTACT_MECHANISM_ID in (select distinct e.ADDRESS_ID from MAILING_ADDRESS_TBL e)">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="PersonMailingAddress"/>
+        </set>
+
+        <set name="personPhones"
+             cascade="save-update"
+             inverse="false"
+             lazy="true">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="PersonPhone"/>
+        </set>
+
+        <!-- User subclass mapping to its own table, normalized. -->
+        <!--table="PRISM_USER_VIEW"-->
+        <joined-subclass name="User"
+                         table="PRISM_USER_VIEW"
+                         lazy="true">
+
+            <key column="PERSON_ID"/>
+
+            <property name="username"
+                      column="USERNAME"
+                      type="string"/>
+
+            <!--<property name="password"-->
+            <!--column="PASSWORD"-->
+            <!--type="string"/>-->
+
+            <!--<property name="challengeQuestion"-->
+            <!--column="CHALLENGE_QUESTION"-->
+            <!--type="string"/>-->
+
+            <!--<property name="challengeAnswer"-->
+            <!--column="CHALLENGE_ANSWER"-->
+            <!--type="string"/>-->
+
+            <!--<property name="activeIndicator"-->
+            <!--column="ACTIVE_IND"-->
+            <!--type="yes_no"/>-->
+
+            <!--<property name="changePasswordIndicator"-->
+            <!--column="CHANGE_PASSWORD_IND"-->
+            <!--type="yes_no"/>-->
+
+            <!--<property name="userInsertionDate"-->
+            <!--column="INSERTION_DATE"-->
+            <!--type="date"-->
+            <!--update="false"/>-->
+
+            <!--<property name="userInsertedBy"-->
+            <!--column="INSERTED_BY"-->
+            <!--type="string"/>-->
+
+            <!--<property name="userEndDate"-->
+            <!--column="END_DATE"-->
+            <!--type="date"/>-->
+
+            <!--<property name="userChangedBy"-->
+            <!--column="CHANGED_BY"-->
+            <!--type="string"/>-->
+
+            <!--<property name="userChangeDate"-->
+            <!--column="CHANGE_DATE"-->
+            <!--type="date"/>-->
+
+        </joined-subclass>
+
+    </class>
+
+    <query name="findUserByUsername">
+        <![CDATA[
+            select person
+            from Person as person
+            where lower(person.ndsUserId) = :username
+            and (person.endDate is null
+            or person.endDate >= sysdate)
+        ]]>
+    </query>
+
+    <query name="findPersonsByGroupId">
+        <![CDATA[
+            select person
+            from Person as person
+            join person.personGroupLinks as groupLinks
+                 where groupLinks.group.groupId = :groupId
+        ]]>
+    </query>
+
+    <query name="findPersonsByPositionClassCode">
+        <![CDATA[
+            select person
+            from Person as person,
+                 Position as position,
+                 PartyResource as partyResource
+            where person.personId = partyResource.partyResourceId.partyId
+               and position.positionId = partyResource.partyResourceId.resourceId
+               and position.classCode = :classCode 
+            order by  person.lastName asc,  person.firstName asc
+        ]]>
+    </query>
+
+    <query name="findPersonsByGroupCode">
+        <![CDATA[
+            select person
+            from Person as person
+            join person.personGroupLinks as groupLinks
+                 where groupLinks.group.groupCode = :groupCode
+                 order by person.lastName asc, person.firstName asc
+        ]]>
+    </query>
+
+    <query name="findUsersByGroupCode">
+        <![CDATA[
+            select u
+            from User as u
+            join u.personGroupLinks as groupLinks
+                 where groupLinks.group.groupCode = :groupCode
+                 order by u.lastName asc, u.firstName asc
+        ]]>
+    </query>
+
+
+</hibernate-mapping>

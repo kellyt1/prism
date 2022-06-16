@@ -1,0 +1,89 @@
+CREATE OR REPLACE VIEW
+    ASSET_VIEW
+    (
+        ORDER_LINE_ITEM_ID,
+        MDH_PO,
+        ASSET_NUMBER,
+        MRQ,
+        ASSET_DESCRIPTION,
+        ASSETS_TYPE,
+        COST,
+        ORDER_DATE,
+        FUNDING_STREAMS,
+        QUANTITY,
+        DELIVER_TO_NAME,
+        DELIVER_TO_ADDRESS,
+        UPDATED_BY
+    ) AS
+SELECT
+    oli.ORDER_LINE_ITEM_ID,
+    o.PO_NUMBER        AS "MDH_PO",
+    aTrck.ASSET_NUMBER AS "ASSET_NUMBER",
+    r.TRACKING_NUMBER  AS "MRQ",
+    oli.DESCRPTN       AS "ASSET_DESCRIPTION",
+    oli.ASSETS_TYPE,
+    oli.BUY_UNIT_COST AS "COST",
+    o.INSERTION_DATE  AS "ORDER_DATE",
+    fund."FUNDING_STREAMS",
+    oli.QUANTITY,
+    p.first_name || ' ' || p.last_name AS "DELIVER_TO_NAME",
+    mat.address1 || nvl2(mat.address2, ', ' || mat.address2, '') || ', ' || mat.city_code || ', '
+    || mat.state_code || ', ' || mat.zip5_code AS "DELIVER_TO_ADDRESS",
+    pt.first_name || ' ' || pt.last_name       AS "UPDATED_BY"
+FROM
+    MATERIALS_ORDER_TBL o
+JOIN
+    MATERIALS_ORDER_LINE_ITEM_TBL oli
+ON
+    oli.ORDER_ID = o.ORDER_ID
+JOIN
+    MATERIALS_REQ_LINE_ITEM_TBL rli
+ON
+    rli.ORDER_LN_ITM_ID = oli.ORDER_LINE_ITEM_ID
+JOIN
+    MATERIALS_REQUEST_TBL r
+ON
+    r.REQUEST_ID = rli.REQUEST_ID
+JOIN
+    (
+        SELECT
+            rlif.REQUEST_LINE_ITEM_ID,
+            listagg(bdgt.fund_code || '|' || bdgt.dept_id || '|' || bdgt.appr_code || nvl2
+            (bdgt.project_id, '|' || bdgt.project_id, ''), ',') within GROUP ( ORDER BY
+            bdgt.org_bdgt_id) AS "FUNDING_STREAMS"
+        FROM
+            org_bdgt_tbl_view bdgt
+        JOIN
+            MATERIALS_RLI_FND_SRC_TBL rlif
+        ON
+            rlif.ORG_BDGT_ID = bdgt.ORG_BDGT_ID
+        WHERE
+            bdgt.dept_id IS NOT NULL
+        GROUP BY
+            rlif.REQUEST_LINE_ITEM_ID ) fund
+ON
+    fund.REQUEST_LINE_ITEM_ID = rli.REQUEST_LINE_ITEM_ID
+JOIN
+    MATERIALS_REQ_DELIVERY_DTL_TBL rddt
+ON
+    rddt.DELIVERY_DETAIL_ID = r.DELIVERY_DETAIL_ID
+JOIN
+    person_tbl p
+ON
+    p.PERSON_ID = rddt.RECIPIENT_PERSON_ID
+JOIN
+    MAILING_ADDRESS_TBL mat
+ON
+    mat.address_id = rddt.MAILING_ADDRESS_ID
+JOIN
+    person_tbl pt
+ON
+    pt.person_id = o.purchaser_id
+JOIN
+    MATERIALS_RECVNG_DETAIL_TBL aTrck
+ON
+    aTrck.ORDR_LN_ITM_ID = oli.ORDER_LINE_ITEM_ID
+ORDER BY
+    oli.ORDER_LINE_ITEM_ID,
+    o.po_number,
+    r.tracking_number;

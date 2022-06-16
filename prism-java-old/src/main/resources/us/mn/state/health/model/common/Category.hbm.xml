@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+
+Mapping file for the Category class.
+
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="Category"
+           table="CATEGORY_TBL"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- Common id property. -->
+        <id name="categoryId"
+            type="long"
+            column="CATEGORY_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <version name="version"
+                 column="VERSION"/>
+
+        <!-- categoryCode represents the first 3 digits of the legacy icnbr; should be optional - only applies to stock items -->
+        <property name="categoryCode"
+                  column="CATEGORY_CODE"
+                  type="string"
+                  not-null="false"/>
+
+        <!-- childCategories.
+             We use a Set for this bidirectional one-to-many. Batch fetching is
+             particulary interesting for this association: We expect that the
+             application will need much more childCategories if it accesses
+             one. Batch fetching can significantly improve fetching of the
+             whole category graph.
+        -->
+        <set name="childCategories"
+             cascade="all,delete-orphan"
+             inverse="false"
+             lazy="true"
+             batch-size="10">
+            <key column="PARENT_CATEGORY_ID"/>
+            <one-to-many class="Category"/>
+        </set>
+
+        <!-- insertedBy. username of the person that inserted the record -->
+        <property name="insertedBy"
+                  type="string"
+                  column="INSERTED_BY"/>
+
+        <!-- insertionDate. We can't change the creation time, so map it with update="false". -->
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+
+        <!-- Name is limited to 255 characters.-->
+        <property name="name"
+                  column="NAME"
+                  type="string"
+                  not-null="true"/>
+
+        <!-- Parent can be null for root categories. -->
+        <many-to-one name="parentCategory"
+                     cascade="delete"
+                     fetch="join"
+                     class="Category">
+            <column name="PARENT_CATEGORY_ID" not-null="false"/>
+        </many-to-one>
+
+        <property name="usedFor"
+                  column="USED_FOR"
+                  type="string"
+                  not-null="false"/>
+
+    </class>
+
+    <query name="findChildCategoriesByParentCode">
+        <![CDATA[select category 
+                 from Category as category 
+                 where category.parentCategory.categoryId in (select parentCategory 
+                                                              from Category as parentCategory 
+                                                              where parentCategory.categoryCode = :categoryCode) 
+                 order by category.name
+        ]]>
+    </query>
+
+    <query name="findByCategoryCode">
+        <![CDATA[select category 
+                 from Category as category 
+                 where category.categoryCode = :categoryCode
+        ]]>
+    </query>
+
+    <query name="findByCategoryName">
+        <![CDATA[select category
+                 from Category as category
+                 where upper(category.name) = :categoryName
+        ]]>
+    </query>
+
+    <query name="countItemsInCategory">
+        <![CDATA[
+            select count(*) 
+            from Item item 
+            where item.category.categoryId = :categoryId
+        ]]>
+    </query>
+
+</hibernate-mapping>

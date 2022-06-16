@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<!--
+  - Application context definition for Prism on Hibernate.
+  -->
+<beans>
+
+    <!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+    <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
+    <!-- (in this case, JDBC-related settings for the dataSource definition below) -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--<property name="location" value="/WEB-INF/classes/jdbc.properties"/>-->
+        <property name="location" value="classpath:/jdbc.properties"/>
+    </bean>
+
+    <!-- Local DataSource that works in any environment -->
+    <!-- Note that DriverManagerDataSource does not pool; it is not intended for production -->
+    <!-- See JPetStore for an example of using Commons DBCP BasicDataSource as alternative -->
+    <!-- See Image Database for an example of using C3P0 ComboPooledDataSource as alternative -->
+    <bean id="abstractDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="dataSource" parent="abstractDataSource" lazy-init="true">
+        <!--<property name="url" value="${jdbc.url.STG}"/>-->
+        <!--<property name="url" value="${jdbc.url.TST}"/>-->
+        <property name="url" value="${jdbc.url.DEV}"/>
+        <!--<property name="url" value="${jdbc.url.PRDI}"/>-->
+    </bean>
+
+    <!--JNDI DataSource for J2EE environments -->
+    <!--This DS must be used for when we deploy the app on the Oracle servers -->
+
+    <bean id="dataSource_OAS" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true">
+        <property name="jndiName" value="jdbc/PrismDS"/>
+        <property name="resourceRef" value="true"/>
+    </bean>
+
+    <!--For OAS deployment use dataSource_OAS-->
+    <bean id="sessionFactory" parent="abstractSessionFactory" lazy-init="true">
+        <property name="dataSource" ref="dataSource_OAS"/>
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    </bean>
+
+    <!--scope="prototype" means that the bean is not a singleton-->
+    <!--<bean id="luceneInterceptor" class="us.mn.state.health.model.util.search.LuceneInterceptor" scope="prototype">-->
+    <bean id="luceneInterceptor" class="us.mn.state.health.model.util.search.spring.LuceneInterceptor"/>
+
+    <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="entityInterceptor">
+            <ref bean="luceneInterceptor"/>
+        </property>
+    </bean>
+
+    <bean name="hibernateTemplate"
+          class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <constructor-arg ref="sessionFactory"/>
+        <property name="entityInterceptor">
+            <ref local="luceneInterceptor"/>
+        </property>
+    </bean>
+
+    <!--<bean id="userRepository" class="us.mn.state.health.security.SecurityManagerFilter">-->
+  <!--</bean>-->
+
+    <!-- Hibernate SessionFactory -->
+    <bean id="abstractSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"
+          lazy-init="true">
+        <property name="mappingResources">
+            <list>
+                <!-- inventory domain mapping files. -->
+                <value>us/mn/state/health/model/inventory/AttachedFile.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/ActionRequestType.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/ClassCode.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/Item.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/ItemVendor.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/ItemVendorLinkHistory.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/OrderFormula.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/SensitiveAsset.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemActionRequest.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemActionRequestEvaluation.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockQtyAdjustmentHistory.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockQtyChangeReasonRef.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemLocation.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/Unit.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/CycleCountPriority.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemHistory.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemLocationHistory.hbm.xml</value>
+                <value>us/mn/state/health/model/inventory/StockItemLot.hbm.xml</value>
+
+                <!-- materials request domain mapping files -->
+                <value>us/mn/state/health/model/materialsrequest/AttachedFileNonCat.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/DeliveryDetail.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/MaterialsRequestEvaluation.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/Request.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/RequestLineItem.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/RequestLineItemFundingSource.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/RequestLineItemNote.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/ShoppingList.hbm.xml</value>
+                <value>us/mn/state/health/model/materialsrequest/ShoppingListLineItem.hbm.xml</value>
+
+                <!-- purchasing domain mapping files -->
+                <value>us/mn/state/health/model/purchasing/Order.hbm.xml</value>
+                <value>us/mn/state/health/model/purchasing/OrderNote.hbm.xml</value>
+                <value>us/mn/state/health/model/purchasing/OrderLineItem.hbm.xml</value>
+                <value>us/mn/state/health/model/purchasing/HelpDeskTicketTracking.hbm.xml</value>
+                <value>us/mn/state/health/model/purchasing/HelpDeskTicketTrackingSubmission.hbm.xml</value>
+                <value>us/mn/state/health/model/purchasing/AssetView.hbm.xml</value>
+
+                <!-- receiving domain mapping files -->
+                <value>us/mn/state/health/model/receiving/ReceivingDetail.hbm.xml</value>
+                <value>us/mn/state/health/model/receiving/DeliveryTicket.hbm.xml</value>
+
+                <!-- common domain mapping files. -->
+                <value>us/mn/state/health/model/common/Category.hbm.xml</value>
+                <value>us/mn/state/health/model/common/EmailAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Employee.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ExternalOrgDetail.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ExtOrgDetailEmailAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ExtOrgDetailMailingAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ExternalOrgDetailRep.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Facility.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Group.hbm.xml</value>
+                <value>us/mn/state/health/model/common/MailingAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Manufacturer.hbm.xml</value>
+                <value>us/mn/state/health/model/common/OrgBudget.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ReportCategory.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PartyResource.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Person.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PersonEmailAddressLink.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PersonMailingAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PersonGroupLink.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PersonPhone.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Phone.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Position.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PositionFacility.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Priority.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Status.hbm.xml</value>
+                <value>us/mn/state/health/model/common/StatusType.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Vendor.hbm.xml</value>
+                <value>us/mn/state/health/model/common/VendorAccount.hbm.xml</value>
+                <value>us/mn/state/health/model/common/VendorContract.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ExtOrgDetailPhone.hbm.xml</value>
+                <value>us/mn/state/health/model/common/ObjectCode.hbm.xml</value>
+                <value>us/mn/state/health/model/common/FiscalYears.hbm.xml</value>
+                <value>us/mn/state/health/model/common/PrismExternalReports.hbm.xml</value>
+                <value>us/mn/state/health/model/common/BusinessRulesORCL.hbm.xml</value>
+                <value>us/mn/state/health/model/common/Hazardous.hbm.xml</value>
+                <value>us/mn/state/health/model/common/NotificationEmailAddress.hbm.xml</value>
+                <value>us/mn/state/health/model/common/NotificationEmailBudgetLink.hbm.xml</value>
+
+                <!-- external configuration mapping files-->
+                <value>us/mn/state/health/model/util/configuration/ApplicationConfig.hbm.xml</value>
+                <value>us/mn/state/health/model/util/configuration/ConfigurationItem.hbm.xml</value>
+
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.connection.release_mode">after_transaction</prop>
+                <prop key="hibernate.transaction.auto_close_session">true</prop>
+
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <prop key="hibernate.generate_statistics">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.use_minimal_puts">false</prop>
+                <prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+                <prop key="hibernate.jdbc.batch_size">40</prop>
+                <prop key="hibernate.default_batch_fetch_size">16</prop>
+                <prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
+                <prop key="current_session_context_class">thread</prop>
+                <prop key="connection.factory_class">org.hibernate.transaction.JTATransactionFactory</prop>
+                <prop key="hibernate.query.substitutions">true 'Y', false 'N'</prop>
+                <prop key="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider
+                </prop>
+                <prop key="hibernate.search.default.indexBase">${PRISM_LUCENE}</prop>
+                <!--<prop key="hibernate.search.default.indexBase">/var/lib/tomcat5.5/appdata/prism/LuceneIndexes</prop>-->
+            </props>
+        </property>
+        <property name="eventListeners">
+            <map>
+                <entry key="merge">
+                    <bean class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener"/>
+                </entry>
+                <entry key="post-update">
+                    <bean class="org.hibernate.search.event.FullTextIndexEventListener"/>
+                </entry>
+                <entry key="post-insert">
+                    <bean class="org.hibernate.search.event.FullTextIndexEventListener"/>
+                </entry>
+                <entry key="post-delete">
+                    <bean class="org.hibernate.search.event.FullTextIndexEventListener"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+
+</beans>

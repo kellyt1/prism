@@ -1,0 +1,30 @@
+## Dennis Rausch
+## 6/26/2014
+
+#macro( displayCssMenu $menu )
+
+## set menu title
+#set ($title = $displayer.getMessage($menu.title))
+#if (!$menu.url) #set ($url="#") #else #set ($url=$menu.url) #end
+
+    ## create a single menu item
+    #if ($menu.components.size() == 0)
+        <li><a href="$url" #if($menu.target)target="$menu.target"#end>${title}</a>
+    ## create multiple menu items in a menu
+    #else
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" #if($menu.target)target="$menu.target"#end>${title} <b class="caret"></b></a>
+    #end
+
+    #if ($menu.components.size() > 0)
+        <ul class="dropdown-menu">
+            #foreach ($menuIt in $menu.components)
+            #eval("#displayCssMenu($menuIt)")
+            #end ## end for loop
+        </ul>
+    #else
+    </li>
+
+#end ## end if
+
+#end
+#displayCssMenu($menu)

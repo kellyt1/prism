@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.ItemVendor"
+           table="ITEM_VENDOR_LINK"
+           lazy="true">
+
+        <!--<cache usage="nonstrict-read-write"/>-->
+
+        <composite-id name="itemVendorId"
+                      class="us.mn.state.health.model.inventory.ItemVendor$ItemVendorId"
+                      unsaved-value="undefined">
+
+            <key-property name="itemId"
+                          access="field"
+                          column="ITEM_ID"/>
+
+            <key-property name="vendorId"
+                          access="field"
+                          column="VENDOR_ID"/>
+            <key-property name="insertionDate"
+                          access="field"
+                          column="INSERTION_DATE"
+                          type="java.sql.Timestamp"
+                    />
+        </composite-id>
+
+        <!-- vendor.  the child/many end of the vendor-itemVendor relationship.  Note that <many-to-one> is always inverse="false" (the inverse attribute does not exist). -->
+        <many-to-one name="vendor"
+                     class="us.mn.state.health.model.common.Vendor"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="none"
+                     column="VENDOR_ID"/>
+
+        <!--item.  the child/many end of the item-itemVendor relationship.  Note that <many-to-one> is always inverse="false" (the inverse attribute does not exist). -->
+        <many-to-one name="item"
+                     class="us.mn.state.health.model.inventory.Item"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="none"
+                     column="ITEM_ID"/>
+        <!---->
+        <!-- vendorContract.  the child/many end of the (optional) vendorContract-itemVendor relationship.  Note that <many-to-one> is always inverse="false" (the inverse attribute does not exist). -->
+        <many-to-one name="vendorContract"
+                     class="us.mn.state.health.model.common.VendorContract"
+                     insert="true"
+                     update="true"
+                     not-null="false"
+                     cascade="save-update"
+                     column="VENDOR_CONTRACT_ID"/>
+
+        <many-to-one name="buyUnit"
+                     class="us.mn.state.health.model.inventory.Unit"
+                     insert="true"
+                     update="true"
+                     not-null="false"
+                     cascade="none"
+                     column="BUY_UNIT_ID"/>
+
+        <property name="insertedBy"
+                  type="string"
+                  column="INSERTED_BY"/>
+
+        <property name="vendorCatalogNbr"
+                  type="string"
+                  column="VENDOR_CATALOG_NBR"/>
+
+        <property name="buyUnitCost" type="double" column="BUY_UNIT_COST"/>
+
+        <property name="primaryVendor" type="yes_no" column="PRIMARY_VENDOR"/>
+        <property name="discount" type="double" not-null="false" column="DISCOUNT"/>
+        <property name="updatedBy" type="string" column="LAST_UPDATED_BY"/>
+        <property name="updateDate" type="date" column="LAST_UPDATED_DATE"/>
+        <property name="endedBy" type="string" column="ENDED_BY"/>
+        <property name="endDate" type="date" column="END_DATE"/>
+        <property name="dispenseUnitsPerBuyUnit" type="integer" column="DISPENSE_UNITS_PER_BUY_UNIT"/>
+    </class>
+
+</hibernate-mapping>

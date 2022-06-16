@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.legacySystem.inventory.StockInv"
+        table="STOCK_INV_TBL"
+        lazy="true" >
+<!--        <id name="stockInvId"-->
+<!--            column="STOCK_INV_ID"-->
+<!--            type="long">-->
+<!--        </id>-->
+        <id name="icnbr"
+            column="ICNBR"
+            type="string" >
+        </id>
+
+<!--        <property name="icnbr"-->
+<!--            column="ICNBR"-->
+<!--            type="string"/>-->
+
+        <property name="itemDescription"
+            column="ITEM"
+            type="string"/>
+
+        <property name="unit"
+            column="UNIT"
+            type="string"/>
+
+        <property name="ROP"
+            column="ROP"
+            type="integer"/>
+
+        <property name="ROQ"
+            column="ROQ"
+            type="integer"/>
+
+        <property name="BNBR"
+            column="BNBR"
+            type="string"/>
+
+        <property name="primaryContactId"
+            column="PCONTACT"
+            type="long"/>
+
+        <property name="secondaryContactId"
+            column="SCONTACT"
+            type="long"/>
+
+        <property name="insertedBy"
+            column="INSERTED_BY"
+            type="string"/>
+
+        <property name="insertionDate"
+            column="INSERTION_DATE"
+            type="date"/>
+
+        <property name="endDate"
+            column="END_DATE"
+            type="date"/>
+
+        <property name="comments"
+            column="COMMENTS"
+            type="string"/>
+
+        <property name="aContactId"
+            column="ACONTACT"
+            type="long"/>
+
+        <property name="holdDate"
+            column="HOLD_DATE"
+            type="date"/>
+
+        <property name="reponseType"
+            column="REPONSE_TYPE"
+            type="string"/>
+
+        <property name="hazardous"
+            column="hazardous"
+            type="yes_no"/>
+
+        <property name="onOrder"
+            column="ONORDER"
+            type="yes_no"/>
+
+        <property name="seasonal"
+            column="SEASONAL"
+            type="yes_no"/>
+
+        <property name="packQty"
+            column="PACK_QTY"
+            type="integer"/>
+
+        <property name="VendorName"
+            column="VENDOR_NAME"
+            type="string"/>
+
+        <property name="annualUsage"
+            column="USAGE_ANNUAL"
+            type="integer"/>
+
+    </class>
+</hibernate-mapping>

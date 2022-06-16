@@ -1,0 +1,102 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!-- This is the configuration file for Request Actions -->
+<struts-config>
+    <form-beans>
+        <form-bean name="advancedSearchFillStockRequestsForm" type="us.mn.state.health.web.struts.fillstockrequests.AdvancedSearchFillStockRequestsForm"/>
+        <form-bean name="editStockItemForm" type="us.mn.state.health.web.struts.editstockitem.EditStockItemForm"/>
+    </form-beans>
+
+    <action-mappings>
+        <!--Begin fill stock request actions-->
+        <action path="/inventory/advancedSearchOpenStockRequests"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="advancedSearchFillStockRequestsForm"
+                scope="request"
+                parameter="advancedSearchOpenStockRequests">
+            <forward name="success" path="/inventory2/fillstockrequests/advancedSearchStockRequests.jsp"/>
+        </action>
+
+        <action path="/generatePickListForAdvancedSearchOpenStockRequestsTemp"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="requestFormCollection"
+                scope="session"
+                parameter="generatePickListForSearchOpenStockRequestsTemp"
+                validate="false">
+            <forward name="search" redirect="yes" path="/inventory/advancedSearchOpenStockRequests.do"/>
+            <forward name="reload" path="/inventory2/fillstockrequests/advancedSearchStockRequests.jsp"/>
+            <forward name="success" path="/inventory/pickList.jsp"/>
+        </action>
+        <!--End fill stock request actions-->
+        <!--Beging Edit Stock Item actions-->
+
+        <action path="/inventory/editStockItem"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="editStockItemForm"
+                scope="session"
+                parameter="editStockItem"
+                validate="false">
+            <forward name="cancel" path="/viewStockItems.do" redirect="yes"/>
+            <forward name="tab0" path="/inventory2/editstockitem/editStockItemTab0.jsp"/>
+            <forward name="tab1" path="/inventory2/editstockitem/editStockItemTab1.jsp"/>
+            <forward name="tab2" path="/inventory2/editstockitem/editStockItemTab2.jsp"/>
+            <forward name="tab3" path="/inventory2/editstockitem/editStockItemTab3.jsp"/>
+            <forward name="pre_submit" path="/inventory2/editstockitem/preSubmit.jsp"/>
+            <forward name="optimisticLockingFailureException"
+                     path="/inventory2/editstockitem/optimisticLockingFailureException.jsp"/>
+        </action>
+
+        <action path="/inventory/editMyStockItem"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="editStockItemForm"
+                scope="session"
+                parameter="editMyStockItem"
+                validate="false">
+            <forward name="cancel" path="/viewMyStockItems.do" redirect="yes"/>
+            <forward name="tab0" path="/inventory2/editmystockitem/editStockItemTab0.jsp"/>
+            <forward name="tab3" path="/inventory2/editmystockitem/editStockItemTab3.jsp"/>
+            <forward name="pre_submit" path="/inventory2/editmystockitem/preSubmit.jsp"/>
+            <forward name="optimisticLockingFailureException"
+                     path="/inventory2/editmystockitem/optimisticLockingFailureException.jsp"/>
+            <forward name="confirmation" path="/inventory2/editmystockitem/confirmation.jsp"/>
+        </action>
+
+        <action path="/inventory/getStockItemOnOrderInfo"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="getStockItemOnOrderInfo"
+                validate="false">
+            <forward name="success" path="/inventory2/editstockitem/onOrderInfo.jsp"/>
+        </action>
+
+        <action path="/inventory/getStockItemHistory"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="getStockItemHistory"
+                validate="false">
+            <forward name="success" path="/inventory2/editstockitem/stockItemHistory.jsp"/>
+        </action>
+        <action path="/inventory/getStockItemQtyAdjustmentHistory"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="getStockItemQtyAdjustmentHistory"
+                validate="false">
+            <forward name="success" path="/inventory2/editstockitem/stockItemQtyAdjustmentHistory.jsp"/>
+        </action>
+        <action path="/inventory/getStockItemLocationHistory"   
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="getStockItemLocationHistory"
+                validate="false">
+            <forward name="success" path="/inventory2/editstockitem/stockItemLocationHistory.jsp"/>
+        </action>
+        <action path="/inventory/getItemVendorLinkHistory"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="getItemVendorLinkHistory"
+                validate="false">
+            <forward name="success" path="/inventory2/editstockitem/ItemVendorLinkHistory.jsp"/>
+        </action>
+
+        <action path="/inventory/downloadFileAction"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="editStockItemForm"
+                scope="session"               
+                validate="false">
+        </action>
+    </action-mappings>
+</struts-config>

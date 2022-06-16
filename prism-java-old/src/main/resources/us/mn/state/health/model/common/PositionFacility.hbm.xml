@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+Mapping file for the PositionFacility class.
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="PositionFacility"
+        table="RESOURCE_LOC_LINK"
+        lazy="true">
+<!--where="(END_DATE is null or TRUNC(END_DATE) > SYSDATE)"-->
+        <!-- Common id property. -->
+        <id name="positionFacilityId"
+            type="long"
+            column="RESOURCE_LOC_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+        <property name="rank"
+            type="integer"
+            column="RANK"
+            not-null="true"/>
+        
+        <many-to-one name="position"
+            class="Position"
+            column="RESOURCE_ID"
+            cascade="none"
+            not-null="true"/>
+            
+        <many-to-one name="facility"
+            class="Facility"
+            column="LOCATION_ID"
+            cascade="none"
+            not-null="true"/>
+            
+        <property name="relationshipType"
+            type="string"
+            column="RELATIONSHIP_TYPE"
+            not-null="true"/>
+            
+        <property name="insertedBy"
+            type="string"
+            column="INSERTED_BY"
+            not-null="true"/>
+            
+        <property name="insertionDate"
+            type="date"
+            column="INSERTION_DATE"
+            not-null="true"/>
+
+    </class>
+
+</hibernate-mapping>

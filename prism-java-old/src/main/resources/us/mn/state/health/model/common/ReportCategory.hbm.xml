@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the ReportCategory class
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="ReportCategory"
+           table="REPORT_CATEGORY_TBL"
+           lazy="true">
+        
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="reportCategoryId"
+            type="long"
+            column="REP_CAT_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+
+        <property name="repCatApprCode"
+                  column="REP_CAT_APPR_CODE"
+                  type="string"
+                  not-null="false" />
+
+        <property name="repCatOrgBdgt"
+                  column="REP_CAT_ORG_BDGT"
+                  type="string"
+                  not-null="false" />
+
+        <property name="repCatName"
+                  column="REP_CAT_NAME"
+                  type="string"
+                  not-null="false" />
+                  
+        <property name="repCatFederalYear"
+                    column="REP_CAT_FEDERAL_YEAR"
+                    type="string"
+                    not-null="false" />
+
+        <property name="repCatBeginDate"
+                    column="REP_CAT_BEGIN_DATE"
+                    type="string"
+                    not-null="false" />
+
+        <property name="repCatEndDate"
+                    column="REP_CAT_END_DATE"
+                    type="string"
+                    not-null="false" />
+
+        <property name="repCatCode"
+                    column="REP_CAT_CODE"
+                    type="string"
+                    not-null="false" />
+
+        <property name="insertedBy"
+                    column="INSERTED_BY"
+                    type="string"
+                    not-null="false" />
+
+            <property name="insertionDate"
+                    column="INSERTION_DATE"
+                    type="date"
+                    not-null="false" />
+
+            <property name="comments"
+                    column="COMMENTS"
+                    type="string"
+                    not-null="false" />
+
+            <property name="endDate"
+                    column="END_DATE"
+                    type="date"
+                    not-null="false" />
+
+ 
+
+            <!--<many-to-one name="orgCode"-->
+                     <!--class="us.mn.state.health.model.common.OrgBudget"-->
+                     <!--column="REP_CAT_ORG_BDGT"-->
+                     <!--property-ref = "orgBudgetCode"-->
+                     <!--cascade="save-update"-->
+                     <!--not-null="false" />-->
+    </class>
+    
+</hibernate-mapping>

@@ -1,0 +1,321 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!--
+     This is the Struts configuration file for Purchasing actions
+-->
+<struts-config>
+    <action-mappings>
+
+        <!-- ************* Editor Request Actions ********************** -->
+
+        <!-- Action that adds Purchasing Request Line Item Note for Editor -->
+        <action path="/addPurchasingRequestLineItemNote2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="addPurchasingRequestLineItemNote2"
+                validate="false">
+            <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action that handles preparation of Purchasing Request Line Item view for Editor -->
+        <action path="/viewEditEditorRequest"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="viewEditEditorRequest"
+                validate="false">
+            <forward name="success" path="/editor/editorRequest.jsp"/>
+        </action>
+
+        <!-- Action that handles Purchasing Request Line Item Search for Editor -->
+        <action path="/searchPurchasingRequestLineItems2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="requestLineItemSearchForm"
+                scope="session"
+                parameter="searchPurchasingRequestLineItems2"
+                validate="false">
+            <forward name="success" path="/editor/requestLineItems.jsp"/>
+        </action>
+
+        <!-- Action that handles view of Purchasing Request Line Item Search Page for Editor -->
+        <action path="/viewSearchPurchasingRequestLineItems2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="requestLineItemSearchForm"
+                scope="session"
+                parameter="viewSearchPurchasingRequestLineItems2"
+                validate="false">
+            <forward name="success" path="/editor/requestLineItems.jsp"/>
+        </action>
+
+        <!-- Action that handles canceling of edit Purchasing Request Line Item for Editor -->
+        <action path="/cancelEditPurchasingRequest2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestLineItemForm"
+                scope="session"
+                parameter="cancelEditPurchasingRequest2"
+                validate="false">
+            <forward name="purchasingRequestLineItems" path="/editor/requestLineItems.jsp"/>
+            <forward name="order" path="/editor/order.jsp"/>
+            <forward name="orderLineItem" path="/editor/orderLineItem.jsp"/>
+        </action>
+
+        <!-- Action that handles Purchasing Request Line Item Search for Editor -->
+        <action path="/searchOrdersForEditor"
+        type="us.mn.state.health.matmgmt.action.OrderAction"
+        name="searchOrdersForm"
+        scope="session"
+        parameter="searchOrders"
+        validate="false">
+        <forward name="success" path="/editor/searchOrders.jsp"/>
+        </action>
+
+        <!-- Action that handles viewEditOrder for Edit role for Editor -->
+        <action path="/viewEditOrder2"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="orderForm"
+                scope="session"
+                parameter="viewEditOrder2"
+                validate="false">
+            <forward name="success" path="/editor/order.jsp"/>
+        </action>
+
+        <!-- Action that handles view for editing Order Line Item for Editor -->
+        <action path="/viewEditOrderLineItem2"
+                type="us.mn.state.health.matmgmt.action.OrderLineItemAction"
+                name="orderForm"
+                scope="session"
+                parameter="viewEditOrderLineItem2"
+                validate="false">
+            <forward name="success" path="/editor/orderLineItem.jsp"/>
+        </action>
+
+        <!-- Action that handles preparation of Purchasing Request Line Item view for Editor -->
+        <action path="/viewEditPurchasingRequest2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="viewEditPurchasingRequest2"
+                validate="false">
+            <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!--Action that handles preparation of Purchasing Request Line Item view for Editor -->
+        <action path="/viewEditPurchasingRequestLineItem2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="viewEditPurchasingRequestLineItem2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action that handles preparation of Purchasing Request Line Item Funding Source edit view for Editor -->
+        <action path="/viewEditPurchasingRequestLineItemFundingSource2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="viewEditPurchasingRequestLineItemFundingSource2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action removePurchasingRequestLineItemFundingSource2 for Editor -->
+        <action path="/removePurchasingRequestLineItemFundingSource2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="removePurchasingRequestLineItemFundingSource2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Sept 8  -->
+        <!-- Action savePurchasingRequestLineItemFundingSource2 for Editor -->
+        <action path="/savePurchasingRequestLineItemFundingSource2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestLineItemFundingSourceForm"
+        scope="session"
+        parameter="savePurchasingRequestLineItemFundingSource2"
+        input="/editor/request.jsp"
+        validate="true">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action viewEditRequestLineItem2 for Editor -->
+        <action path="/viewEditRequestLineItem2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="orderForm"
+                scope="session"
+                parameter="viewEditEditorRequest"
+                validate="false">
+            <forward name="success" path="/requests/resubmitRequestLineItem.jsp"/>
+        </action>
+
+        <!-- Action savePurchasingRequestLineItem2 for Editor -->
+        <action path="/savePurchasingRequestLineItem2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestLineItemForm"
+                scope="session"
+                parameter="savePurchasingRequestLineItem2"
+                input="/editor/request.jsp"
+                validate="true">
+            <!--<forward name="success" path="/editor/request.jsp"/>-->
+            <forward name="success" path="/editor/requestGeneral.jsp"/>
+        </action>
+
+        <!-- Action savePurchasingRequest2 for Editor -->
+        <action path="/savePurchasingRequest2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="savePurchasingRequest2"
+        input="/editor/request.jsp"
+        validate="true">
+        <forward name="purchasingRequestLineItems" path="/editor/requestLineItems.jsp"/>
+        <forward name="order" path="/editor/order.jsp"/>
+        <forward name="orderLineItem" path="/editor/orderLineItem.jsp"/>
+        <!--<forward name="purchasingRequest" path="/viewCreatePurchasingRequest2.do"/>-->
+            <forward name="purchasingRequest" path="/viewCreatePurchasingRequest.do"/>
+        </action>
+
+        <action path="/saveRequestLineEdit"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="savePurchasingRequest2"
+                input="/editor/editorRequest.jsp"
+                validate="false">
+            <forward name="purchasingRequestLineItems" path="/viewSearchPurchasingRequestLineItems2.do"/>
+            <forward name="purchasingRequest" path="/viewSearchPurchasingRequestLineItems2.do"/>
+        </action>
+        <!-- Action removePurchasingRequestLineItemNote2 for Editor -->
+        <action path="/removePurchasingRequestLineItemNote2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="removePurchasingRequestLineItemNote2"
+                validate="false">
+            <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action that handles preparation of Purchasing Request Line Item Funding Source edit view for Editor -->
+        <action path="/viewCreatePurchasingRequestLineItemFundingSource2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="viewCreatePurchasingRequestLineItemFundingSource2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action printPurchaseOrder2 for Editor -->
+        <action path="/printPurchaseOrder2"
+        type="us.mn.state.health.matmgmt.action.OrderAction"
+        name="orderForm"
+        scope="session"
+        parameter="printPurchaseOrder2"
+        validate="false">
+        <forward name="success" path="/purchaseOrder.pdf"/>
+        </action>
+
+        <!-- Action removePurchasingRequestLineItem2 for Editor -->
+        <action path="/removePurchasingRequestLineItem2"
+                type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+                name="purchasingRequestForm"
+                scope="session"
+                parameter="removePurchasingRequestLineItem2"
+                validate="false">
+            <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action saveOrder2 for Editor -->
+        <action path="/saveOrder2"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="orderForm"
+                scope="session"
+                parameter="saveOrder2"
+                input="/editor/order.jsp"
+                validate="true">
+            <forward name="success" path="/viewEditOrder2.do"/>
+        </action>
+
+        <action path="/reloadVendorList2"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="orderForm"
+                scope="session"
+                parameter="reloadVendorList2"
+                validate="false">
+            <forward name="success" path="/editor/order.jsp"/>
+        </action>
+        <!-- Sept 8 end -->
+
+        <!-- Action that handles preparation of Purchasing Request Line Item create view for Editor -->
+        <action path="/viewCreatePurchasingRequest2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="viewCreatePurchasingRequest2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action that handles preparation of Purchasing Request Line Item create view -->
+        <action path="/viewCreatePurchasingRequestLineItem2"
+        type="us.mn.state.health.matmgmt.action.EditorRoleRequestAction"
+        name="purchasingRequestForm"
+        scope="session"
+        parameter="viewCreatePurchasingRequestLineItem2"
+        validate="false">
+        <forward name="success" path="/editor/request.jsp"/>
+        </action>
+
+        <!-- Action that saves adds Purchase Order note -->
+        <!--<action path="/addPurchaseOrderNote"-->
+        <!--type="us.mn.state.health.matmgmt.action.OrderAction"-->
+        <!--name="orderForm"-->
+        <!--scope="session"-->
+        <!--parameter="addPurchaseOrderNote"-->
+        <!--validate="false">-->
+        <!--<forward name="success" path="/editor/order.jsp"/>-->
+        <!--</action>-->
+
+        <!-- Action that handles view for editing Order Line Item -->
+        <!--<action path="/removeOrderLineItem"-->
+        <!--type="us.mn.state.health.matmgmt.action.OrderLineItemAction"-->
+        <!--name="orderForm"-->
+        <!--scope="session"-->
+        <!--parameter="removeOrderLineItem"-->
+        <!--validate="false">-->
+        <!--<forward name="success" path="/editor/order.jsp"/>-->
+        <!--</action>-->
+
+        <!-- Action that saves adds Purchase Order note-->
+        <!--<action path="/removePurchaseOrderNote"-->
+        <!--type="us.mn.state.health.matmgmt.action.OrderAction"-->
+        <!--name="orderForm"-->
+        <!--scope="session"-->
+        <!--parameter="removePurchaseOrderNote"-->
+        <!--validate="false">-->
+        <!--<forward name="success" path="/editor/order.jsp"/>-->
+        <!--</action>-->
+
+        <!-- Action that handles Creating new Order Line Item -->
+        <!--<action path="/saveOrderLineItem"-->
+        <!--type="us.mn.state.health.matmgmt.action.OrderLineItemAction"-->
+        <!--name="orderLineItemForm"-->
+        <!--scope="session"-->
+        <!--parameter="saveOrderLineItem"-->
+        <!--validate="true"-->
+        <!--input="/purchasing/orderLineItem.jsp">-->
+        <!--<forward name="success" path="/editor/order.jsp"/>-->
+        <!--</action>-->
+
+        <!--<action path="/purchasing/downloadFileAction"-->
+        <!--type="us.mn.state.health.matmgmt.action.DownloadFileAction"-->
+        <!--name="requestLineItemSearchForm"-->
+        <!--scope="session"-->
+        <!--validate="false">-->
+        <!--</action>-->
+
+    </action-mappings>
+</struts-config>

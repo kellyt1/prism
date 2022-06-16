@@ -1,0 +1,129 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <!--<session-factory name="java:/hibernate/SessionFactory">-->
+    <session-factory>
+
+        <!-- Settings for a remote Oracle9/10g database.  -->
+        <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+
+         <!--   -->
+        <!--<property name="connection.datasource">jdbc/ejb/AdminDBPooledDS</property>-->
+
+        <!-- temp non-datasource settings -->
+        <!-- -->
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="connection.url">jdbc:oracle:thin:@wsddb01.health.state.mn.us:1521:DEVDB</property>
+        <property name="connection.username">admin_db</property>
+        <property name="connection.password">wide_778</property>
+        <!-- -->
+
+        <!-- ensure that auto-commit mode is turned off-->
+        <property name="hibernate.connection.autocommit">false</property>
+
+        <!-- Use EHCache -->
+        <property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+        <property name="cache.use_query_cache">true</property>
+        <property name="cache.use_minimal_puts">true</property>
+
+        <!-- optimization properties -->
+        <property name="hibernate.cglib.use_reflection_optimizer">true</property>
+        <property name="hibernate.jdbc.batch_size">20</property>
+
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- We're still going to use the old query parser   -->
+        <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
+
+        <property name="connection.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
+        <!--<property name="transaction.manager_lookup_class">org.hibernate.transaction.OrionTransactionManagerLookup</property>-->
+
+        <!-- Print SQL to stdout. -->
+        <property name="show_sql">true</property>
+        <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.format_sql">false</property>
+
+        <property name="hibernate.query.substitutions">true 'Y', false 'N'</property>
+
+        <!-- inventory domain mapping files. -->
+        <mapping resource="us/mn/state/health/model/inventory/ActionRequestType.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/ClassCode.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/Item.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/ItemVendor.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/OrderFormula.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/SensitiveAsset.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/StockItemActionRequest.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/StockItemActionRequestEvaluation.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/StockQtyAdjustmentHistory.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/StockQtyChangeReasonRef.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/StockItemLocation.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/inventory/Unit.hbm.xml"/>
+
+        <!-- materials request domain mapping files -->
+        <mapping resource="us/mn/state/health/model/materialsrequest/DeliveryDetail.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/MaterialsRequestEvaluation.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/Request.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/RequestLineItem.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/RequestLineItemFundingSource.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/RequestLineItemNote.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/ShoppingList.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/materialsrequest/ShoppingListLineItem.hbm.xml"/>
+
+        <!-- purchasing domain mapping files -->
+        <mapping resource="us/mn/state/health/model/purchasing/Order.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/purchasing/OrderNote.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/purchasing/OrderLineItem.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/purchasing/AssetView.hbm.xml"/>
+
+        <!-- receiving domain mapping files -->
+        <mapping resource="us/mn/state/health/model/receiving/ReceivingDetail.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/receiving/DeliveryTicket.hbm.xml"/>
+
+        <!-- common domain mapping files. -->
+        <mapping resource="us/mn/state/health/model/common/Category.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/EmailAddress.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ExternalOrgDetail.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ExtOrgDetailEmailAddress.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ExtOrgDetailMailingAddress.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ExternalOrgDetailRep.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Facility.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Group.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/MailingAddress.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Manufacturer.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/OrgBudget.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PartyResource.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Person.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PersonEmailAddressLink.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PersonMailingAddress.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PersonGroupLink.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PersonPhone.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Phone.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Position.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/PositionFacility.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Priority.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Status.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/StatusType.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/Vendor.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/VendorAccount.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/VendorContract.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ExtOrgDetailPhone.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/ObjectCode.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/FiscalYears.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/common/BusinessRulesORCL.hbm.xml"/>
+        <!-- external configuration mapping files-->
+        <mapping resource="us/mn/state/health/model/util/configuration/ApplicationConfig.hbm.xml"/>
+        <mapping resource="us/mn/state/health/model/util/configuration/ConfigurationItem.hbm.xml"/>
+
+        <!-- legacy mappings -->
+        <!--<mapping resource="us/mn/state/health/model/legacySystem/inventory/Inventory.hbm.xml"/>-->
+        <!--<mapping resource="us/mn/state/health/model/legacySystem/inventory/Vendor.hbm.xml"/>-->
+        <!--<mapping resource="us/mn/state/health/model/legacySystem/inventory/StockInv.hbm.xml"/>-->
+        <!--<mapping resource="us/mn/state/health/model/legacySystem/fixedAssets/FixedAssetOracle.hbm.xml"/>-->
+        <!--<mapping resource="us/mn/state/health/model/legacySystem/common/ExternalOrgASAP.hbm.xml"/> -->
+
+    </session-factory>
+
+</hibernate-configuration>

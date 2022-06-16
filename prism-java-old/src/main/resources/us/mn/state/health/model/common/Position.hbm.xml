@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+    <class name="Position"
+           table="POSITION_TBL"
+           lazy="true">
+
+        <id name="positionId"
+            type="long"
+            column="POSITION_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <set name="personPositionLinks"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="false"
+             batch-size="32">
+            <key column="RESOURCE_ID"/>
+            <one-to-many class="PartyResource"/>
+        </set>
+
+        <set name="facilities"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             where="RELATIONSHIP_TYPE = 'POS_FCLTY_ASGN' and (end_date is null or TRUNC(end_date) > sysdate) and LOCATION_ID in (select distinct f.FACILITY_ID from FACILITY_TBL f)">
+            <key column="RESOURCE_ID"/>
+            <one-to-many class="PositionFacility"/>
+        </set>
+
+        <property name="positionControlNbr"
+                  column="POSITION_CONTROL_NBR"
+                  type="string"/>
+
+        <property name="workingTitle"
+                  column="WORKING_TITLE"
+                  type="string"/>
+
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"/>
+
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"/>
+
+        <property name="positionEndDate"
+                  column="POSITION_END_DATE"
+                  type="date"/>
+
+        <property name="classCode"
+                  column="CLASS_CODE"
+                  type="string"/>
+
+        <property name="positionFtePrctRt"
+                  column="POSITION_FTE_PRCT_RT"
+                  type="float"/>
+
+        <property name="effDt"
+                  column="EFF_DT"
+                  type="date"/>
+
+        <property name="positionStartDate"
+                  column="POSITION_START_DATE"
+                  type="date"/>
+
+        <property name="classStartDate"
+                  column="CLASS_START_DATE"
+                  type="date"/>
+
+        <property name="brgngUnitNumber"
+                  column="BRGNG_UNIT_NBR"
+                  type="string"/>
+
+        <property name="comments"
+                  column="COMMENTS"
+                  type="string"/>
+
+    </class>
+
+</hibernate-mapping>

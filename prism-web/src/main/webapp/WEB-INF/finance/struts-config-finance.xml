@@ -1,0 +1,35 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!--
+     This is the Struts configuration file for Purchasing actions
+-->
+<struts-config>
+    <action-mappings>
+        <action path="/viewSearchOrdersForFinance"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="searchOrdersForm"
+                scope="session"
+                parameter="viewSearchOrders"
+                validate="false">
+            <forward name="success" path="/finance/searchOrders.jsp"/>
+        </action>
+        
+        <action path="/searchOrdersForFinance"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="searchOrdersForm"
+                scope="session"
+                parameter="searchOrders"
+                validate="false">
+            <forward name="success" path="/finance/searchOrders.jsp"/>
+        </action>
+        
+        <action path="/viewOrderReadOnly"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="orderForm"
+                scope="session"
+                parameter="viewOrderReadOnly"
+                validate="false">
+            <forward name="success" path="/finance/order.jsp"/>
+        </action>
+
+    </action-mappings>
+</struts-config>

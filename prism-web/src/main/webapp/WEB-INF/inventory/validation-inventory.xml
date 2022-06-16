@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+        "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+
+    <formset>
+        <form name="stockItemActionRequestForm">
+            <field property="potentialStockItemForm.description" depends="required">
+                <arg0 key="inventory.description"/>
+            </field>
+            <field property="potentialStockItemForm.categoryId" depends="required">
+                <arg0 key="inventory.category"/>
+            </field>
+            <field property="potentialStockItemForm.primaryContactId" depends="required">
+                <arg0 key="inventory.primaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.secondaryContactId" depends="required">
+                <arg0 key="inventory.secondaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.dispenseUnitId" depends="required">
+                <arg0 key="inventory.buyUnit"/>
+            </field>
+            <field property="potentialStockItemForm.orgBudgetId" depends="required">
+                <arg0 key="inventory.orgBudget"/>
+            </field>
+
+            <field property="potentialStockItemForm.qtyOnHand" depends="integer,intRange">
+                <arg0 key="inventory.qtyOnHand"/>
+                <arg1 name="intRange" key="${var:min}" resource="false"/>
+                <arg2 name="intRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>0</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>1000000000</var-value>
+                </var>
+            </field>
+
+            <field property="potentialStockItemForm.estimatedAnnualUsage" depends="required2,integer,intRange">
+                <arg0 key="inventory.estimatedAnnualUsage"/>
+                <arg1 name="intRange" key="${var:min}" resource="false"/>
+                <arg2 name="intRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>0</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>1000000000</var-value>
+                </var>
+            </field>
+
+            <field property="suggestedVendorId" depends="xor">
+                <arg0 key="inventory.suggestedVendorId_XOR_suggestedVendorName"/>
+                <var>
+                    <var-name>secondProperty</var-name>
+                    <var-value>suggestedVendorName</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="evaluateStockItemActionRequestForm">
+            <!--            Left a few commented usages of a custom validators to have them as an example-->
+
+            <!--            <field property="potentialStockItemForm.itemVendors" depends="emptyCollection">-->
+            <!--                <arg0 key="inventory.selectedVendors"/>-->
+            <!--            </field>-->
+
+            <field property="evaluationReason" depends="validwhen">
+                <arg0 key="inventory.DenialReason"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((approved == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="myStockItemChange">
+            <field property="potentialStockItemForm.description" depends="required">
+                <arg0 key="inventory.description"/>
+            </field>
+            <field property="potentialStockItemForm.categoryCode" depends="required">
+                <arg0 key="inventory.category"/>
+            </field>
+            <field property="potentialStockItemForm.primaryContactId" depends="required">
+                <arg0 key="inventory.primaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.secondaryContactId" depends="required">
+                <arg0 key="inventory.secondaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.dispenseUnitId" depends="required">
+                <arg0 key="inventory.dispenseUnit"/>
+            </field>
+            <field property="potentialStockItemForm.orgBudgetId" depends="required">
+                <arg0 key="inventory.orgBudget"/>
+            </field>
+
+            <field property="potentialStockItemForm.estimatedAnnualUsage" depends="required,integer,intRange">
+                <arg0 key="inventory.estimatedAnnualUsage"/>
+                <arg1 name="intRange" key="${var:min}" resource="false"/>
+                <arg2 name="intRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>0</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>10000000</var-value>
+                </var>
+            </field>
+
+            <!--            <field property="suggestedVendorId" depends="xor">-->
+            <!--                <arg0 key="inventory.suggestedVendorId_XOR_suggestedVendorName"/>-->
+            <!--                <var>-->
+            <!--                    <var-name>secondProperty</var-name>-->
+            <!--                    <var-value>suggestedVendorName</var-value>-->
+            <!--                </var>-->
+            <!--            </field>-->
+
+            <field property="requestReason" depends="property_equals_with_value">
+                <arg1 key="inventory.statusCode"/>
+                <arg2 key="inventory.statusCode.onHold"/>
+                <arg3 key="inventory.evaluationReason"/>
+                <var>
+                    <var-name>property</var-name>
+                    <var-value>potentialStockItemForm.status.statusCode</var-value>
+                </var>
+                <var>
+                    <var-name>value</var-name>
+                    <var-value>ONH</var-value>
+                </var>
+            </field>
+
+            <field property="potentialStockItemForm.holdUntilDate"
+                   depends="validate_date_if_property_equals_with_value">
+                <arg1 key="inventory.statusCode"/>
+                <arg2 key="inventory.statusCode.onHold"/>
+                <arg3 key="inventory.holdUntilDate"/>
+                <arg0 key="inventory.holdUntilDate"/>
+                <var>
+                    <var-name>property</var-name>
+                    <var-value>potentialStockItemForm.status.statusCode</var-value>
+                </var>
+                <var>
+                    <var-name>value</var-name>
+                    <var-value>ONH</var-value>
+                </var>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+        </form>
+
+        <form name="stockItemChange">
+            <field property="potentialStockItemForm.description" depends="required">
+                <arg0 key="inventory.description"/>
+            </field>
+            <field property="potentialStockItemForm.categoryCode" depends="required">
+                <arg0 key="inventory.category"/>
+            </field>
+            <field property="potentialStockItemForm.primaryContactId" depends="required">
+                <arg0 key="inventory.primaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.secondaryContactId" depends="required">
+                <arg0 key="inventory.secondaryContact"/>
+            </field>
+            <field property="potentialStockItemForm.dispenseUnitId" depends="required">
+                <arg0 key="inventory.dispenseUnit"/>
+            </field>
+            <field property="potentialStockItemForm.orgBudgetId" depends="required">
+                <arg0 key="inventory.orgBudget"/>
+            </field>
+
+            <field property="stkQtyChangeReasonRefId" depends="validateQtyOnHandChangeReasonRequired">
+                <arg0 key="errors.validateQtyOnHandChangeReasonRequired"/>
+            </field>
+
+            <field property="potentialStockItemForm.estimatedAnnualUsage" depends="integer,intRange">
+                <arg0 key="inventory.estimatedAnnualUsage"/>
+                <arg1 name="intRange" key="${var:min}" resource="false"/>
+                <arg2 name="intRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>0</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>10000000</var-value>
+                </var>
+            </field>
+
+            <!--            <field property="suggestedVendorId" depends="xor">-->
+            <!--                <arg0 key="inventory.suggestedVendorId_XOR_suggestedVendorName"/>-->
+            <!--                <var>-->
+            <!--                    <var-name>secondProperty</var-name>-->
+            <!--                    <var-value>suggestedVendorName</var-value>-->
+            <!--                </var>-->
+            <!--            </field>-->
+            <field property="potentialStockItemForm.holdUntilDate"
+                   depends="validate_date_if_property_equals_with_value">
+                <arg1 key="inventory.statusCode"/>
+                <arg2 key="inventory.statusCode.onHold"/>
+                <arg3 key="inventory.holdUntilDate"/>
+                <arg0 key="inventory.holdUntilDate"/>
+                <var>
+                    <var-name>property</var-name>
+                    <var-value>potentialStockItemForm.status.statusCode</var-value>
+                </var>
+                <var>
+                    <var-name>value</var-name>
+                    <var-value>ONH</var-value>
+                </var>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="discardStock" depends="validwhen">
+                <arg key="inventory.discardStock"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((potentialStockItemForm.statusId==47583) or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="potentialStockItemForm.facilityId" depends="validwhen">
+                <arg key="inventory.facility"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd!='AddLocation') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="potentialStockItemForm.itemVendorForm.vendorId" depends="validwhen">
+                <arg key="validvendor"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd!='AddVendor') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+        </form>
+
+        <form name="fixedAssetForm">
+            <field property="fixedAssetNumber" depends="validwhen">
+                <arg key="inventory.fixedAssetNumber"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(fixedAssetNumberIsNull=='false')</var-value>
+                </var>
+            </field>
+            <field property="fixedAssetNumber1" depends="validwhen">
+                <arg key="inventory.fixedAssetNumberAssigned"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((fixedAssetNumberAlreadyAssigned == 'false') or (fixedAssetNumberIsNull == 'true'))
+                    </var-value>
+                </var>
+            </field>
+            <field property="maintAgreementExpirationDate" depends="date">
+                <arg key="inventory.maintAgreementExpirationDate"/>
+            </field>
+            <field property="dateReceived" depends="date">
+                <arg key="inventory.dateReceived"/>
+            </field>
+            <field property="warrantyExpirationDate" depends="date">
+                <arg key="inventory.warrantyExpirationDate"/>
+            </field>
+            <field property="cost" depends="double">
+                <arg key="inventory.cost"/>
+            </field>
+        </form>
+
+        <form name="sensitiveAssetForm">
+            <field property="maintAgreementExpirationDate" depends="date">
+                <arg key="inventory.maintAgreementExpirationDate"/>
+            </field>
+            <field property="dateReceived" depends="date">
+                <arg key="inventory.dateReceived"/>
+            </field>
+            <field property="warrantyExpirationDate" depends="date">
+                <arg key="inventory.warrantyExpirationDate"/>
+            </field>
+            <field property="cost" depends="double">
+                <arg key="inventory.cost"/>
+            </field>
+        </form>
+
+        <form name="stockItemReorderRequestForm">
+            <field property="needByDate" depends="required,date">
+                <arg key="request.needByDate"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="requestLineItemForms" depends="validwhen">
+                <arg key="request.atLeastOneRLI"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(RLIsNumber>0)</var-value>
+                </var>
+            </field>
+
+            <field property="deliveryDetailForm.facilityId" depends="required">
+                <arg key="receiving.receivingFacility"/>
+            </field>
+
+            <field property="requestLineItemForms" depends="validateQuantitiesRequestForm"/>
+        </form>
+
+    </formset>
+
+</form-validation>

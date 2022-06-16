@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the StockItemActionRequestEvaluation class
+-->
+<hibernate-mapping package="us.mn.state.health.model.inventory">
+
+    <class name="StockItemActionRequestEvaluation"
+           table="STOCK_ITEM_ACTION_REQ_EVAL_TBL"
+           lazy="true">
+        
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="requestEvaluationId"
+            type="long"
+            column="REQUEST_EVALUATION_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+         <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+                 
+        <many-to-one name="evaluatorGroup"
+                     class="us.mn.state.health.model.common.Group"
+                     column="EVALUATOR_GROUP_ID"
+                     cascade="none"
+                     not-null="true" />
+                     
+        <many-to-one name="evaluator"
+                     class="us.mn.state.health.model.common.User"
+                     column="EVALUATOR_PERSON_ID"
+                     cascade="none"
+                     not-null="false" />
+                     
+        <many-to-one name="evaluationDecision"
+                     class="us.mn.state.health.model.common.Status"
+                     column="EVALUATION_STATUS_ID"
+                     cascade="none"
+                     not-null="true" />
+                     
+        <property name="evaluationDate"
+                  column="EVALUATION_DATE"
+                  type="date"
+                  not-null="false" />
+                  
+        <many-to-one name="stockItemActionRequest"
+                     class="StockItemActionRequest"
+                     column="STOCK_ITEM_ACTION_REQ_ID"
+                     cascade="none"
+                     not-null="true" />
+        
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,308 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans>
+        <form-bean name="deliveryAddressForm" type="us.mn.state.health.view.common.DeliveryAddressForm"/>
+        <form-bean name="categoryForm" type="us.mn.state.health.view.common.CategoryForm"/>
+        <form-bean name="inventoryMaintenanceForm" type="us.mn.state.health.view.inventory.InventoryMaintenanceForm"/>
+        <form-bean name="sensitiveAssetForm" type="us.mn.state.health.view.inventory.SensitiveAssetForm"/>
+        <form-bean name="fixedAssetForm" type="us.mn.state.health.view.inventory.FixedAssetForm"/>
+        <form-bean name="assetFormCollection" type="us.mn.state.health.view.inventory.AssetFormCollection"/>
+        <form-bean name="advancedSearchAllItemsForm" type="us.mn.state.health.view.inventory.ItemsAdvancedSearchForm"/>
+        <form-bean name="assetSearchForm" type="us.mn.state.health.view.inventory.AssetSearchForm"/>
+        <form-bean name="assetsViewReportForm" type="us.mn.state.health.view.purchasing.AssetsViewReportForm"/>
+        
+        <!-- Order Formula -->
+        <form-bean name="orderFormulaMaintainanceForm" type="us.mn.state.health.view.purchasing.OrderFormulaMaintainanceForm"/>
+
+        <!-- Personal Add Bk Forms  - deprecated
+        <form-bean name="personalAddressBookForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="addAddrBkPersonForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="removeAddrBkPersonForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="saveAddrBkPersonForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="addAddrBkExtSourceForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="removeAddrBkExtSourceForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        <form-bean name="saveAddrBkExtSourceForm" type="us.mn.state.health.view.common.PersonalAddressBookForm"/>
+        -->
+        
+        <!-- Shopping List Forms -->
+        <form-bean name="addToShoppingListForm" type="us.mn.state.health.view.materialsrequest.ShoppingListsForm"/>
+        <form-bean name="saveShoppingListForm" type="us.mn.state.health.view.materialsrequest.ShoppingListsForm"/>
+        <form-bean name="shoppingListsForm" type="us.mn.state.health.view.materialsrequest.ShoppingListsForm"/>
+        
+        <!-- Stock Item Action Request Forms -->
+        <form-bean name="evaluateStockItemActionRequestForm" type="us.mn.state.health.view.inventory.StockItemActionRequestForm"/>
+        <form-bean name="stockItemActionRequestForm" type="us.mn.state.health.view.inventory.StockItemActionRequestForm"/>
+        <form-bean name="stockItemChange" type="us.mn.state.health.view.inventory.StockItemActionRequestForm"/>
+        <form-bean name="myStockItemChange" type="us.mn.state.health.view.inventory.StockItemActionRequestForm"/>
+        <form-bean name="stockItemActionRequestsForm" type="us.mn.state.health.view.inventory.StockItemActionRequestsForm"/>
+
+        <!-- Stock Item Forms -->
+        <form-bean name="stockItemForm" type="us.mn.state.health.view.inventory.StockItemForm"/>
+        <form-bean name="stockItemsForm" type="us.mn.state.health.view.inventory.StockItemsForm"/>
+        <form-bean name="advancedSearchStockItemsForm" type="us.mn.state.health.view.inventory.ItemsAdvancedSearchForm"/>
+        <form-bean name="stockItemReorderRequestForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="stockItemReorderRequestRLIForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemForm"/>
+        <form-bean name="stockItemsReportForm" type="us.mn.state.health.view.inventory.StockItemsReportForm"/>
+        
+        <!-- Materials Request Forms -->
+        <form-bean name="deliveryDetailForm" type="us.mn.state.health.view.materialsrequest.DeliveryDetailForm"/>
+        <form-bean name="evaluateRequestForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="requestForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>        
+        <form-bean name="requestLineItemForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemForm"/>
+        <form-bean name="requestLineItemSearchForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemSearchForm"/>
+        <form-bean name="requestLineItemFundingSourceForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemFundingSourceForm"/>
+        <form-bean name="requestLineItemNoteForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemNoteForm"/>
+        <form-bean name="browseCatalogForm" type="us.mn.state.health.view.materialsrequest.BrowseCatalogForm"/>
+        <form-bean name="requestFormCollection" type="us.mn.state.health.view.materialsrequest.RequestFormCollection"/>
+        <form-bean name="searchCatalogForm" type="us.mn.state.health.view.materialsrequest.SearchCatalogForm"/>
+        <form-bean name="itemDetailsForm" type="us.mn.state.health.view.materialsrequest.ItemDetailsForm"/>
+        <form-bean name="advancedSearchCatalogForm" type="us.mn.state.health.view.inventory.ItemsAdvancedSearchForm"/>
+        <form-bean name="searchMaterialRequestsForm" type="us.mn.state.health.view.materialsrequest.SearchMaterialRequestsForm"/>
+        <form-bean name="requestLineItemPurchaseDetailsForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemPurchaseDetailsForm"/>
+        <form-bean name="stockItemOutTransactionsForm" type="us.mn.state.health.view.materialsrequest.reports.StockItemTransactionsForm"/>
+        <form-bean name="stockItemOutTransactionsWithoutFSForm" type="us.mn.state.health.view.materialsrequest.reports.StockItemTransactionsForm"/>
+        <form-bean name="stockItemInTransactionsForm" type="us.mn.state.health.view.materialsrequest.reports.StockItemTransactionsForm"/>
+        <form-bean name="purchaseItemTransactionsForm" type="us.mn.state.health.view.materialsrequest.reports.PurchaseItemTransactionsForm"/>
+
+        <!-- Purchasing Forms -->
+        <form-bean name="orderForm" type="us.mn.state.health.view.purchasing.OrderForm"/>
+        <form-bean name="ordersForm" type="us.mn.state.health.view.purchasing.OrdersForm"/>
+        <form-bean name="purchaseItemForm" type="us.mn.state.health.view.inventory.ItemForm"/>
+        <form-bean name="purchaseItemAddVendorForm" type="us.mn.state.health.view.inventory.ItemForm"/>
+        <form-bean name="purchaseItemRemoveVendorForm" type="us.mn.state.health.view.inventory.ItemForm"/>
+        <form-bean name="orderLineItemForm" type="us.mn.state.health.view.purchasing.OrderLineItemForm"/>
+        <!-- <form-bean name="purchasingAddressesForm" type="us.mn.state.health.view.purchasing.PurchasingAddressesForm"/> -->
+        <form-bean name="purchasingRequestForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="purchasingRequestLineItemForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="purchasingRequestLineItemFundingSourceForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="requestPurchasingForm" type="us.mn.state.health.view.materialsrequest.RequestForm"/>
+        <form-bean name="searchOrdersForm" type="us.mn.state.health.view.purchasing.SearchOrdersForm"/>
+        <form-bean name="viewAddToOrderLineItemForm" type="us.mn.state.health.view.purchasing.OrderForm"/>
+        <form-bean name="viewAddToOrderForm" type="us.mn.state.health.view.materialsrequest.RequestLineItemSearchForm"/>
+        <form-bean name="itemVendorsForm" type="us.mn.state.health.view.purchasing.ItemVendorsForm"/>
+        <form-bean name="itemDefaultDeliveryDetailForm" type="us.mn.state.health.view.materialsrequest.DeliveryDetailForm"/>
+
+        <!-- Receiving Forms -->
+        <form-bean name="deliveryTicketForm" type="us.mn.state.health.view.receiving.DeliveryTicketForm"/>
+        <form-bean name="receiveOrderForm" type="us.mn.state.health.view.purchasing.OrderForm"/>
+        
+        <!-- Vendor Form-->
+        <form-bean name="vendorsForm" type="us.mn.state.health.view.common.VendorsForm"/>
+        
+        <!-- Reporting Forms -->
+        <form-bean name="generalReportingForm" type="us.mn.state.health.view.reporting.GeneralReportingForm"/>
+
+        <form-bean name="luceneIndexesForm" type="us.mn.state.health.model.util.search.struts.LuceneIndexesForm"/>
+
+        <form-bean name="CachedObjectsForm" type="us.mn.state.health.web.struts.admin.CachedObjectsForm"/>
+
+        <form-bean name="BudgetBuilderForm" type="us.mn.state.health.web.struts.admin.BudgetBuilderForm"/>
+
+         <form-bean name="purchasereport" type="us.mn.state.health.view.materialsrequest.reports.FishConsumptionForm"/>
+
+    </form-beans>
+
+    <action-mappings>
+
+        <action path="/purchasereport"
+                type="us.mn.state.health.view.materialsrequest.reports.FishConsumptionAction"
+                name="purchasereport"
+                scope="session"
+                parameter="generateReport"
+                validate="false">
+            <!-- <forward name="success" path="/requests/reports/index.jsp"/> -->
+            
+            
+        </action>
+
+        
+       <action path="/viewAddNewAddressStep1"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="viewAddNewAddressStep1"
+                validate="false">
+            <forward name="success" path="/common/viewAddNewAddressStep1.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/viewAddNewAddressStep2"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="viewAddNewAddressStep2"
+                input="/common/viewAddNewAddressStep1.jsp"
+                validate="true">
+            <forward name="step2" path="/common/viewAddNewAddressStep2.jsp"/>
+            <forward name="step3" path="/viewAddNewAddressStep3.do" redirect="true"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/viewAddNewAddressStep3"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="viewAddNewAddressStep3"
+                input="/common/viewAddNewAddressStep1.jsp"
+                validate="false">
+            <forward name="success" path="/common/viewAddNewAddressStep3.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/addNewAddressFinalStep"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="addNewAddressFinalStep"
+                input="/common/viewAddNewAddressStep3.jsp"
+                validate="false">
+            <forward name="success" path="/viewAddNewAddressStep1.do" redirect="true"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/addContacts"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="addContacts"
+                validate="false">
+            <forward name="success" path="/common/viewAddNewAddressStep2.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/viewAddPerson"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="viewAddPerson"
+                validate="false">
+            <forward name="success" path="/common/viewAddPerson.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/addPerson"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="addPerson"
+                input="/common/viewAddPerson.jsp"
+                validate="true">
+            <forward name="success" path="/common/viewAddNewAddressStep2.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/viewAddNewMailingAddress"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="viewAddNewMailingAddress"
+                validate="false">
+            <forward name="success" path="/common/viewAddNewMailingAddress.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+        <action path="/addNewMailingAddress"
+                type="us.mn.state.health.matmgmt.action.DeliveryAddressAction"
+                name="deliveryAddressForm"
+                scope="session"
+                parameter="addNewMailingAddress"
+                input="/common/viewAddNewMailingAddress.jsp"
+                validate="true">
+            <forward name="success" path="/common/viewAddNewAddressStep3.jsp"/>
+            <forward name="failure" path="/common/error.jsp"/>
+        </action>
+
+        <action path="/admin"
+            type="us.mn.state.health.web.struts.admin.EvictCacheAction"
+            name="CachedObjectsForm"
+            scope="session"
+            parameter="admin"
+            validate="false">
+            <forward name="success" path="/common/admin.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/selectIndexes"
+                type="us.mn.state.health.model.util.search.struts.LuceneIndexCreatorAction"
+                name="luceneIndexesForm"
+                scope="session"
+                parameter="selectIndexes"
+                validate="false">
+            <forward name="success" path="/common/selectIndexes.jsp"/>
+        </action>
+
+        <action path="/buildIndexes"
+                type="us.mn.state.health.model.util.search.struts.LuceneIndexCreatorAction"
+                name="luceneIndexesForm"
+                scope="session"
+                parameter="buildIndexes"
+                validate="false">
+            <forward name="success" path="/common/buildIndexes.jsp"/>
+        </action>
+
+        <action path="/selectCacheToEvict"
+                type="us.mn.state.health.web.struts.admin.EvictCacheAction"
+                name="CachedObjectsForm"
+                scope="session"
+                parameter="selectCacheToEvict"
+                validate="false">
+            <forward name="success" path="/common/selectCacheToEvict.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/evictCache"
+                type="us.mn.state.health.web.struts.admin.EvictCacheAction"
+                name="CachedObjectsForm"
+                scope="session"
+                parameter="evictCache"
+                validate="false">
+            <forward name="success" path="/common/evictCache.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/changePrismNotifications"
+                type="us.mn.state.health.web.struts.admin.EvictCacheAction"
+                name="CachedObjectsForm"
+                scope="session"
+                parameter="changePrismNotifications"
+                validate="false">
+            <forward name="success" path="/common/changePrismNotifications.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/changePrismNotificationsSave"
+                type="us.mn.state.health.web.struts.admin.EvictCacheAction"
+                name="CachedObjectsForm"
+                scope="session"
+                parameter="changePrismNotificationsSave"
+                validate="false">
+            <forward name="success" path="/common/admin.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/changeBudgetBuilderLink"
+                type="us.mn.state.health.web.struts.admin.BudgetBuilderAction"
+                name="BudgetBuilderForm"
+                scope="session"
+                parameter="changeBudgetBuilderLink"
+                validate="false">
+            <forward name="success" path="/common/changeBudgetBuilderLink.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+        <action path="/changeBudgetBuilderLinkSave"
+                type="us.mn.state.health.web.struts.admin.BudgetBuilderAction"
+                name="BudgetBuilderForm"
+                scope="session"
+                parameter="changeBudgetBuilderLinkSave"
+                validate="false">
+            <forward name="success" path="/common/admin.jsp"/>
+            <forward name="notAuthorized" path="/common/unAuthorizedAttempt.jsp"/>
+        </action>
+
+    </action-mappings>
+
+    <message-resources parameter="ApplicationResources"/>
+
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
+        /WEB-INF/validation.xml,/WEB-INF/inventory/validation-inventory.xml,
+        /WEB-INF/purchasing/validation-purchasing.xml,/WEB-INF/receiving/validation-receiving.xml,
+        /WEB-INF/requests/validation-requests.xml"/>
+    </plug-in>
+    <plug-in className="net.sf.navigator.menu.MenuPlugIn">
+            <set-property property="menuConfig" value="/WEB-INF/menu-config.xml"/> <!-- Default settings -->
+    </plug-in>
+</struts-config>

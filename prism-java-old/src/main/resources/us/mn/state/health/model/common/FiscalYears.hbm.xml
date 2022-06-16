@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="us.mn.state.health.model.common.FiscalYears" table="FISCALYEAR_STATE_VIEW">
+		<id name="id" column="PK" type="long">
+		</id>
+        <property name="fiscalyear" type="long" column="FISCAL_YEAR"/>
+        <property name="yearsago" type="long" column="YEARS_AGO"/>
+	</class>
+
+</hibernate-mapping>

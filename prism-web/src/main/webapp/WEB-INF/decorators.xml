@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<decorators defaultdir="/decorators">
+    <decorator name="main" page="main.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+
+    <excludes>
+        <pattern>/include/*</pattern>
+        <pattern>/viewApprovalStatus*</pattern>
+        <pattern>/inventory/reports/stockItemsBelowROP.*</pattern>
+        <pattern>*displayAjax=true*</pattern>
+        <pattern>/updateVendorInstructions.do?shipToID=*</pattern>
+        <pattern>/viewRequestLineItemDetail*</pattern>
+        <pattern>/viewStockItemActionRequestInfo*</pattern>
+
+        <pattern>/inventory/getStockItemHistory*</pattern>
+        <pattern>/inventory/getStockItemQtyAdjustmentHistory*</pattern>
+        <pattern>/inventory/getStockItemLocationHistory*</pattern>
+        <pattern>/inventory/getItemVendorLinkHistory*</pattern>
+        <pattern>/purchasing/additionalInstructions.jsp*</pattern>
+        <pattern>/purchasing/assetTypes.jsp*</pattern>
+
+
+    </excludes>
+    <decorator name="panel" page="panel.jsp"/>
+    <decorator name="printable" page="printable.jsp"/>
+</decorators>

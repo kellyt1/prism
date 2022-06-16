@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean name="spring-context.xml"
+		class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>classpath:/common/repository.xml</value>
+				<value>classpath:/common/service.xml</value>
+				<value>classpath:/common/facade.xml</value>
+				<value>classpath:/common/proxy.xml</value>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the Unit class
+-->
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.Unit"
+           table="UNIT_TBL"
+           batch-size="32"
+           lazy="false">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="unitId"
+            type="long"
+            column="UNIT_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- name -->
+        <property name="name"
+                  column="NAME"
+                  type="string"
+                  not-null="true"/>
+
+        <!-- CODE -->
+        <property name="code"
+                  column="CODE"
+                  type="string"
+                  not-null="true"/>
+
+    </class>
+
+    <query name="findUnitByCode">
+        <![CDATA[
+            from Unit as unit
+            where unit.code = :code
+        ]]>
+    </query>
+
+
+</hibernate-mapping>

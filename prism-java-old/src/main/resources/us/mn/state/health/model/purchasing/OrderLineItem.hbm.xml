@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the OrderLineItem class
+-->
+<hibernate-mapping package="us.mn.state.health.model.purchasing">
+
+    <class name="OrderLineItem"
+           table="MATERIALS_ORDER_LINE_ITEM_TBL"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="orderLineItemId"
+            type="long"
+            column="ORDER_LINE_ITEM_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+
+        <property name="discountPercent"
+                  column="DISCOUNT_PERCENT"
+                  type="double"
+                  not-null="false"/>
+
+        <property name="lineItemNumber"
+                  column="LINE_ITEM_NUMBER"
+                  type="integer"
+                  not-null="false"/>
+
+        <property name="quantity"
+                  column="QUANTITY"
+                  type="integer"
+                  not-null="true"/>
+
+        <property name="buyUnitCost"
+                  column="BUY_UNIT_COST"
+                  type="double"
+                  not-null="true"/>
+
+        <property name="dispenseUnitsPerBuyUnit"
+                  column="DISP_UNITS_PER_BUY_UNIT"
+                  type="integer"
+                  not-null="false"/>
+
+        <property name="commodityCode"
+                  column="COMMODITY_CODE"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="itemDescription"
+                  column="DESCRPTN"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="assetsType"
+                  column="ASSETS_TYPE"
+                  type="string"
+                  not-null="false"/>
+
+
+        <property name="assetsEmailSent"
+                  column="ASSETS_EMAIL_SENT"
+                  type="date"
+                  not-null="false"/>
+
+        <property name="vendorCatalogNbr"
+                  column="VENDOR_CATALOG_NBR"
+                  type="string"
+                  not-null="false"/>
+
+        <many-to-one name="status"
+                     class="us.mn.state.health.model.common.Status"
+                     column="STATUS_ID"
+                     not-null="false"
+                     cascade="none"/>
+
+        <many-to-one name="item"
+                     class="us.mn.state.health.model.inventory.Item"
+                     column="ITEM_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="buyUnit"
+                     class="us.mn.state.health.model.inventory.Unit"
+                     column="BUY_UNIT_ID"
+                     cascade="save-update"
+                     not-null="true"/>
+
+        <many-to-one name="order"
+                     class="Order"
+                     column="ORDER_ID"
+                     cascade="all"
+                     not-null="true"/>
+
+        <set name="requestLineItems"
+             cascade="save-update"
+             inverse="true"
+             lazy="true">
+            <key column="ORDER_LN_ITM_ID" on-delete="cascade"/>
+            <one-to-many class="us.mn.state.health.model.materialsrequest.RequestLineItem"/>
+        </set>
+
+        <set name="receivingDetails"
+             cascade="all,delete-orphan"
+             inverse="true"
+             batch-size="32"
+             lazy="false">
+            <cache usage="nonstrict-read-write"/>
+            <key column="ORDR_LN_ITM_ID" on-delete="cascade"/>
+            <one-to-many class="us.mn.state.health.model.receiving.ReceivingDetail"/>
+        </set>
+
+    </class>
+
+    <query name="findStockItemsToBeStocked">
+        <![CDATA[ 
+            select distinct rd
+            from ReceivingDetail as rd
+                join rd.orderLineItem as oli
+                join oli.item as item
+                join rd.facility as fac
+            where item.itemId in (select si.itemId from us.mn.state.health.model.inventory.StockItem as si)
+            and oli.status.statusCode in ('RCD', 'RCP')
+            and fac.facilityId = :facilityId
+            and rd.dateReceived between :startDate and :endDate
+        ]]>
+    </query>
+
+    <query name="findPurchaseItemsToBeDelivered">
+        <![CDATA[ 
+            select distinct req
+            from us.mn.state.health.model.materialsrequest.Request as req
+                join req.requestLineItems as rli
+                    join rli.orderLineItem as oli
+                        join oli.receivingDetails as rd
+            where (oli.item is null 
+                   or oli.item.itemId in (select pi.itemId from us.mn.state.health.model.inventory.PurchaseItem as pi))
+            and oli.status.statusCode in ('RCD', 'RCP')
+            and rd.facility.facilityId = :facilityId
+            and rd.dateReceived between :startDate and :endDate
+        ]]>
+    </query>
+
+</hibernate-mapping>

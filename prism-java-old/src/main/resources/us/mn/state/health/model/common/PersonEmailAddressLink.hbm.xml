@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="PersonEmailAddressLink"
+           table="ENTITY_TARGET_CONTACT_LINK"
+           where="DEVICE_TYPE='GRP_WISE'"
+           lazy="true">
+
+        <composite-id name="personEmailAddressLinkId"
+                      class="PersonEmailAddressLink$PersonEmailAddressLinkId"
+                      unsaved-value="any">
+            <key-property name="personId"
+                          access="field"
+                          column="ENTITY_TARGET_ID"/>
+            <key-property name="emailAddressId"
+                          access="field"
+                          column="CONTACT_MECHANISM_ID"/>
+        </composite-id>
+        
+        <!-- person -->
+        <many-to-one name="person"
+                     class="Person"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="save-update"
+                     column="ENTITY_TARGET_ID"/>
+
+        <many-to-one name="emailAddress"
+                     class="EmailAddress"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="save-update"
+                     column="CONTACT_MECHANISM_ID"/>
+
+        <property name="startDate"
+                  column="START_DATE"
+                  type="date"
+                  update="false"/>
+
+        <property name="endDate"
+                  column="END_DATE"
+                  type="date"
+                  update="false"/>
+
+        <property name="rank"
+                  type="integer"
+                  column="RANK"
+                  />
+        
+        <property name="insertedBy"
+                  type="string"
+                  column="INSERTED_BY"/>
+        
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"/>
+        
+        <property name="terminatedBy"
+                  type="string"
+                  column="TERMINATED_BY"/>
+        
+        <property name="terminationDate"
+                  column="TERMINATION_DATE"
+                  type="date"/>
+                  
+        <property name="timeStart"
+                  column="TIME_START"
+                  type="double"/>
+        
+        <property name="timeEnd"
+                  column="TIME_END"
+                  type="double"/>
+                  
+        <property name="dayStart"
+                  column="DAY_START"
+                  type="integer"/>
+                  
+        <property name="dayEnd"
+                  column="DAY_END"
+                  type="integer"/>
+                  
+        <property name="monthStart"
+                  column="MONTH_START"
+                  type="integer"/>
+                  
+        <property name="monthEnd"
+                  column="MONTH_END"
+                  type="integer"/>
+        
+    </class>
+
+</hibernate-mapping>

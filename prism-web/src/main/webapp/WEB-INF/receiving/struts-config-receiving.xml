@@ -1,0 +1,112 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!--
+     This is the Struts configuration file for Receiving actions
+-->
+<struts-config>
+    <action-mappings>
+        <action path="/viewSearchOrdersForReceiving"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="searchOrdersForm"
+                scope="session"
+                parameter="viewSearchOrders"
+                validate="false">
+            <forward name="success" path="/receiving/searchOrders.jsp"/>
+        </action>
+
+        <!-- Action that handles Order Search -->
+        <action path="/searchOrdersForReceiving"
+                type="us.mn.state.health.matmgmt.action.OrderAction"
+                name="searchOrdersForm"
+                scope="session"
+                parameter="searchOrders"
+                validate="false">
+            <forward name="success" path="/receiving/searchOrders.jsp"/>
+        </action>
+
+        <!-- Action that handles preparing view order for receiving  -->
+        <action path="/viewReceiveOrder"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="receiveOrderForm"
+                scope="session"
+                parameter="viewReceiveOrder"
+                validate="false">
+            <forward name="success" path="/receiving/receiveOrder.jsp"/>
+        </action>
+
+        <!-- Action that handles receiving an order -->
+        <action path="/receiveOrder"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="receiveOrderForm"
+                scope="session"
+                parameter="receiveOrder"
+                validate="true"
+                input="/receiving/receiveOrder.jsp">
+            <!--<forward name="success" path="/viewSearchOrdersForReceiving.do?message=Thank you. Your changes have been saved."/>-->
+            <forward name="success" redirect="yes"
+                     path="/receiving/searchOrdersForReceiving.do?message=Thank you. Your changes have been saved."/>
+            <!-- the functionality for creating the fixed or sensitive asset from the ReceivingAction has not been fully
+                 implemented yet, so for now, do the same thing as "success".
+                 Also, the person receiving a Fixed or Sensitive Asset probably does not have the Asset # or ready access to
+                 the serial #.  Currently Bruce Brokaw sends a form to the end-user to collect the information including serial #.-->
+            <!--<forward name="viewEnterAssetInfo" path="/viewEnterAssetInfo.do"/>-->
+            <forward name="viewEnterAssetInfo"  redirect="yes"
+                     path="/receiving/searchOrdersForReceiving.do?message=Thank you. Your changes have been saved."/>
+            <forward name="reload" path="/receiving/receiveOrder.jsp"/>
+        </action>
+
+        <!-- Action that handles collecting fixed & sensitive asset info as part of the process of receiving an order  -->
+        <action path="/viewReceivingHistory"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="orderLineItemForm"
+                scope="session"
+                parameter="viewReceivingHistory"
+                validate="false">
+            <forward name="success" path="/receiving/viewReceivingHistory.jsp"/>
+        </action>
+
+        <!-- Action that handles collecting fixed & sensitive asset info as part of the process of receiving an order  -->
+        <action path="/viewEnterAssetInfo"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="assetFormCollection"
+                scope="session"
+                parameter="viewEnterAssetInfo"
+                validate="false">
+            <forward name="success" path="/receiving/enterAssetInfo.jsp"/>
+        </action>
+
+        <!-- Action that handles collecting fixed & sensitive asset info as part of the process of receiving an order  -->
+        <action path="/enterAssetInfo"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="assetFormCollection"
+                scope="session"
+                parameter="enterAssetInfo"
+                validate="false">
+            <forward name="success"
+                     path="/viewSearchOrdersForReceiving.do?message=Thank you. Your changes have been saved."/>
+        </action>
+
+        <!-- Action that handles preparing a Delivery Ticket  -->
+        <action path="/viewCreateDeliveryTicket"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="deliveryTicketForm"
+                scope="session"
+                parameter="viewCreateDeliveryTicket"
+                validate="false">
+            <forward name="success" path="/receiving/viewCreateDeliveryTicket.jsp"/>
+        </action>
+
+        <!-- Action that handles creating/persisting a DeliveryTicket  -->
+        <action path="/createDeliveryTicket"
+                type="us.mn.state.health.matmgmt.action.ReceivingAction"
+                name="deliveryTicketForm"
+                scope="session"
+                parameter="createDeliveryTicket"
+                validate="false">
+            <forward name="success" path="/receiving/viewCreateDeliveryTicket.jsp"/>
+            <forward name="printDeliveryTicket" path="/receiving/reports/deliveryTicket.pdf"/>
+        </action>
+
+    </action-mappings>
+
+    <!--<message-resources parameter="ApplicationResources_receiving" key="receivingMessages" />-->
+</struts-config>

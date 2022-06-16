@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="updateIcnbrAdvice"
+          class="us.mn.state.health.facade.inventory.editStockItem.UpdateIcnbrAdvice">
+        <constructor-arg>
+            <ref bean="editStockItemFacadeWithoutAdvices"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="insertStockItemHistoryAdvice"
+          class="us.mn.state.health.facade.inventory.editStockItem.InsertStockItemHistoryAdvice">
+        <constructor-arg>
+            <ref bean="editStockItemFacadeWithoutAdvices"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="updateIcnbrAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName">
+            <value>attach*</value>
+        </property>
+        <property name="advice">
+            <ref bean="updateIcnbrAdvice"/>
+        </property>
+    </bean>
+
+    <bean id="insertStockItemHistoryAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName">
+            <value>attach*</value>
+        </property>
+        <property name="advice">
+            <ref bean="insertStockItemHistoryAdvice"/>
+        </property>
+    </bean>
+
+    <bean id="qtyAdjustmentHistoryAdvice"
+          class="us.mn.state.health.facade.inventory.editStockItem.QtyAdjustmentHistoryAdvice">
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="userRepository"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="qtyAdjustmentHistoryAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <property name="mappedName">
+            <value>attach*</value>
+        </property>
+        <property name="advice">
+            <ref bean="qtyAdjustmentHistoryAdvice"/>
+        </property>
+    </bean>
+
+</beans>

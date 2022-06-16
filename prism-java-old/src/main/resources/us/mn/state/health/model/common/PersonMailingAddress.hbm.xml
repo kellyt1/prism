@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="PersonMailingAddress"
+           table="ENTITY_TARGET_CONTACT_LINK"
+           lazy="true">
+
+         <!-- Common id property. -->
+        <id name="personMailingAddressId"
+            type="long"
+            column="ENTITY_TARGET_CONTACT_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+        <!-- person -->
+        <many-to-one name="person"
+                     class="Person"
+                     not-null="true"
+                     cascade="save-update"
+                     column="ENTITY_TARGET_ID"/>
+
+        <many-to-one name="mailingAddress"
+                     class="MailingAddress"
+                     not-null="true"
+                     cascade="save-update"
+                     column="CONTACT_MECHANISM_ID"/>
+
+        <property name="rank"
+                  type="integer"
+                  column="RANK"/>
+        
+        <property name="insertedBy"
+                  type="string"
+                  column="INSERTED_BY"/>
+        
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"/>
+        
+    </class>
+
+</hibernate-mapping>

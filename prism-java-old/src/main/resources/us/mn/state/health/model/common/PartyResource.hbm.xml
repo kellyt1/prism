@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.common.PartyResource"
+        table="PARTY_RESOURCE_LINK"
+        lazy="true">
+        
+        <cache usage="nonstrict-read-write"/>
+
+        <composite-id name="partyResourceId"
+            class="us.mn.state.health.model.common.PartyResource$PartyResourceId">
+            <!--            Hibernate will access instance variables directly only-->
+            <!--if you specify access="field" in the property mapping. We discourage this usage.-->
+            <key-property name="partyId"
+                column="PARTY_ID"
+                type="long"/>
+
+            <key-property name="resourceId"
+                column="RESOURCE_ID"
+                type="long"/>
+
+            <key-property name="insertionDate"
+                column="INSERTION_DATE"
+                type="date"/>
+
+            <key-property name="relationshipType"
+                column="RELATIONSHIP_TYPE"
+                type="string"/>
+        </composite-id>
+
+        <many-to-one name="position"
+            class="us.mn.state.health.model.common.Position"
+            cascade="save-update"
+            insert="false"
+            update="false"
+            column="RESOURCE_ID" />
+
+        <many-to-one name="person"
+            class="us.mn.state.health.model.common.Person"
+            cascade="save-update"
+            insert="false"
+            update="false"
+            column="PARTY_ID"/>
+            
+        <property name="rank"
+            column="RANK"
+            type="integer"/>
+
+        <property name="startDate"
+            column="START_DATE"
+            type="date"/>
+
+        <property name="endDate"
+            column="END_DATE"
+            type="date"/>
+
+        <property name="insertedBy"
+            column="INSERTED_BY"
+            type="string"/>
+
+        <property name="terminatedBy"
+            column="TERMINATED_BY"
+            type="string"/>
+
+        <property name="terminationDate"
+            column="TERMINATION_DATE"
+            type="date"/>
+
+    </class>
+</hibernate-mapping>

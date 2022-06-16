@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+    <class name="Group"
+           table="GROUP_TBL"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <id name="groupId"
+            type="long"
+            column="GROUP_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+        <!-- groupShortName -->
+        <property name="groupShortName"
+                  column="GROUP_SHORT_NAME"
+                  type="string"/>
+                    
+        <!-- groupName -->
+        <property name="groupName"
+                  column="GROUP_NAME"
+                  type="string"/>
+                  
+        <!-- groupName -->
+        <property name="groupCode"
+                  column="GROUP_CODE"
+                  type="string"/>
+                  
+        <!-- groupPurpose -->
+        <property name="groupPurpose"
+                  column="GROUP_PURPOSE"
+                  type="string"/>
+                    
+        <!-- insertedBy -->
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"/>
+                  
+        <!-- insertionDate -->
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"/>
+                  
+        <!-- terminatedBy -->
+        <property name="terminatedBy"
+                  column="TERMINATED_BY"
+                  type="string"/>
+                  
+        <!-- terminationDate -->
+        <property name="terminationDate"
+                  column="TERMINATION_DATE"
+                  type="date"/>
+                  
+        <!-- groupType -->
+        <property name="groupType"
+                  column="GROUP_TYPE"
+                  type="string"/>
+                  
+        <!-- endDate -->
+        <property name="endDate"
+                  column="END_DATE"
+                  type="date"/>
+                  
+        <!-- approvedBy -->
+        <property name="approvedBy"
+                  column="APPROVED_BY"
+                  type="string"/>
+                  
+        <!-- approvalDate -->
+        <property name="approvalDate"
+                  column="APPROVAL_DATE"
+                  type="date"/>
+                  
+         <!-- changedBy -->
+        <property name="changedBy"
+                  column="CHANGED_BY"
+                  type="string"/>
+                  
+        <!-- changeDate -->
+        <property name="changeDate"
+                  column="CHANGE_DATE"
+                  type="date"/>
+                  
+        <set name="personGroupLinks"
+             cascade="save-update"
+             inverse="true"
+             lazy="true"
+             where="((end_date is null) or (END_DATE > sysdate)) ">
+            <key column="GROUP_ID"/>
+            <one-to-many class="us.mn.state.health.model.common.PersonGroupLink"/>
+        </set>
+    
+    </class>
+
+    <!-- WARNING!!! DO NOT USER THE WORD "group" AS AN ALIAS IN ANY QUERY!  IT IS A KEYWORD in Hibernate -->
+    
+    <query name="findGroupsByPersonId">
+        <![CDATA[ 
+            select g 
+            from Group as g
+            join g.personGroupLinks as groupLinks 
+                 where groupLinks.person.personId = :personId        
+        ]]>
+    </query>
+
+    <query name="findGroupByName">
+        <![CDATA[
+            select g from Group as g
+            where g.groupName = :groupName
+        ]]>
+    </query>
+    
+    <query name="findGroupByCode">
+        <![CDATA[
+            select g from Group as g
+            where upper(g.groupCode) = upper(:groupCode)
+        ]]>
+    </query>
+
+</hibernate-mapping>

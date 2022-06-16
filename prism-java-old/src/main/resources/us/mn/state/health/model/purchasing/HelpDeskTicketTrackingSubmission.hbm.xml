@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ Mapping file for the Person class - INCOMPLETE AS OF 1/25/05.
+-->
+<hibernate-mapping package="us.mn.state.health.model.purchasing">
+
+    <class name="HelpDeskTicketTrackingSubmission"
+           table="TRACKING_SUBMISSION_TBL"
+           lazy="true">
+
+        <cache usage="read-write"/>
+
+        <!-- Common id property. -->
+        <id name="trackingSubId"
+            type="long"
+            column="TRACKING_SUB_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="orgDiv"
+                  column="ORG_DIV"
+                  type="string"/>
+
+        <property name="contactName"
+                  column="CONTACT_NAME"
+                  type="string"/>
+
+        <property name="contactPhone"
+                  column="CONTACT_PHONE"
+                  type="string"/>
+
+        <property name="contactEmail"
+                  column="CONTACT_EMAIL"
+                  type="string"/>
+
+        <property name="description"
+                  column="DESCRIPTION"
+                  type="string" />
+
+        <property name="status"
+                  column="STATUS"
+                  type="string" />
+
+        <property name="insertDate"
+                  column="INSERT_DATE"
+                  type="date"/>
+
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"/>
+
+        <property name="personId"
+                  column="PERSON_ID_FK"
+                  type="long"/>
+
+        <property name="origDate"
+                  column="ORIG_DATE"
+                  type="date"/>
+
+        <property name="copyEE1"
+                  column="COPYEE1"
+                  type="string"/>
+
+        <property name="copyEE2"
+                  column="COPYEE2"
+                  type="string"/>
+
+        <property name="copyEE3"
+                  column="COPYEE3"
+                  type="string"/>
+
+        <property name="buildingOffice"
+                  column="BUILDING_OFFICE"
+                  type="string"/>
+
+        <property name="assignedDiv"
+                  column="ASSIGNED_DIV"
+                  type="string"/>
+
+        <property name="dateNeeded"
+                  column="DATE_NEEDED"
+                  type="date"/>
+
+    </class>
+
+
+</hibernate-mapping>

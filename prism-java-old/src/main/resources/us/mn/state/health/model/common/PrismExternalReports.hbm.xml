@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="us.mn.state.health.model.common.PrismExternalReports" table="PRISM_EXTERNAL_REPORTS">
+		<id name="id" column="REPORT_ID" type="long" unsaved-value="0">
+		</id>
+        <property name="reportname" type="string" column="REPORT_NAME"/>
+		<property name="reporttype" type="string" column="REPORT_TYPE"/>
+		<property name="reporturl" type="string" column="REPORT_URL"/>
+		<property name="enddate" type="date" column="ENDDATE"/>
+		<property name="activedate" type="date" column="ACTIVEDATE"/>
+	</class>
+
+</hibernate-mapping>

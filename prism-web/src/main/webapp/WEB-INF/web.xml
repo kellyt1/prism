@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" version="2.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>Materials Management Application</display-name>
+    <!-- CONTEXT-PARAMS FOR SECURITY MANAGER -->
+    <context-param>
+        <param-name>defaultPage</param-name>
+        <param-value>index.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>loginPage</param-name>
+        <param-value>/securityManager/login.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>challengeQuestionPage</param-name>
+        <param-value>/securityManager/challengeQuestion.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>changeChallengeQuestionPage</param-name>
+        <param-value>/securityManager/setChallengeQuestion.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>changePasswordPage</param-name>
+        <param-value>/securityManager/changePassword.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>noAccessPage</param-name>
+        <param-value>/securityManager/noaccess.jsp</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dataStoreType</param-name>
+        <param-value>HIBERNATE</param-value>
+    </context-param>
+    <context-param>
+        <!-- set the debug param to true to display diagnostic info to system log files.
+             set it to false to turn off all output. -->
+        <param-name>debug</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>newIndex</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <!-- END OF CONTEXT PARAMS FOR SECURITY MANAGER -->
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            classpath:/webApplicationContext-hibernate.xml
+            classpath:/prism-util-context.xml
+            classpath:/prism-scheduling-context.xml
+            classpath:/prism-mail-context.xml
+
+            classpath:/common/repository.xml
+            classpath:/common/service.xml
+            classpath:/common/facade.xml
+            classpath:/common/proxy.xml
+
+            classpath:/inventory/repository.xml
+            classpath:/inventory/service.xml
+            classpath:/inventory/facade.xml
+            classpath:/inventory/proxy.xml
+            classpath:/inventory/advice.xml
+
+            classpath:/materialsrequest/repository.xml
+            classpath:/materialsrequest/service.xml
+            classpath:/materialsrequest/facade.xml
+            classpath:/materialsrequest/proxy.xml
+
+            classpath:/purchasing/repository.xml
+            classpath:/purchasing/service.xml
+            classpath:/purchasing/facade.xml
+            classpath:/purchasing/proxy.xml
+
+            <!--classpath:/editor/repository.xml-->
+            <!--classpath:/editor/service.xml-->
+            <!--classpath:/editor/facade.xml-->
+            <!--classpath:/editor/proxy.xml-->
+
+            classpath:/struts/action-bean-admin.xml
+            classpath:/struts/action-bean-requests.xml
+            classpath:/struts/action-bean-inventory.xml
+            classpath:/struts/action-bean-purchasing.xml
+            classpath:/struts/action-bean-editor.xml
+            classpath:/struts/action-bean-finance.xml
+            classpath:/struts/action-bean-receiving.xml
+            classpath:/applicationContext-acegi-security.xml
+        </param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>HibernateFilter</filter-name>
+        <filter-class>us.mn.state.health.persistence.HibernateFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>ResponseOverrideFilter</filter-name>
+        <filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
+    </filter>
+
+    <filter>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+        <init-param>
+            <param-name>targetClass</param-name>
+            <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>sitemesh</filter-name>
+        <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+    </filter>
+    <!--<filter>
+        <filter-name>SetCacheControl</filter-name>
+        <filter-class>us.mn.state.health.util.CacheControlFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SetCacheControl</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>/j_acegi_security_check</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>/j_acegi_logout</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>Acegi Filter Chain Proxy</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>ResponseOverrideFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>HibernateFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>us.mn.state.health.model.util.configuration.ApplicationWatch</listener-class>
+    </listener>
+
+
+    <!-- Standard Action Servlet Configuration (with debugging) -->
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+
+        <!-- Struts configuration files -->
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml,/WEB-INF/struts-config2.xml,
+                /WEB-INF/inventory/struts-config-inventory.xml, /WEB-INF/inventory/struts-config-inventory2.xml,
+                /WEB-INF/purchasing/struts-config-purchasing.xml,/WEB-INF/purchasing/struts-config-purchasing2.xml,
+                /WEB-INF/editor/struts-config-editor.xml, /WEB-INF/editor/struts-config-editor2.xml,
+                /WEB-INF/receiving/struts-config-receiving.xml,/WEB-INF/receiving/struts-config-receiving2.xml,
+                /WEB-INF/requests/struts-config-requests.xml,/WEB-INF/requests2/struts-config-requests2.xml,
+                /WEB-INF/reporting/struts-config-reporting.xml,
+                /WEB-INF/finance/struts-config-finance.xml, /WEB-INF/finance/struts-config-finance2.xml
+            </param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <!-- SERVLET DEFINITIONS FOR THE SECURITY MANAGER -->
+    <servlet>
+        <servlet-name>ApplicationResourcesInitializer</servlet-name>
+        <servlet-class>us.mn.state.health.security.ApplicationResourcesInitializer</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SecurityManagerController</servlet-name>
+        <servlet-class>us.mn.state.health.security.controller.SecurityManagerController</servlet-class>
+    </servlet>
+    <!-- END OF SERVLET DEFINITION & MAPPING FOR THE SECURITY MANAGER -->
+
+    <servlet>
+        <servlet-name>SortController</servlet-name>
+        <servlet-class>us.mn.state.health.common.web.SortController</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>LuceneIndexCreatorServlet</servlet-name>
+        <servlet-class>us.mn.state.health.model.util.search.LuceneIndexCreatorServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>viewApprovalStatus</servlet-name>
+        <servlet-class>us.mn.state.health.matmgmt.action.ViewApprovalStatusServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>viewStockItemActionRequestInfo</servlet-name>
+        <servlet-class>us.mn.state.health.matmgmt.action.ViewStockItemActionRequestInfo</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>viewPrismUpTime</servlet-name>
+        <servlet-class>us.mn.state.health.model.util.configuration.ApplicationUpTimeServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>setLogLevel</servlet-name>
+        <servlet-class>us.mn.state.health.model.util.configuration.SetLogLevel</servlet-class>
+    </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>viewApprovalStatus</servlet-name>
+        <url-pattern>/viewApprovalStatus</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>viewStockItemActionRequestInfo</servlet-name>
+        <url-pattern>/viewStockItemActionRequestInfo</url-pattern>
+    </servlet-mapping>
+
+    <!-- Standard Action Servlet Mapping -->
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SortController</servlet-name>
+        <url-pattern>*.sort</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ApplicationResourcesInitializer</servlet-name>
+        <url-pattern>/securityManager/ApplicationResourcesInitializer</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SecurityManagerController</servlet-name>
+        <url-pattern>/securityManager/Controller</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>LuceneIndexCreatorServlet</servlet-name>
+        <url-pattern>/RefreshIndexes</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>viewPrismUpTime</servlet-name>
+        <url-pattern>/viewPrismUpTime</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>setLogLevel</servlet-name>
+        <url-pattern>/setLogLevel</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/common/400.jsp</location>
+    </error-page>
+
+    <!--<resource-ref>-->
+        <!--<description>DB Connection</description>-->
+        <!--<res-ref-name>jdbc/PrismDS</res-ref-name>-->
+        <!--<res-type>javax.sql.DataSource</res-type>-->
+        <!--<res-auth>Container</res-auth>-->
+    <!--</resource-ref>-->
+</web-app>

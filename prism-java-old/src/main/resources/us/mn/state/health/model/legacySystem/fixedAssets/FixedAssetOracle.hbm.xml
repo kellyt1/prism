@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the FixedAssetOracle.hbm.xml class
+-->
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.legacySystem.fixedAssets.FixedAssetOracle"
+        table="eqipfle_dbf"
+        batch-size="32"
+        lazy="false">
+
+        <id name="assetNumber" type="string"  column="AN" />
+
+        <property name="classCode"
+            type="string"
+            column="CC"
+            lazy="true"
+            />
+
+        <property name="idnbr"
+            type="integer"
+            column="IDNBR"
+            lazy="true"
+            />
+
+        <property name="type"
+            type="integer"
+            column="TYPE"
+            lazy="true"
+            />
+
+        <property name="mnid"
+            type="integer"
+            column="MNID"
+            lazy="true"
+            />
+
+        <property name="description"
+            type="string"
+            column="DESCRIPTION"
+            lazy="true"
+            />
+
+        <property name="manufacturer"
+            type="string"
+            column="MANUF"
+            lazy="true"
+            />
+
+        <property name="model"
+            type="string"
+            column="MODEL"
+            lazy="true"
+            />
+
+        <property name="cost"
+            type="double"
+            column="COST"
+            lazy="true"
+            />
+
+        <property name="serialNumber"
+            type="string"
+            column="SN"
+            lazy="true"
+            />
+
+        <property name="building"
+            type="string"
+            column="BLDG"
+            lazy="true"
+            />
+
+        <property name="room"
+            type="string"
+            column="ROOM"
+            lazy="true"
+            />
+
+        <property name="workstation"
+            type="string"
+            column="WS"
+            lazy="true"
+            />
+
+        <property name="dateReceived"
+            type="date"
+            column="DATEREC"
+            lazy="true"
+            />
+
+        <property name="document"
+            type="string"
+            column="DOCUMENT"
+            lazy="true"
+            />
+
+        <property name="bnbr"
+            type="string"
+            column="BNBR"
+            lazy="true"
+            />
+
+        <property name="org"
+            type="string"
+            column="ORG"
+            lazy="true"
+            />
+
+        <property name="fundingSource"
+            type="string"
+            column="FUND"
+            lazy="true"
+            />
+
+        <property name="estimatedLifeCycle"
+            type="integer"
+            column="ESTLIFE"
+            lazy="true"
+            />
+
+        <property name="serviceContract"
+            type="integer"
+            column="SVC"
+            lazy="true"
+            />
+
+        <property name="maintainanceAgreement"
+            type="yes_no"
+            column="MAINT"
+            lazy="true"
+            />
+
+        <property name="maintainancePONumber"
+            type="string"
+            column="MAINTPO"
+            lazy="true"
+            />
+
+        <property name="vidnbr"
+            type="string"
+            column="VIDNBR"
+            lazy="true"
+            />
+
+        <property name="contractNumber"
+            type="string"
+            column="CONT"
+            lazy="true"
+            />
+
+        <property name="contractExpirationDate"
+            type="date"
+            column="CEXPDATE"
+            lazy="true"
+            />
+
+        <property name="warantyExpirationDate"
+            type="date"
+            column="WEXPDATE"
+            lazy="true"
+            />
+
+        <property name="IExpirationDate"
+            type="date"
+            column="IEXPDATE"
+            lazy="true"
+            />
+
+    </class>
+
+</hibernate-mapping>

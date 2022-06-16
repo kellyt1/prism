@@ -1,0 +1,1 @@
+mvn compile exec:java -q -Dexec.mainClass="us.mn.state.health.scripts.S2_Client_Create"

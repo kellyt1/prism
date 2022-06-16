@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="us.mn.state.health.model.purchasing">
+
+    <class name="AssetView"
+           table="ASSET_VIEW"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <id name="orderLineItemId"
+                 column="ORDER_LINE_ITEM_ID"
+                 type="long"/>
+
+        <property name="mdhPo"
+                  column="MDH_PO"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="assetNumber"
+                  column=" ASSET_NUMBER"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="mrq"
+                  column="MRQ"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="assetDescription"
+                  column="ASSET_DESCRIPTION"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="assetsType"
+                  column="ASSETS_TYPE"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="cost"
+                  column="COST"
+                  type="double"
+                  not-null="false"/>
+
+        <property name="orderDate"
+                  column="ORDER_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <property name="fundingStreams"
+                  column="FUNDING_STREAMS"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="quantity"
+                  column="QUANTITY"
+                  type="long"
+                  not-null="false"/>
+
+
+        <property name="deliverToName"
+                  column="DELIVER_TO_NAME"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="deliverToAddress"
+                  column="DELIVER_TO_ADDRESS"
+                  type="string"
+                  not-null="true"/>
+
+        <property name="updatedBy"
+                  column="UPDATED_BY"
+                  type="string"
+                  not-null="true"/>
+
+    </class>
+
+    <query name="assetsSinceOrderDate">
+        <![CDATA[
+            select a
+            from AssetView as a
+            where a.assetsType is not null
+            and a.orderDate >= :orderDate
+        ]]>
+    </query>
+
+</hibernate-mapping>

@@ -1,0 +1,436 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the RequestLineItem class
+-->
+<hibernate-mapping package="us.mn.state.health.model.materialsrequest">
+
+    <class name="RequestLineItem"
+           table="MATERIALS_REQ_LINE_ITEM_TBL"
+           lazy="true">
+
+        <cache usage="read-write"/>
+
+        <!-- id property. -->
+        <id name="requestLineItemId"
+            type="long"
+            column="REQUEST_LINE_ITEM_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+
+        <property name="isOnOrder"
+                  type="boolean"
+                  lazy="true"
+                  update="false"
+                  access="field"
+                  formula="(select count(*)
+                         from MATERIALS_REQ_LINE_ITEM_TBL m
+                         where m.REQUEST_LINE_ITEM_ID = REQUEST_LINE_ITEM_ID and
+                          m.status_id in (
+                            select s.STATUS_ID
+                                                from STATUS_TBL s
+                                                where s.STATUS_CODE in ('RCD','RCP','PBO', 'ORD')
+                         ))"
+                />
+
+        <property name="amountInDollars"
+                  column="AMT_IN_DOLLARS"
+                  type="yes_no"
+                  not-null="true"/>
+
+        <many-to-one name="status"
+                     class="us.mn.state.health.model.common.Status"
+                     column="STATUS_ID"
+                     cascade="none"
+                     not-null="true"/>
+
+        <many-to-one name="unit"
+                     class="us.mn.state.health.model.inventory.Unit"
+                     column="UNIT_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="item"
+                     class="us.mn.state.health.model.inventory.Item"
+                     column="ITEM_ID"
+                     cascade="none"
+                     not-null="false"
+                />
+
+        <property name="itemDescription"
+                  column="ITEM_DESCRIPTION"
+                  type="string"
+                  not-null="false"/>
+              <property name="itemJustification"
+                  column="ITEM_JUSTIFICATION"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="itemCost"
+                  column="ITEM_COST"
+                  type="double"
+                  not-null="false"/>
+
+        <property name="itemHazardous"
+                  column="ITEM_HAZARDOUS"
+                  type="yes_no"
+                  not-null="false"/>
+
+        <!-- the quantity requested.  -->
+        <property name="quantity"
+                  column="QUANTITY"
+                  type="integer"
+                  not-null="true"/>
+
+        <!-- the quantity received by the requestor (so far) -->
+        <property name="quantityFilled"
+                  column="QUANTITY_FILLED"
+                  type="integer"
+                  not-null="true"/>
+        <!-- the Last Date that this line item was delivered -->
+        <property name="dateDelivered"
+                  column="DATE_DELIVERED"
+                  type="date"
+                  not-null="false"/>
+
+        <property name="suggestedVendorURL"
+                  column="SUGGESTED_VENDOR_URL"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="suggestedVendorCatalogNumber"
+                  column="SUGGESTED_VENDOR_CATALOG_NBR"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="suggestedVendorName"
+                  column="SUGGESTED_VENDOR_NAME"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="denialReason"
+                  column="DENIAL_REASON"
+                  type="string"
+                  not-null="false"
+                  />
+        <property name="swiftItemId"
+                  column="SWIFT_ITEM_ID"
+                  type="string"
+                  not-null="false"
+                />
+        <property name="lastUpdatedBy"
+                     column="LASTUPDATEDBY"
+                     type="string"
+                     not-null="false"
+                     />
+           <property name="lastUpdated"
+                     column="LASTUPDATED"
+                     type="date"
+                     not-null="false"
+                     />
+
+   
+        <!--
+        <many-to-one name="suggestedVendor"
+                     class="us.mn.state.health.model.common.Vendor"
+                     column="SUGGESTED_VENDOR_ID"
+                     cascade="none"
+                     not-null="false" />
+        -->
+
+        <many-to-one name="purchaser"
+                     class="us.mn.state.health.model.common.Person"
+                     column="PURCHASER_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="request"
+                     class="Request"
+                     column="REQUEST_ID"
+                     cascade="save-update"
+                     not-null="true"/>
+
+        <many-to-one name="itemCategory"
+                     class="us.mn.state.health.model.common.Category"
+                     column="ITEM_CATEGORY_ID"
+                />
+
+        <many-to-one name="orderLineItem"
+                     class="us.mn.state.health.model.purchasing.OrderLineItem"
+                     column="ORDER_LN_ITM_ID"
+                     cascade="save-update"
+                     not-null="false"/>
+
+        <!--
+       <many-to-one name="purchasingInfoFiles"
+                    class="us.mn.state.health.model.common.???"
+                    column="???"
+                    cascade="none"
+                    not-null="false" />
+        -->
+
+        <set name="fundingSources"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+                >
+            <key column="REQUEST_LINE_ITEM_ID"/>
+            <one-to-many class="RequestLineItemFundingSource"/>
+        </set>
+
+        <set name="notes"
+             cascade="all,delete-orphan"
+             order-by="MATERIALS_RLI_NOTE_ID desc"
+             inverse="true"
+                >
+            <key column="REQUEST_LINE_ITEM_ID"/>
+            <one-to-many class="RequestLineItemNote"/>
+        </set>
+
+        <set name="requestEvaluations"
+             cascade="all,delete-orphan"
+             inverse="false"
+             batch-size="32"
+             lazy="false">
+            <key column="REQUEST_LINE_ITEM_ID"/>
+            <one-to-many class="MaterialsRequestEvaluation"/>
+        </set>
+
+        <set name="attachedFileNonCats"
+             cascade="all,delete-orphan"
+             lazy="true">
+            <key column="REQUEST_LINE_ITEM_ID"/>
+            <one-to-many class="us.mn.state.health.model.materialsrequest.AttachedFileNonCat"/>
+        </set>
+
+    </class>
+
+    <query name="findAllRequestLineItemsWithStatusCode">
+        <![CDATA[
+            select rli 
+            from RequestLineItem as rli
+            where rli.status.statusCode = :statusCode
+        ]]>
+    </query>
+
+    <query name="findStockItemOutTransactionsWithFS">
+        <![CDATA[
+            select new us.mn.state.health.view.materialsrequest.reports.StockItemOutTransaction(
+            rli.request.trackingNumber,
+            item.itemId,
+            item.description,
+            unit.code,
+            item.dispenseUnitCost,
+            rli.request.dateRequested,
+            rli.quantity,
+            rli.quantityFilled,
+            rli.request.requestor.firstName,
+            rli.request.requestor.lastName,
+            rli.requestLineItemId,
+            fs.amount,
+            fs.orgBudget.orgBudgetCode,
+            fs.orgBudget.orgBudgetCodeDisplay,
+            deliveryDetail,
+            org,
+            recipient,
+            mailingAddress,
+            facility
+            )
+                 from RequestLineItem rli
+                join rli.item item
+                join item.category c
+                join item.dispenseUnit unit
+                join rli.request r
+                left join r.deliveryDetail deliveryDetail
+                left join deliveryDetail.organization org
+                left join deliveryDetail.recipient recipient
+                left join deliveryDetail.mailingAddress mailingAddress
+                left join deliveryDetail.facility facility
+                join rli.fundingSources fs
+                where
+                (select count(si) from StockItem si where si.itemId = item.itemId
+                 and si.category.categoryId like (:categoryId)
+                 and si.category.categoryCode like (:categoryCode)
+                 and si.icnbr like (:icnbr))>0
+            and (fs.orgBudget.endDate > :beginFY1 and fs.orgBudget.endDate < :endFY1
+                or
+                fs.orgBudget.endDate > :beginFY2 and fs.orgBudget.endDate < :endFY2
+                or
+                fs.orgBudget.endDate > :beginFY3 and fs.orgBudget.endDate < :endFY3
+                or
+                fs.orgBudget.endDate > :beginFY4 and fs.orgBudget.endDate < :endFY4
+                or
+                fs.orgBudget.endDate > :beginFY5 and fs.orgBudget.endDate < :endFY5
+                or
+                fs.orgBudget.endDate > :beginFY6 and fs.orgBudget.endDate < :endFY6
+                or
+                fs.orgBudget.endDate > :beginFY7 and fs.orgBudget.endDate < :endFY7
+                or
+                fs.orgBudget.endDate > :beginFY8 and fs.orgBudget.endDate < :endFY8
+                or
+                fs.orgBudget.endDate > :beginFY9 and fs.orgBudget.endDate < :endFY9
+                or
+                fs.orgBudget.endDate > :beginFY10 and fs.orgBudget.endDate < :endFY10)
+                and
+                (fs.orgBudget.orgBudgetCode like (:orgBdgt) or fs.orgBudget.orgBudgetCodeDisplay like (:orgBdgt))
+                and
+                r.dateRequested >= :startDate and r.dateRequested <= :endDate
+                and
+                ((rli.status.statusCode = 'FLD' and rli.quantityFilled>0 ) or
+                 (rli.status.statusCode = 'WFD' and rli.quantityFilled>0))
+             order by rli.requestLineItemId desc
+        ]]>
+    </query>
+    <query name="findStockItemOutTransactionsWithoutFS">
+        <![CDATA[
+            select new us.mn.state.health.view.materialsrequest.reports.StockItemOutTransaction(
+            rli.request.trackingNumber,
+            item.itemId,
+            item.description,
+            unit.code,
+            item.dispenseUnitCost,
+            rli.request.dateRequested,
+            rli.quantity,
+            rli.quantityFilled,
+            rli.request.requestor.firstName,
+            rli.request.requestor.lastName,
+            rli.requestLineItemId,
+            deliveryDetail,
+            org,
+            recipient,
+            mailingAddress,
+            facility
+            )
+                from RequestLineItem rli
+                join rli.item item
+                join item.category c
+                join item.dispenseUnit unit
+                join rli.request r
+                left join r.deliveryDetail deliveryDetail
+                left join deliveryDetail.organization org
+                left join deliveryDetail.recipient recipient
+                left join deliveryDetail.mailingAddress mailingAddress
+                left join deliveryDetail.facility facility
+                where
+                (select count(si) from StockItem si where si.itemId = item.itemId
+                 and si.category.categoryId like (:categoryId)
+                 and si.category.categoryCode like (:categoryCode)
+                 and si.icnbr like (:icnbr))>0
+                and
+                rli.fundingSources.size=0
+                 and
+                r.dateRequested >= :startDate and r.dateRequested <= :endDate
+                and
+                ((rli.status.statusCode = 'FLD' and rli.quantityFilled>0 ) or
+                 (rli.status.statusCode = 'WFD' and rli.quantityFilled>0))
+             order by rli.requestLineItemId desc
+        ]]>
+    </query>
+
+    <query name="findDeliveryDetailUsingRequestLineItemId">
+        <![CDATA[
+
+                ]]>
+    </query>
+
+    <query name="findStockItemInTransactions">
+        <![CDATA[
+            select new us.mn.state.health.view.materialsrequest.reports.StockItemInTransaction(
+            item,
+            rli.request.trackingNumber,
+            item.description,
+            unit.code,
+            item.dispenseUnitCost,
+            rli.request.dateRequested,
+            rli.quantity,
+            rli.request.requestor.firstName,
+            rli.request.requestor.lastName,
+            rli.requestLineItemId,
+            rli.status.name,
+            rli.isOnOrder
+            )
+             from RequestLineItem rli
+                join rli.item item
+                join item.dispenseUnit unit
+                join rli.request r
+                where
+                (select count(si) from StockItem si
+                where si.itemId = item.itemId
+                 and si.category.categoryId like (:categoryId)
+                 and si.category.categoryCode like (:categoryCode)
+                 and si.icnbr like (:icnbr)
+                 and (si.orgBudget.orgBudgetCode like (:orgBdgt)  or si.orgBudget.orgBudgetCodeDisplay like (:orgBdgt)) )>0
+                and
+                r.dateRequested >= :startDate and r.dateRequested <= :endDate
+                and
+                rli.status.statusCode in('WFP','RCP','RCD','PBO', 'ORD')
+             order by rli.requestLineItemId desc
+        ]]>
+    </query>
+
+    <query name="findOrderedPurchaseItemTransactions">
+        <![CDATA[
+            select new us.mn.state.health.view.materialsrequest.reports.PurchaseItemTransaction(
+                rli.requestLineItemId,
+                rli.itemDescription,
+                rli.request.trackingNumber,
+                rli.itemCategory.name,
+                fs.amount,
+                fs.orgBudget.orgBudgetCode,
+                fs.orgBudget.orgBudgetCodeDisplay,
+                o.orderId,
+                r.dateRequested,
+                o.insertionDate,
+                rli.quantity,
+                oli.quantity,
+                oli.buyUnit.name,
+                oli.buyUnitCost,
+                o.vendor.externalOrgDetail.orgName,
+                rli.request.requestor.firstName,
+                rli.request.requestor.lastName,
+                oli.status.name
+            )
+             from RequestLineItem rli
+                join rli.orderLineItem oli
+                join rli.request r
+                join oli.order o
+                join rli.fundingSources fs
+                where
+                rli.item is null
+                and rli.itemCategory.categoryId like (:categoryId)
+                and (fs.orgBudget.endDate > :beginFY1 and fs.orgBudget.endDate < :endFY1
+                or
+                fs.orgBudget.endDate > :beginFY2 and fs.orgBudget.endDate < :endFY2
+                or
+                fs.orgBudget.endDate > :beginFY3 and fs.orgBudget.endDate < :endFY3
+                or
+                fs.orgBudget.endDate > :beginFY4 and fs.orgBudget.endDate < :endFY4
+                or
+                fs.orgBudget.endDate > :beginFY5 and fs.orgBudget.endDate < :endFY5
+                or
+                fs.orgBudget.endDate > :beginFY6 and fs.orgBudget.endDate < :endFY6
+                or
+                fs.orgBudget.endDate > :beginFY7 and fs.orgBudget.endDate < :endFY7
+                or
+                fs.orgBudget.endDate > :beginFY8 and fs.orgBudget.endDate < :endFY8
+                or
+                fs.orgBudget.endDate > :beginFY9 and fs.orgBudget.endDate < :endFY9
+                or
+                fs.orgBudget.endDate > :beginFY10 and fs.orgBudget.endDate < :endFY10)
+                and
+                (fs.orgBudget.orgBudgetCode like (:orgBdgt) or fs.orgBudget.orgBudgetCodeDisplay like (:orgBdgt))
+                and
+                r.dateRequested >= :startDate and r.dateRequested <= :endDate
+                order by rli.requestLineItemId desc
+        ]]>
+    </query>
+</hibernate-mapping>

@@ -1,0 +1,27 @@
+<Context useHttpOnly="true">
+    <Resource  name="jdbc/PrismDS"
+               auth="Container"
+               type="javax.sql.DataSource"
+               driverClassName="com.amazonaws.secretsmanager.sql.AWSSecretsManagerOracleDriver"
+               url="jdbc-secretsmanager:oracle:thin:@//placeholder"
+               username="rds/admindb/prism_user"
+               maxIdle="10"
+               minIdle="5"
+               maxWait="1000"
+               removeAbandoned="true"
+               removeAbandonedTimeout="60"
+               logAbandoned="true"
+               minEvictableIdleTimeMillis="1800000"
+               timeBetweenEvictionRunsMillis="1800000"
+               numTestsPerEvictionRun="3"
+               testOnBorrow="true"
+               testWhileIdle="true"
+               testOnReturn="true"
+               validationQuery="SELECT 1 from dual"
+               factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    />
+    <Environment name="kc.token.endpoint" value="https://authenticator4.nonprod.health.state.mn.us/auth/realms/admin-apps-realm/protocol/openid-connect/token" type="java.lang.String" override="false"/>
+    <Environment name="kc.userinfo.endpoint" value="https://authenticator4.nonprod.health.state.mn.us/auth/realms/admin-apps-realm/protocol/openid-connect/userinfo" type="java.lang.String" override="false"/>
+    <Environment name="kc.clientId" value="prism-client" type="java.lang.String" override="false"/>
+    <Environment name="environment" value="nonprod" type="java.lang.String" override="false" description="This should be a value of 'web', 'nonprod' or 'local'"/>
+</Context>

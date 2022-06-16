@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the StockQtyAdjustmentHistory class
+-->
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.StockQtyAdjustmentHistory"
+           table="STOCK_QTY_ADJ_HISTORY_TBL"
+           lazy="true">
+
+        <!-- id property. -->
+        <id name="id"
+            type="long"
+            column="ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <many-to-one name="changeReason"
+                     class="us.mn.state.health.model.inventory.StockQtyChangeReasonRef"
+                     column="STOCK_QTY_CHANGE_REASON_REF_ID"
+                     not-null="false"
+                     cascade="none"
+                     update="true"/>
+
+        <!-- requestedDate. We can't change the creation time, so map it with update="false". -->
+        <property name="changeDate"
+                  column="CHANGE_DATE"
+                  type="date"
+                  update="false"
+                  not-null="true"/>
+
+        <!-- changedBy. -->
+        <many-to-one name="changedBy"
+                     class="us.mn.state.health.model.common.Person"
+                     column="CHANGED_BY"
+                     not-null="true"
+                     cascade="none"
+                     update="false"/>
+
+        <!-- oldValue. -->
+        <property name="previousQtyOnHand"
+                  column="PREVIOUS_QTY_ON_HAND"
+                  type="integer"
+                  update="false"
+                  not-null="true"/>
+
+        <!-- newValue. -->
+        <property name="newQtyOnHand"
+                  column="NEW_QTY_ON_HAND"
+                  type="integer"
+                  update="false"
+                  not-null="true"/>
+
+        <!-- stockItem -->
+        <many-to-one name="stockItem"
+                     class="us.mn.state.health.model.inventory.StockItem"
+                     column="STOCK_ITEM_ID"
+                     not-null="true"
+                     cascade="none"
+                     update="false"/>
+
+        <!-- orgBudget to charge/credit -->
+        <many-to-one name="orgBudget"
+                     class="us.mn.state.health.model.common.OrgBudget"
+                     column="ORG_BDGT_ID"
+                     not-null="false"
+                     cascade="none"
+                     update="false"/>
+    </class>
+
+</hibernate-mapping>

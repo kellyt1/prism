@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+
+Mapping file for the Status class.
+
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="Status"
+        table="STATUS_TBL"
+        lazy="true">
+        
+        <cache usage="read-only"/>
+
+        <!-- Common id property. -->
+        <id name="statusId"
+            type="long"
+            column="STATUS_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- name -->
+        <property name="name"
+            column="NAME"
+            type="string"/>
+
+        <!-- statusCode -->
+        <property name="statusCode"
+            column="STATUS_CODE"
+            type="string"/>
+
+        <!-- statusType -->
+        <many-to-one name="statusType"
+            class="us.mn.state.health.model.common.StatusType"
+            column="STATUS_TYPE_ID"
+            cascade="save-update"
+            not-null="false"/>
+
+        <!-- insertedBy.  The username of person who inserted this record -->            
+        <property   name="insertedBy"
+                    column="INSERTED_BY"
+                    type="string"  />
+
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+
+    </class>
+
+    <query name="findAllByStatusTypeCode">
+        <![CDATA[
+            select status 
+            from Status as status 
+            where status.statusType in (select statustype.statusTypeId 
+                                        from StatusType as statustype 
+                                        where statustype.code = :statusTypeCode)
+            order by status.name
+        ]]>
+    </query>
+
+    <query name="findByStatusTypeCodeAndStatusCode">
+        <![CDATA[
+            select status
+            from Status as status
+            where status.statusType in (select statustype.statusTypeId
+                                        from StatusType as statustype
+                                        where statustype.code = :statusTypeCode)
+            and status.statusCode = :statusCode
+            order by status.name
+        ]]>
+    </query>
+
+    <query name="getStatusByStatusCode">
+        <![CDATA[
+            select status
+            from Status as status
+            where status.statusCode = :statusCode
+        ]]>
+    </query>
+
+</hibernate-mapping>

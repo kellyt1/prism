@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ Mapping file for the Person class - INCOMPLETE AS OF 1/25/05.
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="Employee"
+           table="EMPLOYEE_QUICK_TBL"
+           lazy="true">
+
+        <composite-id name="id" class="EmployeeQuickTblId">
+            <key-property name="personId" type="long">
+                <column name="PERSON_ID" precision="12" scale="0" />
+            </key-property>
+            <key-property name="positionId" type="long">
+                <column name="POSITION_ID" precision="12" scale="0" />
+            </key-property>
+            <key-property name="empId" type="string">
+                <column name="EMP_ID" length="8" />
+            </key-property>
+        </composite-id>
+
+        <property name="personId" type="java.lang.Long" insert="false" update="false">
+            <column name="PERSON_ID" precision="12" scale="0" />
+        </property>
+
+
+        <property name="lastName" type="string">
+            <column name="LAST_NAME" length="40" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="FIRST_NAME" length="40" />
+        </property>
+        <property name="midName" type="string">
+            <column name="MID_NAME" length="40" />
+        </property>
+        <property name="classCode" type="string">
+            <column name="CLASS_CODE" length="6" />
+        </property>
+        <property name="positionControlNbr" type="string">
+            <column name="POSITION_CONTROL_NBR" length="10" />
+        </property>
+        <property name="workingTitle" type="string">
+            <column name="WORKING_TITLE" length="50" />
+        </property>
+        <property name="orgId" type="java.lang.Long">
+            <column name="ORG_ID" precision="12" scale="0" />
+        </property>
+        <property name="deptIdCode" type="string">
+            <column name="DEPT_ID_CODE" length="10" />
+        </property>
+        <property name="deptIdName" type="string">
+            <column name="DEPT_ID_NAME" length="50" />
+        </property>
+        <property name="phoneNbr" type="string">
+            <column name="PHONE_NBR" length="15" />
+        </property>
+        <property name="voipNbr" type="string">
+            <column name="VOIP_NBR" length="15" />
+        </property>
+        <property name="cellNbr" type="string">
+            <column name="CELL_NBR" length="15" />
+        </property>
+        <property name="pagerNbr" type="string">
+            <column name="PAGER_NBR" length="15" />
+        </property>
+        <property name="email" type="string">
+            <column name="EMAIL" length="100" />
+        </property>
+        <property name="supName" type="string">
+            <column name="SUP_NAME" length="200" />
+        </property>
+        <property name="supPositionNbr" type="string">
+            <column name="SUP_POSITION_NBR" length="10" />
+        </property>
+        <property name="supPositionId" type="java.lang.Long">
+            <column name="SUP_POSITION_ID" precision="12" scale="0" />
+        </property>
+        <property name="supPersonId" type="java.lang.Long">
+            <column name="SUP_PERSON_ID" precision="12" scale="0" />
+        </property>
+        <property name="supEmpId" type="string">
+            <column name="SUP_EMP_ID" length="8" />
+        </property>
+        <property name="division" type="string">
+            <column name="DIVISION" length="50" />
+        </property>
+        <property name="orgType" type="string">
+            <column name="ORG_TYPE" length="50" />
+        </property>
+        <property name="orgCode" type="string">
+            <column name="ORG_CODE" length="10" />
+        </property>
+        <property name="personIdIncharge" type="java.lang.Long">
+            <column name="PERSON_ID_INCHARGE" precision="12" scale="0" />
+        </property>
+        <property name="firstNameIncharge" type="string">
+            <column name="FIRST_NAME_INCHARGE" length="50" />
+        </property>
+        <property name="lastNameIncharge" type="string">
+            <column name="LAST_NAME_INCHARGE" length="50" />
+        </property>
+        <property name="classificationTitle" type="string">
+            <column name="CLASSIFICATION_TITLE" length="100" />
+        </property>
+        <property name="moreContactInfo" type="string">
+            <column name="MORE_CONTACT_INFO" length="3" />
+        </property>
+    </class>
+</hibernate-mapping>

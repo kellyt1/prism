@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.StockQtyChangeReasonRef"
+           table="STOCK_QTY_CHANGE_REASON_REF"
+           lazy="true">
+        <cache usage="read-only"/>
+        <!-- id property. -->
+        <id name="id"
+            type="long"
+            column="ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- requestedDate. We can't change the creation time, so map it with update="false". -->
+        <property name="reason"
+                  column="REASON"
+                  type="string"
+                  update="false"/>
+
+        <!-- oldValue. -->
+        <property name="code"
+                  column="CODE"
+                  type="string"/>
+
+    </class>
+
+</hibernate-mapping>

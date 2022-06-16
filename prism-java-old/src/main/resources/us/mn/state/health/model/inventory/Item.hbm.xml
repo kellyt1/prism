@@ -1,0 +1,506 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for Item its concrete sub-classes
+-->
+<hibernate-mapping>
+
+    <class name="us.mn.state.health.model.inventory.Item"
+           table="ITEM_TBL"
+           lazy="true">
+
+        <id name="itemId"
+            type="long"
+            column="ITEM_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking. I presume the joined-subclass StockItem shares this version -->
+        <version name="version"
+                 column="VERSION"/>
+
+        <!-- estimatedAnnualUsage -->
+        <property name="estimatedAnnualUsage"
+                  column="ESTIMATED_ANNUAL_USAGE"
+                  type="integer"
+                  not-null="false"/>
+
+        <!-- annualUsage -->
+        <property name="annualUsage"
+                  column="ANNUAL_USAGE"
+                  type="integer"
+                  not-null="false"/>
+
+        <!-- category. unidirectional many-to-one association to Category.  An Item can have only one Category. -->
+        <many-to-one name="category"
+                     class="us.mn.state.health.model.common.Category"
+                     column="CATEGORY_ID"
+                     lazy="false"
+                     cascade="none"
+                     not-null="true"/>
+
+        <many-to-one name="objectCode"
+                     class="us.mn.state.health.model.common.ObjectCode"
+                     column="OBJECT_CODE_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <!-- description -->
+        <property name="description"
+                  column="DESCRIPTION"
+                  type="string"
+                  not-null="true"/>
+        <!-- description -->
+        <property name="descriptionForUser"
+                  column="DESCRIPTIONFORUSER"
+                  type="string"
+                  not-null="false"/>
+
+        <many-to-one name="deliveryDetail"
+                     class="us.mn.state.health.model.materialsrequest.DeliveryDetail"
+                     column="DELIVERY_DETAIL_ID"
+                     cascade="all"
+                     not-null="false"
+                     unique="false"
+                     insert="true"
+                     update="true"/>
+
+        <!-- model -->
+        <property name="model"
+                  column="MODEL"
+                  type="string"/>
+
+        <!-- dispenseUnit. -->
+        <many-to-one name="dispenseUnit"
+                     column="DISPENSE_UNIT"
+                     class="us.mn.state.health.model.inventory.Unit"
+                     cascade="none"
+                     not-null="false"/>
+
+        <!-- economicOrderQty -->
+        <property name="economicOrderQty"
+                  column="ECONOMIC_ORDER_QTY"
+                  type="integer"
+                  not-null="false"/>
+
+        <!-- hazardous -->
+        <property name="hazardous"
+                  column="HAZARDOUS"
+                  type="yes_no"
+                  not-null="false"/>
+        <many-to-one name="hazardousObject" class="us.mn.state.health.model.common.Hazardous"
+                     cascade="none" not-null="false" column="HAZARDOUS_ID"/>
+
+        <!-- insertedBy.  The username of person who inserted this record -->
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"
+                  update="false"/>
+
+        <!-- insertionDate. We can't change the creation time, so map it with update="false". -->
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+
+        <property name="dispenseUnitCost"
+                  column="DISPENSE_UNIT_COST"
+                  type="double"/>
+
+        <!-- itemVendors - this is a bi-directional one-to-many association; ItemVendor holds optional contract collection
+             setting inverse="true" is recommended for the 'one' side of a bidirection one-to-many and allows SQL optimization.-->
+        <set name="itemVendors"
+             inverse="true"
+             lazy="true"
+             cascade="all, delete-orphan"
+             order-by="INSERTION_DATE"
+             access="field"
+             where="end_date is null or end_date > sysdate">
+            <key column="ITEM_ID" not-null="true"/>
+            <one-to-many class="us.mn.state.health.model.inventory.ItemVendor"/>
+        </set>
+
+        <!-- lastUpdatedBy.  The username of person who last updated this record -->
+        <property name="lastUpdatedBy"
+                  column="LAST_UPDATED_BY"
+                  type="string"/>
+
+        <!-- lastUpdatedDate -->
+        <property name="lastUpdatedDate"
+                  column="LAST_UPDATED_DATE"
+                  type="date"
+                  update="true"
+                  not-null="false"/>
+
+        <!-- manufacturer. unidirectional many-to-one association to Manufacturer.  A particular Item can only have one manufacturer, obviously -->
+        <many-to-one name="manufacturer"
+                     class="us.mn.state.health.model.common.Manufacturer"
+                     column="MANUFACTURER_ID"
+                     cascade="none"
+                     update="true"
+                     not-null="false"/>
+
+        <!-- terminatedBy. unidirectional many-to-one association to Person.  An Item can only have been terminated by one Person. -->
+        <property name="terminatedBy"
+                  column="TERMINATED_BY"
+                  type="string"/>
+
+        <!-- terminationDate -->
+        <property name="terminationDate"
+                  column="TERMINATION_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <!--  currentDemand is a derived property.  It is the sum of all open stock
+ (i.e., waiting for dispersal) RLI's
+ qty requested minus quantity already filled  -->
+        <property name="currentDemand"
+                  type="integer"
+                  lazy="true"
+                  update="false"
+                  formula="(select SUM(m.QUANTITY - m.QUANTITY_FILLED) 
+                            from MATERIALS_REQ_LINE_ITEM_TBL m
+                            where m.ITEM_ID = ITEM_ID
+                            and m.STATUS_ID in (select s.STATUS_ID
+                                                from STATUS_TBL s
+                                                where s.STATUS_CODE in ('WFD') ) )"/>
+
+        <!--inverse="true"-->
+        <set name="attachedFiles"
+             cascade="all,delete-orphan"
+             lazy="true">
+            <key column="ITEM_ID"/>
+            <one-to-many class="us.mn.state.health.model.inventory.AttachedFile"/>
+        </set>
+
+
+
+        <!-- StockItem subclass mapping to its own table, normalized. -->
+        <joined-subclass name="us.mn.state.health.model.inventory.StockItem"
+                         table="STOCK_ITEM_TBL"
+                         lazy="true">
+
+            <key column="STOCK_ITEM_ID"/>
+
+            <property name="safetyStock" column="SAFETY_STOCK" type="integer" not-null="false"/>
+
+            <property name="reviewDate" column="REVIEW_DATE" type="date" not-null="false"/>
+
+            <!--  isOnOrder is a derived property.  should be
+       true if there is a RequestLineItem with status of
+       WaitingForPurchase or Ordered with status -->
+            <property name="isOnOrder"
+                      type="boolean"
+                      lazy="true"
+                      update="false"
+                      formula="(select count(*)
+                            from MATERIALS_REQ_LINE_ITEM_TBL m
+                            where m.ITEM_ID = STOCK_ITEM_ID
+                            and m.STATUS_ID in (select s.STATUS_ID
+                                                from STATUS_TBL s
+                                                where s.STATUS_CODE in ('WFP', 'ORD', 'RCP', 'PBO', 'PMI', 'POB') ) )"/>
+
+            <!-- cycleCountPriority -->
+            <property name="cycleCountPriority"
+                      type="string"
+                      column="CYCLE_COUNT_PRIORITY"
+                      not-null="false"/>
+
+            <many-to-one name="cycleCountPriorityObject"
+                         column="CYCLE_COUNT_PRIORITY_ID"
+                         not-null="false"/>
+
+            <!-- fillUntilDepleted -->
+            <property name="fillUntilDepleted"
+                      type="yes_no"
+                      column="FILL_UNTIL_DEPLETED"
+                      not-null="false"/>
+
+            <!-- holdUntilDate -->
+            <property name="holdUntilDate"
+                      type="date"
+                      column="HOLD_UNTIL_DATE"
+                      not-null="false"/>
+
+            <!-- icnbr -->
+            <property name="icnbr"
+                      type="integer"
+                      column="ICNBR"
+                      unique="false"
+                      not-null="false"/>
+            <!-- a stock item w/o an icnbr is considered a potential stock item, so this needs to be nullable -->
+
+            <!-- orgBudget -->
+            <many-to-one name="orgBudget"
+                         class="us.mn.state.health.model.common.OrgBudget"
+                         cascade="none"
+                         column="ORG_BDGT_ID"
+                         not-null="true"/>
+
+            <!-- packQty -->
+            <property name="packQty"
+                      type="integer"
+                      column="PACK_QTY"
+                      not-null="false"/>
+
+            <!-- primaryContact -->
+            <many-to-one name="primaryContact"
+                         class="us.mn.state.health.model.common.Person"
+                         column="PRIMARY_CONTACT"
+                         cascade="none"
+                         not-null="true"/>
+
+            <!-- printFileURL -->
+            <property name="printFileURL"
+                      type="string"
+                      column="PRINT_FILE_URL"
+                      not-null="false"/>
+
+            <!-- qtyOnHand -->
+            <property name="qtyOnHand"
+                      type="integer"
+                      column="QTY_ON_HAND"
+                      not-null="true"/>
+
+            <!-- reorderDate -->
+            <property name="reorderDate"
+                      type="date"
+                      column="REORDER_DATE"
+                      not-null="false"/>
+
+            <!-- reorderPoint -->
+            <property name="reorderPoint"
+                      type="integer"
+                      column="REORDER_POINT"
+                      not-null="false"/>
+
+            <!-- reorderQty -->
+            <property name="reorderQty"
+                      type="integer"
+                      column="REORDER_QTY"
+                      not-null="false"/>
+
+            <!-- seasonal -->
+            <property name="seasonal"
+                      type="yes_no"
+                      column="SEASONAL"
+                      not-null="false"/>
+
+            <!-- secondaryContact -->
+            <many-to-one name="secondaryContact"
+                         class="us.mn.state.health.model.common.Person"
+                         column="SECONDARY_CONTACT"
+                         cascade="none"
+                         not-null="false"/>
+
+            <!-- staggeredDelivery -->
+            <property name="staggeredDelivery"
+                      type="yes_no"
+                      column="STAGGERED_DELIVERY"
+                      not-null="false"/>
+
+            <!-- printSpecFileName -->
+            <!--<property name="printSpecFileName"-->
+                      <!--type="string"-->
+                      <!--column="PRINT_FILE_NAME"-->
+                      <!--not-null="false"/>-->
+
+            <!-- printSpecFileBinaryValue --> 
+            <!--<property name="printSpecFileBinaryValueHibernate"-->
+            <!--type="blob"-->
+            <!--column="PRINT_FILE_BINARY_VALUE"-->
+            <!--not-null="false"/>-->
+
+            <!-- status -->
+            <many-to-one name="status"
+                         class="us.mn.state.health.model.common.Status"
+                         column="STATUS_ID"
+                         cascade="none"
+                         not-null="true"/>
+
+            <!-- potentialIndicator -->
+            <property name="potentialIndicator"
+                      type="yes_no"
+                      column="POTENTIAL_IND"/>
+
+            <many-to-one name="asstDivDirector"
+                         class="us.mn.state.health.model.common.Person"
+                         column="ASSISTANT_DIVISION_DIRECTOR"
+                         cascade="none"
+                         not-null="false"/>
+
+            <!-- this HAS to be set to lazy="false" or the Fill Stock Requests page won't work -->
+            <set name="locations"
+                 cascade="all,delete-orphan"
+                 inverse="true"
+                 lazy="false" access="field"
+                 where="end_date is null or sysdate>end_date+1"
+                 batch-size="32"
+                 order-by="STOCK_ITEM_LOCATION_ID desc">
+                <key column="STOCK_ITEM_ID"/>
+                <one-to-many class="us.mn.state.health.model.inventory.StockItemLocation"/>
+            </set>
+
+            <set name="lots"
+                 cascade="all,delete-orphan"
+                 inverse="true"
+                 lazy="false" access="field"
+                 batch-size="32"
+                 where="end_date is null or sysdate>end_date+1"
+                 order-by="STOCK_ITEM_LOT_ID desc">
+                <key column="STOCK_ITEM_ID"/>
+                <one-to-many class="us.mn.state.health.model.inventory.StockItemLot"/>
+            </set>
+
+            <set name="siQtyAdjustments"
+                 cascade="all,delete-orphan"
+                 inverse="true"
+                 lazy="true">
+                <key column="STOCK_ITEM_ID"/>
+                <one-to-many class="us.mn.state.health.model.inventory.StockQtyAdjustmentHistory"/>
+            </set>
+
+            <property name="instructions"
+                      type="string"
+                      column="STOCK_ITEM_INSTRUCTIONS"
+                      not-null="false">
+            </property>
+
+        </joined-subclass>
+
+        <!-- StockItem subclass mapping to its own table, normalized. -->
+        <joined-subclass name="us.mn.state.health.model.inventory.PurchaseItem"
+                         table="PURCHASE_ITEM_TBL"
+                         lazy="true">
+            <key column="PURCHASE_ITEM_ID"/>
+
+            <property name="endDate" column="END_DATE" type="date" not-null="false"/>
+
+        </joined-subclass>
+
+    </class>
+
+    <query name="findNextICNBR">
+        <![CDATA[
+            select max(stockItem.icnbr + 1)
+            from StockItem as stockItem
+        ]]>
+    </query>
+
+    <query name="findByStatusCode">
+        <![CDATA[
+            from StockItem as stockItem 
+            where stockItem.status.statusCode = :statusCode
+            and stockItem.potentialIndicator = 'N'
+        ]]>
+    </query>
+
+    <query name="findItemByCategoryCode">
+        <![CDATA[
+            from Item as item 
+            where item.category.categoryCode = :categoryCode
+            order by item.description asc
+        ]]>
+    </query>
+
+    <query name="findStockItemByCategoryCode">
+        <![CDATA[
+            from StockItem as item 
+            where item.category.categoryCode = :categoryCode 
+            and item.potentialIndicator = 'N'
+            order by item.description asc
+        ]]>
+    </query>
+
+    <query name="findPurchaseItemByCategoryCode">
+        <![CDATA[
+            from PurchaseItem as item
+            where item.category.categoryCode = :categoryCode
+            order by item.description asc
+        ]]>
+    </query>
+
+    <query name="findContractsWhereWithVendor">
+        <![CDATA[
+            select itemVendor.vendorContract 
+            from ItemVendor as itemVendor
+            where itemVendor.vendor.vendorId = :vendorId
+        ]]>
+    </query>
+
+    <query name="findStockItemByCategoryCodeAndItemCode">
+        <![CDATA[
+            from StockItem as item 
+            where item.category.categoryCode=:categoryCode 
+            and item.icnbr=:icnbr
+            and item.potentialIndicator = 'N'
+            order by item.description asc
+        ]]>
+    </query>
+
+    <query name="findStockItemsByContactPerson">
+        <![CDATA[
+            from StockItem as item 
+            where (item.primaryContact.personId = :personId 
+                   or item.secondaryContact.personId = :personId) 
+            and item.potentialIndicator = 'N'
+            order by item.description asc
+        ]]>
+    </query>
+
+
+    <query name="findActiveStockItemsByContactPerson">
+        <![CDATA[
+            from StockItem as item
+            where (item.primaryContact.personId = :personId
+                   or item.secondaryContact.personId = :personId)
+            and si.status.statusCode = 'ACT'
+            and item.potentialIndicator = 'N'
+            order by item.description asc
+        ]]>
+    </query>
+
+
+    <query name="findItemByIdEagerLoadStatus">
+        <![CDATA[
+            from Item i left join fetch i.status s where i.itemId= :id
+        ]]>
+    </query>
+
+    <query name="findStockItemsBelowROP">
+        <![CDATA[
+        select si
+            from StockItem si
+                left outer join si.category
+                left outer join si.dispenseUnit
+                left outer join si.locations loc
+                where si.qtyOnHand < si.reorderPoint
+                and si.status.statusCode = 'ACT'
+                and si.category.categoryId in(:categoryIds)
+                and ((si.locations.size=0 and 1=:includeStockItemsWithoutFacilities )or loc.facility.facilityId in(:facilityIds))
+                and si.isOnOrder = 0
+                order by si.category.categoryCode asc, si.icnbr asc
+        ]]>
+    </query>
+
+    <query name="findOnOrderRequestLineItems">
+        <![CDATA[
+            select rli from RequestLineItem rli
+            left join fetch rli.status s
+            left join fetch rli.request r
+            left join fetch r.requestor rstr
+            left join fetch rli.orderLineItem oli
+            left join fetch oli.order o
+            left join fetch o.purchaser p
+            where rli.item.itemId = :stockItemId
+            and rli.status.statusCode in ('ORD','WFP','RCP')
+            and (select count(si) from StockItem si where si.itemId = :stockItemId)>0
+            ]]>
+    </query>
+
+</hibernate-mapping>

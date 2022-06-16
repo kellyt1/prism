@@ -1,0 +1,605 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!-- This is the configuration file for Request Actions -->
+<struts-config>
+
+    <action-mappings>
+
+        <action path="/viewAdvancedSearchMyRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="viewAdvancedSearchMyRequests">
+            <forward name="success" path="/requests/viewAdvancedSearchMyRequests.jsp"/>
+        </action>
+
+        <action path="/advancedSearchMyRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="advancedSearchMyRequests">
+            <forward name="success" path="/requests/viewAdvancedSearchMyRequests.jsp"/>
+        </action>
+
+        <action path="/viewAdvancedSearchRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="viewAdvancedSearchRequests">
+            <forward name="success" path="/requests/viewAdvancedSearchRequests.jsp"/>
+        </action>
+
+        <action path="/advancedSearchRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="advancedSearchRequests">
+            <forward name="success" path="/requests/viewAdvancedSearchRequests.jsp"/>
+        </action>
+
+        <action path="/viewMyRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="viewMyRequests">
+            <forward name="success" path="/requests/viewMyRequests.jsp"/>
+        </action>
+
+        <action path="/searchMyRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="searchMyRequests">
+            <forward name="success" path="/requests/searchMyRequests.jsp"/>
+        </action>
+
+        <!-- Action that prepares view of non-catalog-item request line item -->
+        <action path="/viewAddNonCatalogItemToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="viewAddNonCatalogItemToCart"
+                validate="false">
+            <forward name="success" path="/requests/addNonCatalogItemToCart.jsp"/>
+        </action>
+
+        <action path="/viewAddStaffToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="viewAddStaffToCart"
+                validate="false">
+            <forward name="success" path="/requests/addStaffRequestToCart.jsp"/>
+        </action>
+
+
+        <action path="/viewAddContractToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="viewAddContractToCart"
+                validate="false">
+            <forward name="success" path="/requests/addStaffRequestToCart.jsp"/>
+        </action>
+
+        <action path="/viewAddWanToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="viewAddWanToCart"
+                validate="false">
+            <forward name="success" path="/requests/addWanRequestToCart.jsp"/>
+        </action>
+        <!-- Action that adds a non-catalog request line item to user's shopping cart -->
+        <action path="/addNonCatalogItemToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="addItemToCart"
+                input="/requests/addNonCatalogItemToCart.jsp"
+                validate="true">
+            <forward name="addToCart" path="/viewShoppingCart.do"/>
+            <forward name="addToShoppingList" path="/viewChooseShoppingList.do"/>
+            <forward name="addFundingSource" path="/requests/addNonCatalogItemToCart.jsp"/>
+            <forward name="cancel" path="/requests/index.jsp"/>
+        </action>
+
+        <action path="/addStaffingToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="addItemToCart"
+                input="/requests/addStaffRequestToCart.jsp"
+                validate="true">
+            <forward name="addToCart" path="/viewShoppingCart.do"/>
+            <forward name="addToShoppingList" path="/viewChooseShoppingList.do"/>
+            <forward name="addFundingSource" path="/requests/addStaffRequestToCart.jsp"/>
+            <forward name="cancel" path="/requests/index.jsp"/>
+        </action>
+
+        <!-- Action that prepares view of catalog-item request line item
+            TODO: change the failure forward path. -->
+        <action path="/viewAddCatalogItemToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="viewAddCatalogItemToCart"
+                validate="false">
+            <forward name="success" path="/requests/addCatalogItemToCart.jsp"/>
+            <forward name="failure" path="/requests/addCatalogItemToCart.jsp"/>
+        </action>
+        
+        <!-- Action that adds a catalog-item request line item to user's shopping cart -->
+        <action path="/addCatalogItemToCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemForm"
+                scope="session"
+                parameter="addItemToCart"
+                input="/requests/addCatalogItemToCart.jsp"
+                validate="true">
+            <forward name="addToCart" path="/browseCatalog.do"/>
+            <forward name="addToShoppingList" path="/viewChooseShoppingList.do"/>
+            <forward name="addFundingSource" path="/requests/addCatalogItemToCart.jsp"/>
+            <forward name="cancel" path="/requests/index.jsp"/>
+        </action>
+        
+        <!-- Action that prepares view of shopping cart -->
+        <action path="/viewShoppingCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="viewShoppingCart"
+                validate="false">
+            <forward name="success" path="/requests/viewCart.jsp"/>
+        </action>
+
+        <action path="/viewRequestLineItemDetail"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="request"
+                parameter="viewRequestLineItemDetail"
+                validate="false">
+            <forward name="success" path="/requests/viewRequestLineItemDetail.jsp"/>
+        </action>
+
+        <!-- Action that updates a request line item in user's shopping cart -->
+        <action path="/editShoppingCart"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="editShoppingCart"
+                input="/requests/viewCart.jsp"
+                validate="true">
+            <forward name="success" path="/viewShoppingCart.do"/>
+            <forward name="addFundingSource" path="/requests/viewCart.jsp"/>
+            <forward name="viewCheckout" path="/viewCheckout.do"/>
+            <forward name="addToShoppingList" path="/viewChooseShoppingList.do"/>
+        </action>
+        
+        <!-- Action that prepares view of checkout page -->
+        <action path="/viewCheckout"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="viewCheckout"
+                validate="false">
+            <forward name="success" path="/requests/checkout.jsp"/>
+        </action>
+        
+        <!-- Action that submits the Request -->
+        <action path="/checkout"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="checkout"
+                input="/requests/checkout.jsp"
+                validate="true">
+            <forward name="success" path="/viewCheckoutConfirmation.do"/>
+            <forward name="error" path="/requests/checkoutError.jsp"/>
+            <forward name="addFundingSource" path="/requests/checkout.jsp"/>
+            <forward name="changeDeliveryInfo" path="/viewChangeDeliveryDetails.do"/>
+            <forward name="saveCart" path="/requests/checkout.jsp"/>
+        </action>
+        
+        <!-- Action that prepares view of checkout page -->
+        <action path="/viewChangeDeliveryDetails"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="viewChangeDeliveryDetails"
+                validate="false">
+            <forward name="success" path="/requests/deliveryDetailForm.jsp"/>
+            <forward name="failure" path="/requests/deliveryDetailForm.jsp?message=NoRequest"/>
+        </action>
+        
+         <!-- Action that prepares view of checkout page -->
+        <action path="/changeDeliveryDetails"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="changeDeliveryDetails"
+                validate="false">
+            <forward name="reload" path="/requests/deliveryDetailForm.jsp"/>
+            <forward name="success" path="/viewCheckout.do"/>
+        </action>
+        
+        <action path="/reloadExtOrgList"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="reloadExtOrgList"
+                validate="false">
+            <forward name="success" path="/requests/deliveryDetailForm.jsp"/>
+        </action>
+        
+        <!-- Action that handles choice of advanced delivery option 
+        <action path="/viewChooseAdvancedDeliveryOption"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="viewChooseAdvancedDeliveryOption"
+                input="/requests/advancedDeliveryOptions.jsp"
+                validate="true">
+            <forward name="success" path="/requests/advancedDeliveryOptions.jsp"/>
+        </action>
+        
+        <action path="/chooseAdvancedDeliveryOption"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="chooseAdvancedDeliveryOption"
+                input="/requests/advancedDeliveryOptions.jsp"
+                validate="true">
+            <forward name="advancedDeliveryOptions" path="/requests/advancedDeliveryOptions.jsp"/>
+            <forward name="success" path="/requests/checkout.jsp"/>
+        </action>
+        
+        <action path="/cancelAdvancedDeliveryOption"
+                type="org.apache.struts.actions.ForwardAction"
+                parameter="/requests/checkout.jsp" />
+        -->
+        
+        <!-- Action that prepares post-checkout view, showing request tracking number -->
+        <action path="/viewCheckoutConfirmation"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="viewCheckoutConfirmation"
+                validate="false" >
+            <forward name="success" path="/requests/checkoutConfirmation.jsp"/>
+        </action>
+    
+        <!-- Action that prepares view of a list of Requests for an evaluator -->
+        <action path="/viewMaterialsRequests"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestFormCollection"
+                scope="session"
+                parameter="viewMaterialsRequests"
+                validate="false">
+            <forward name="success" path="/requests/viewMaterialsRequests.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+        </action>
+        <!-- Action that prepares view of a list of Requests for an evaluator -->
+        <action path="/attachQuotes"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="evaluateRequestForm"
+                scope="session"
+                parameter="attachQuote"
+                validate="false">
+            <forward name="success" path="/requests/attachQuotes.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- Action that prepares detail view of a single request for an evaluator -->
+        <action path="/viewEvaluateMaterialsRequest"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="evaluateRequestForm"
+                scope="session"
+                parameter="viewEvaluateMaterialsRequest"
+                validate="false">
+            <forward name="success" path="/requests/viewEvaluateMaterialsRequest.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+            <forward name="showStatus" path="/requests/showEvaluationStatus.jsp"/>
+            <forward name="nothingToApprove" path="/viewApprovalStatus?showIndicator=true"/>
+        </action>
+        
+        <!-- Action that submits the evaluation -->
+        <action path="/evaluateMaterialsRequest"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="evaluateRequestForm"
+                scope="session"
+                parameter="evaluateMaterialsRequest"
+                validate="true"
+                input="/requests/viewEvaluateMaterialsRequest.jsp">
+            <forward name="success" path="/viewMaterialsRequests.do"/>
+            <forward name="reload" path="/requests/viewEvaluateMaterialsRequest.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!--  Action that browses the Catalog -->
+        <action path="/browseCatalog"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                scope="session"
+                name="browseCatalogForm"
+                parameter="browseCatalog"
+                validate="false">
+            <forward name="success" path="/requests/browseCatalog.jsp"/>
+        </action>
+        
+        <!-- ***************** Shopping List Actions ******************* -->
+        
+        <!-- Action that add Shopping List to Cart -->
+        <action path="/addShoppingListToCart"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="addShoppingListToCart"
+                validate="false">
+            <forward name="success" path="/viewShoppingCart.do"/>
+        </action>
+        
+        <!-- Action that prepares view of Shopping Lists page -->
+        <action path="/viewMaintainShoppingLists"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="viewMaintainShoppingLists"
+                input="/requests/myShoppingLists.jsp"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        <action path="/viewMaintainShoppingListsAll"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="viewAllShoppingLists"
+                input="/requests/allShoppingLists.jsp"
+                validate="false">
+            <forward name="success" path="/requests/allShoppingLists.jsp"/>
+        </action>
+
+        <!-- Action that creates new Shopping List view -->
+        <action path="/createNewShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="createNewShoppingList"
+                input="/requests/myShoppingLists.jsp"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        
+        <!-- Action that saves a Shopping List -->
+        <action path="/saveShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="saveShoppingListForm"
+                scope="session"
+                parameter="saveShoppingList"
+                input="/requests/myShoppingLists.jsp"
+                validate="true">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+            <forward name="searchCatalog" path="/browseCatalog.do"/>
+            <forward name="addNonCatItemToCart" path="/requests/addNonCatalogItemToCart.jsp"/>
+            <forward name="addCatItemToCart" path="/requests/addCatalogItemToCart.jsp"/>
+            <forward name="viewCart" path="/requests/viewCart.jsp"/>
+        </action>
+        
+        <!-- Action that prepares edit Shopping List view -->
+        <action path="/viewEditShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="viewEditShoppingList"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        <action path="/viewEditShoppingListAll"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="viewEditShoppingList"
+                validate="false">
+            <forward name="success" path="/requests/allShoppingLists.jsp"/>
+        </action>
+
+        <!-- Action that prepares edit Shopping List view -->
+        <action path="/removeSelectedShoppingListItems"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="removeSelectedShoppingListItems"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        
+        <!-- Action that prepares edit Shopping List view -->
+        <action path="/removeShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="removeShoppingList"
+                validate="false">
+            <forward name="success" path="/viewMaintainShoppingLists.do"/>
+        </action>
+        
+        <!-- Add Item to Shopping List action -->
+        <action path="/addToShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="addToShoppingListForm"
+                scope="session"
+                parameter="addToShoppingList"
+                input="/requests/chooseShoppingList.jsp"
+                validate="true">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        
+        <!-- Add Item to Shopping List action -->
+        <action path="/viewChooseShoppingList"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="viewChooseShoppingList"
+                validate="false">
+            <forward name="success" path="/requests/chooseShoppingList.jsp"/>
+        </action>
+        
+        <!-- Add Item to Shopping List action -->
+        <action path="/flipCatLineItemCheckBoxes"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="flipCatLineItemCheckBoxes"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        <action path="/allFlipCatLineItemCheckBoxes"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="flipCatLineItemCheckBoxes"
+                validate="false">
+            <forward name="success" path="/requests/allShoppingLists.jsp"/>
+        </action>
+
+        <!-- Add Item to Shopping List action -->
+        <action path="/flipNonCatLineItemCheckBoxes"
+                type="us.mn.state.health.matmgmt.action.ShoppingListAction"
+                name="shoppingListsForm"
+                scope="session"
+                parameter="flipNonCatLineItemCheckBoxes"
+                validate="false">
+            <forward name="success" path="/requests/myShoppingLists.jsp"/>
+        </action>
+        
+        <!-- ************** Catalog Actions ************************* -->
+        <action path="/searchCatalog"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="browseCatalogForm"
+                scope="session"
+                parameter="searchCatalog">
+            <forward name="success" path="/requests/browseCatalog.jsp"/>
+        </action>
+
+        <action path="/showItemDetails"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="itemDetailsForm"
+                scope="session"
+                parameter="showItemDetails"
+                validate="false">
+            <forward name="success" path="/requests/itemDetails.jsp"/>
+        </action>
+        
+        <action path="/showItemDetailsPop"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="itemDetailsForm"
+                scope="session"
+                parameter="showItemDetails"
+                validate="false">
+            <forward name="success" path="/requests/itemDetailsPopup.jsp"/>
+        </action>
+
+        <action path="/advancedSearchCatalog"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="advancedSearchCatalogForm"
+                scope="session"
+                parameter="advancedSearchCatalog"
+                validate="false">
+            <forward name="success" path="/requests/advancedSearchCatalog.jsp"/>
+        </action>
+
+        <action path="/viewAdvancedSearchCatalog"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="advancedSearchCatalogForm"
+                scope="session"
+                parameter="viewAdvancedSearchCatalog"
+                validate="false">
+            <forward name="success" path="/requests/advancedSearchCatalog.jsp"/>
+        </action>
+
+        <action path="/showRequestLineItemDetails"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestLineItemPurchaseDetailsForm"
+                scope="request"
+                parameter="showRequestLineItemDetails"
+                validate="false">
+            <forward name="success" path="/requests/viewPurchasingInformation.jsp"/>
+        </action>
+
+        <action path="/displaystockitemouttransactions"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="stockItemOutTransactionsForm"
+                scope="session"
+                parameter="displayStockItemOutTransactions"
+                validate="true"
+                input="/requests/reports/stockitemouttransactions.jsp">
+            <forward name="success" path="/requests/reports/stockitemouttransactions.jsp" redirect="true"/>
+        </action>
+
+        <action path="/displaystockitemouttransactionswithoutfs"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="stockItemOutTransactionsWithoutFSForm"
+                scope="session"
+                parameter="displayStockItemOutTransactionsWithoutFS"
+                validate="true"
+                input="/requests/reports/stockitemouttransactionswithoutfs.jsp">
+            <forward name="success" path="/requests/reports/stockitemouttransactionswithoutfs.jsp" redirect="true"/>
+        </action>
+
+        <action path="/displaystockitemintransactions"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="stockItemInTransactionsForm"
+                scope="session"
+                parameter="displayStockItemInTransactions"
+                validate="true"
+                input="/requests/reports/stockitemintransactions.jsp">
+            <forward name="success" path="/requests/reports/stockitemintransactions.jsp" redirect="true"/>
+        </action>
+
+        <action path="/displaypurchaseitemtransactions"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="purchaseItemTransactionsForm"
+                scope="session"
+                parameter="displayPurchaseItemTransactions"
+                validate="true"
+                input="/requests/reports/purchaseitemtransactions.jsp">
+            <forward name="success" path="/requests/reports/purchaseitemtransactions.jsp" redirect="true"/>
+        </action>
+        <action path="/queryMRQInfo"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                validate="false"
+                parameter="viewAdvancedSearchRequests">
+            <forward name="success" path="/requests/reports/mrqGeneralInfo.jsp"/>
+        </action>
+
+        <action path="/displayMRQInformation"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="searchMaterialRequestsForm"
+                scope="session"
+                parameter="advancedSearchRequests"
+                validate="true"
+                input="/requests/reports/mrqGeneralInfo.jsp">
+            <forward name="success" path="/requests/reports/mrqGeneralInfo.jsp" redirect="true"/>
+        </action>
+        <!-- Action that prepares detail view of a single request for an evaluator -->
+        <action path="/viewSelectedRequest"
+                type="us.mn.state.health.matmgmt.action.MaterialsRequestAction"
+                name="requestForm"
+                scope="session"
+                parameter="populateRequestLineItemFromRequestForm"
+                validate="false">
+            <forward name="success" path="/requests/viewRequestLineItemFullOutput.jsp"/>
+        </action>
+
+
+    </action-mappings>
+
+    <message-resources parameter="ApplicationResources_requests" key="requestsMessages"/>
+
+</struts-config>

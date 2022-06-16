@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean name="categoryRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HibernateCategoryRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+
+    <bean name="userRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HibernateUserRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+
+    <bean name="statusRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HibernateStatusRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+
+    <bean name="groupRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HibernateGroupRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+
+    <bean name="priorityRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HibernatePriorityRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean name="unitRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.UnitRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean name="orgBudgetRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.OrgBudgetRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean name="vendorRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.VendorRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean name="manufacturerRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.ManufacturerRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean name="hazardousRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.HazardousRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean id="mailingAddressRepository"
+          class="us.mn.state.health.domain.repository.common.hibernate.MailingAddressRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+</beans>

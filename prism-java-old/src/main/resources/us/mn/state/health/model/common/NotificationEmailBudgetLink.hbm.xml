@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="NotificationEmailBudgetLink"
+           table="NOTIFICATION_EMAIL_BDGT_LINK"
+           lazy="true">
+
+        <composite-id name="notificationEmailBudgetLinkId"
+            class="NotificationEmailBudgetLink$NotificationEmailBudgetLinkId"
+            unsaved-value="any">
+
+            <key-property name="emailId"
+                access="field"
+                column="EMAIL_ID"/>
+
+            <key-property name="budgetId"
+                access="field"
+                column="ORG_BDGT_ID"/>
+        </composite-id>
+
+        <many-to-one name="notificationEmailAddress"
+            class="NotificationEmailAddress"
+            insert="false"
+            update="false"
+            not-null="true"
+            cascade="save-update"
+            column="EMAIL_ID"/>
+
+        <many-to-one name="orgBudget"
+            class="OrgBudget"
+            insert="false"
+            update="false"
+            not-null="true"
+            cascade="save-update"
+            column="ORG_BDGT_ID"/>
+
+    </class>
+
+</hibernate-mapping>

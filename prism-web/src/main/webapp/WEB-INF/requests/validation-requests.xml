@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+    <formset>        
+        <!-- Shopping List Validators -->
+        <form name="addToShoppingListForm">
+            <field property="shoppingListForm.name" depends="validwhen">
+                <arg0 key="shoppingList.name"/>
+                <var>
+                  <var-name>test</var-name>
+                  <var-value>((existingList == "true") or (*this* != null))</var-value>
+                </var>
+            </field>
+        </form>
+        
+        <form name="saveShoppingListForm">
+            <field property="shoppingListForm.name" depends="required">
+                <arg0 key="shoppingList.name"/>
+            </field>
+        </form>
+        
+        <form name="requestLineItemForm">
+            <field property="itemDescription" depends="validwhen" >
+                <arg key="requestLineItem.itemDescription"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((itemPresent=='true')or(*this*!=null))</var-value>
+                </var>
+            </field>
+            <field property="textNote" depends="validateNoteRequiredOnPARIT" >
+            </field>
+            <field property="suggestedVendorName" depends="validatePORequiredIfContractOrStaffing">
+                <var>
+                    <var-name>poNumber</var-name>
+                    <var-value>suggestedVendorName</var-value>
+                </var>
+                <var>
+                    <var-name>quantity</var-name>
+                    <var-value>quantity</var-value>
+                </var>
+                <var>
+                    <var-name>typeOf</var-name>
+                    <var-value>suggestedVendorCatalogNumber</var-value>
+                </var>
+
+            </field>
+
+            <field property="itemJustification" depends="validateItemJustification,validateItemJustification2"/>
+            <field property="amountInDollars" depends="required" >
+                <arg0 key="requestLineItem.amountInDollars"/>
+            </field>
+
+            <field property="itemCost" depends="validwhen,double">
+                <arg0 key="requestLineItem.itemCost"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((itemPresent=='true')or((*this*!=null)and(*this*>0)))</var-value>
+                </var>
+            </field>
+
+            <!--Comment that because we took off the percent amount from pages-->
+            <!--<field property="amountInDollars" depends="validateRequestLineItemForAmountInDollars"/>-->
+
+            <!--TODO add here a validation for at least a fundingsourceform with a not null orgbudgetid
+            we have to have at least one funding source for the "PurchaseCoordinator" users
+            Comment that for now, we don't think we need it
+            <field property="fundingSourceForms" depends="validateAtLeastOneFSforPurchaseCoordinators">
+                <arg key="requestLineItem.fundingSourceForms"/>
+            </field>-->
+
+
+            <field property="fundingSourceForms" depends="validateRequestLineItemFormAmounts">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>addToShoppingList addToCart</var-value>
+                </var>
+            </field>
+
+            <field property="quantity" depends="validwhen,integer">
+                <arg0 key="requestLineItem.quantity"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd!='addToCart')or(*this* != 0))</var-value>
+                </var>
+            </field>
+
+            
+            <field property="unitId" depends="validwhen">
+                <arg0 key="requestLineItem.unit"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((itemPresent=='true')or(*this*!=null))</var-value>
+                </var>
+            </field>
+
+            <field property="categoryId" depends="validwhen">
+                <arg key="requestLineItem.category"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((itemPresent=='true')or(*this*!=null))</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="requestForm">
+            <field property="requestLineItemForms"
+                   depends="validateNonCatalogRLItemsForUnit">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>saveCart checkout viewCheckout addToShoppingList</var-value>
+                </var>
+            </field>
+            <field property="requestLineItemForms" depends="validateAttachmentRequiredIfComputerNonCatalogRequest">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>checkout</var-value>
+                </var>
+            </field>
+
+            <field property="requestLineItemForms"
+                   depends="validateNonCatalogRLItemsForCategory">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>saveCart checkout viewCheckout addToShoppingList</var-value>
+                </var>
+            </field>
+            <field property="requestLineItemForms"
+                   depends="validateRequestFormAmountPositiveDoubleValue">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>saveCart checkout viewCheckout</var-value>
+                </var>
+            </field>
+            <field property="requestLineItemForms"
+                   depends="validateRequestLineItemForms">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>saveCart checkout viewCheckout</var-value>
+                </var>
+            </field>
+            <field property="requestLineItemForms"
+                   depends="validateAtLeastOneFundingSourcePerRLIForm">
+                <var>
+                    <var-name>commandProperty</var-name>
+                    <var-value>cmd</var-value>
+                </var>
+                <var>
+                    <var-name>commandValue</var-name>
+                    <var-value>saveCart checkout viewCheckout</var-value>
+                </var>
+            </field>
+
+            <field property="mailingAddress" depends="validwhen">
+                <arg0 key="errors.validateDeliveryAddressNotNull"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'checkout') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="requestLineItemForms" depends="validateQuantitiesRequestForm"/>
+
+            <field property="requestLineItemForms" depends="validateItemCostForNonCatalogRLI"/>
+
+            <field property="needByDate" depends="validwhen,date">
+                <arg key="request.needByDate"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd!='checkout')or(*this*!=null))</var-value>
+                </var>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="requestLineItemForms" depends="validwhen">
+                <arg key="request.atLeastOneRLI"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd!='checkout') or (RLIsNumber>0))</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="evaluateRequestForm">
+            <field property="requestLineItemForms"
+                   depends="validateEvaluateRequestFormAmountPositiveDoubleValue,
+                   validateRequestLineItemFormsForEvaluation,
+                   validatePORequiredIfContractOrStaffing,
+                   validateApproverNotRequestor,
+                   validateEvaluationSelection"/>
+        </form>
+
+        <form name="stockItemOutTransactionsForm">
+            <!--<field property="orgBdgtCode" depends="required">-->
+                <!--<arg key="inventory.orgBudget"/>-->
+            <!--</field>-->
+            <field property="fiscalYear" depends="required">
+                <arg key="fiscal_year"/>
+            </field>
+            <field property="dateFrom" depends="required,date">
+                <arg key="date_from"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="dateTo" depends="required,date">
+                <arg key="date_to"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="stockItemInTransactionsForm">
+            <field property="dateFrom" depends="required,date">
+                <arg key="date_from"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="dateTo" depends="required,date">
+                <arg key="date_to"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+        </form>
+
+        <form name="stockItemOutTransactionsWithoutFSForm">
+            <field property="dateFrom" depends="required,date">
+                <arg key="date_from"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="dateTo" depends="required,date">
+                <arg key="date_to"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+        </form>
+        <form name="purchaseItemTransactionsForm">
+            <field property="fiscalYear" depends="required">
+                <arg key="fiscal_year"/>
+            </field>
+            <field property="dateFrom" depends="required,date">
+                <arg key="date_from"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="dateTo" depends="required,date">
+                <arg key="date_to"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+        </form>
+
+
+    </formset>
+</form-validation>

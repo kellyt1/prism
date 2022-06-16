@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="stockItemFacadeInvokingJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          lazy-init="true">
+        <property name="targetObject" ref="stockItemFacade"/>
+        <property name="targetMethod" value="activateOnHoldStockItemsAndNotifyContacts"/>
+        <property name="arguments" ref="stockItemFacade"/>
+    </bean>
+    <bean id="notifyStockItemHitReviewDateJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          lazy-init="true">
+        <property name="targetObject" ref="stockItemFacade"/>
+        <property name="targetMethod" value="notifyStockItemHitReviewDate"/>
+    </bean>
+    <!--begin notifyEvaluatorsTheReminder-->
+    <bean id="notifyRequestEvaluatorsJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          lazy-init="true">
+        <property name="targetObject" ref="notifyEvaluatorsFacade"/>
+        <property name="targetMethod" value="notifyEvaluatorsTheReminder"/>
+    </bean>
+    <bean id="notifyRequestEvaluatorsTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="notifyRequestEvaluatorsJobDetail"/>
+        <property name="cronExpression" value="59 49 20 * * ?"/>
+    </bean>
+    <!--end notifyEvaluatorsTheReminder-->
+    <!--begin notifyEvaluatorsTheCancelation-->
+
+    <bean id="notifyRequestEvaluatorsCancelationJobDetail"
+          class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          lazy-init="true">
+        <property name="targetObject" ref="notifyEvaluatorsFacade"/>
+        <property name="targetMethod" value="notifyEvaluatorsTheCancelation"/>
+    </bean>
+    <bean id="notifyRequestEvaluatorsCancelationTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="notifyRequestEvaluatorsCancelationJobDetail"/>
+        <property name="cronExpression" value="59 49 20 * * ?"/>
+    </bean>
+    <!--end notifyEvaluatorsTheCancelation-->
+    
+    <bean id="cronStockItemActivationTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="stockItemFacadeInvokingJobDetail"/>
+        <property name="cronExpression" value="59 49 20 * * ?"/>
+    </bean>
+    <bean id="notifyStockItemHitReviewDateTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="notifyStockItemHitReviewDateJobDetail"/>
+        <property name="cronExpression" value="59 59 1 * * ?"/>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronStockItemActivationTrigger"/>
+                <ref bean="notifyStockItemHitReviewDateTrigger"/>
+                <ref bean="notifyRequestEvaluatorsCancelationTrigger"/>
+                <ref bean="notifyRequestEvaluatorsTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="buildIndexes" class="us.mn.state.health.model.util.search.BuildMissingLuceneIndexes">
+    </bean>
+
+    <bean id="scheduledIndexingTask"
+          class="org.springframework.scheduling.timer.ScheduledTimerTask">
+        <property name="timerTask" ref="buildIndexes" />
+        <property name="period" value="86400000"/>
+        <property name="delay"  value="300000" />
+    </bean>
+
+    <bean class="org.springframework.scheduling.timer.TimerFactoryBean" >
+        <property name="scheduledTimerTasks" >
+            <list>
+                <ref bean="scheduledIndexingTask" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

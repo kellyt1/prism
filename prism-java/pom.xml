@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <artifactId>PRISM</artifactId>
+        <groupId>us.mn.state.health</groupId>
+        <version>2.14.2</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>prism-java</artifactId>
+    <name>prism-java</name>
+    <url>https://repo.maven.apache.org/maven2</url>
+    <dependencies>
+        <dependency>
+            <groupId>us.mn.state.health</groupId>
+            <artifactId>prism-java-old</artifactId>
+            <version>2.14.2</version>
+        </dependency>
+    </dependencies>
+</project>

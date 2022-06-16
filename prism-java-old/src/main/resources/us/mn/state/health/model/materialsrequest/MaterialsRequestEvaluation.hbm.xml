@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the MaterialsRequestEvaluation class
+-->
+<hibernate-mapping package="us.mn.state.health.model.materialsrequest">
+
+    <class name="MaterialsRequestEvaluation"
+           table="MATERIALS_REQUEST_EVAL_TBL"
+           lazy="true">
+        
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="requestEvaluationId"
+            type="long"
+            column="REQUEST_EVALUATION_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+         <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+
+        <many-to-one name="evaluatorGroup"
+                     class="us.mn.state.health.model.common.Group"
+                     column="EVALUATOR_GROUP_ID"
+                     cascade="none"
+                     not-null="true" />
+                     
+        <many-to-one name="evaluator"
+                     class="us.mn.state.health.model.common.User"
+                     column="EVALUATOR_PERSON_ID"
+                     cascade="none"
+                     not-null="false" />
+                     
+        <many-to-one name="evaluationDecision"
+                     class="us.mn.state.health.model.common.Status"
+                     column="EVALUATION_STATUS_ID"
+                     cascade="none"
+                     not-null="true" />
+                     
+        <property name="evaluationDate"
+                  column="EVALUATION_DATE"
+                  type="date"
+                  not-null="false" />
+                  
+        <many-to-one name="requestLineItem"
+                     class="RequestLineItem"
+                     column="REQUEST_LINE_ITEM_ID"
+                     cascade="none"
+                     not-null="true" />
+
+        <property name="approvalLevel"
+                  column="APPROVAL_LEVEL"
+                  type="integer"
+                  not-null="false" />
+
+        <many-to-one name="firstStatus"
+                     class="us.mn.state.health.model.common.Status"
+                     column="FIRST_STATUS_ID"
+                     cascade="none"
+                     not-null="false" />
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.inventory.StockItemLocationHistory"
+           table="STOCK_ITEM_LOCATION_HIST_TBL"
+           lazy="true">
+
+        <id name="locationHistoryId"
+            type="long"
+            column="STOCK_ITEM_LOCATION_HIST_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!--<id name="locationId"-->
+            <!--type="long"-->
+            <!--column="STOCK_ITEM_LOCATION_ID"-->
+        <!--</id>-->
+
+        <many-to-one name="location"
+                 column="STOCK_ITEM_LOCATION_ID"
+                 class="us.mn.state.health.model.inventory.StockItemLocation"
+                 not-null="true"/>
+
+        <property name="locationCode"
+                  column="CODE"
+                  type="string"/>
+
+        <property name="isPrimary"
+                  column="IS_PRIMARY"
+                  type="yes_no"
+                  not-null="true"/>
+
+        <many-to-one name="facility"
+                     column="FACILITY_ID"
+                     class="us.mn.state.health.model.inventory.StockItemFacility"
+                     not-null="true"/>
+
+        <many-to-one name="stockItem"
+                     class="us.mn.state.health.model.inventory.StockItem"
+                     column="STOCK_ITEM_ID"
+                     not-null="true"/>
+
+        <property name="updateDate" type="date" column="UPDATEDATE"/>
+    
+    </class>
+</hibernate-mapping>

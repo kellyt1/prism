@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+        "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<!--
+  Define the Struts Actions as Spring beans
+  Each bean has to have the same name as the action path
+  -->
+<beans>
+    <bean name="/receiving/searchOrdersForReceiving" class="us.mn.state.health.web.struts.searchorders.SearchOrdersAction">
+        <property name="searchOrdersFacade" ref="searchOrdersFacade"/>
+    </bean>
+</beans>

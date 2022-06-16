@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+    <global>
+        <constant>
+            <constant-name>phone</constant-name>
+            <constant-value>\(?[2-9]\d\d\)?[ -]?[2-9]\d\d-\d{4}</constant-value>
+        </constant>
+    </global>
+    <formset>
+        <form name="orderFormulaMaintainanceForm">
+            <field property="orderFormulaForm.categoryId" depends="validwhen">
+                <arg0 key="orderFormula.selectCategory"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (cmd != 'SaveOrderFormula'))</var-value>
+                </var>
+            </field>
+            <field property="orderFormulaForm.orderCost" depends="validwhen,double,doubleRange">
+                <arg0 key="orderFormula.OrderCost"/>
+                <arg1 name="doubleRange" key="${var:min}" resource="false"/>
+                <arg2 name="doubleRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>0.01</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>1000000</var-value>
+                </var>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (cmd != 'SaveOrderFormula'))</var-value>
+                </var>
+            </field>
+            <field property="orderFormulaForm.leadTimeDays" depends="validwhen,integer,intRange">
+                <arg0 key="orderFormula.leadTimeDays"/>
+                <arg1 name="intRange" key="${var:min}" resource="false"/>
+                <arg2 name="intRange" key="${var:max}" resource="false"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((*this* != null) or (cmd != 'SaveOrderFormula'))</var-value>
+                </var>
+                <var>
+                    <var-name>min</var-name>
+                    <var-value>1</var-value>
+                </var>
+                <var>
+                    <var-name>max</var-name>
+                    <var-value>365</var-value>
+                </var>
+            </field>
+        </form>
+        
+        <form name="vendorsForm">
+            <field property="vendorForm.externalOrgDetailForm.orgName" depends="required">
+                <arg key="vendor.extOrgDetail.orgName"/>
+            </field>
+            
+            <!--
+            <field property="vendorForm.externalOrgDetailForm.orgCode" depends="required">
+                <arg key="vendor.extOrgDetail.orgCode"/>
+            </field>
+            -->
+
+            <!--            <field property="vendorForm.externalOrgDetailForm.webAddress" depends="url">-->
+            <!--                <arg0 key="vendor.extOrgDetail.webAddress"/>-->
+            <!--                <var>-->
+            <!--                    <var-name>allow2slashes</var-name>-->
+            <!--                    <var-value>true</var-value>-->
+            <!--                </var>-->
+            <!--                <var>-->
+            <!--                    <var-name>nofragments</var-name>-->
+            <!--                    <var-value>true</var-value>-->
+            <!--                </var>-->
+            <!--                <var>-->
+            <!--                    <var-name>schemes</var-name>-->
+            <!--                    <var-value>http,https</var-value>-->
+            <!--                </var>-->
+            <!--            </field>-->
+            <!--            
+            <field property="vendorForm.externalOrgDetailForm.webAddress" depends="mask">
+                <arg0 key="vendor.extOrgDetail.webAddress"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>https?://(\w*:\w*@)?[-\w.]+(:\d+)?(/([\w/_.]*(\?\S+)?)?)?</var-value>
+                </var>
+            </field>
+            
+
+            <field property="vendorForm.externalOrgDetailForm.emailAddressForm.emailAddress" depends="email">
+                <arg0 key="vendor.extOrgDetail.emailAddress"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>https?://(\w*:\w*@)?[-\w.]+(:\d+)?(/([\w/_.]*(\?\S+)?)?)?</var-value>
+                </var>
+            </field>
+            -->
+
+            <!--<field property="vendorForm.externalOrgDetailForm.faxForm.number" depends="mask">-->
+                <!--<arg0 key="vendor.extOrgDetail.fax"/>-->
+                <!--<var>-->
+                    <!--<var-name>mask</var-name>-->
+                    <!--<var-value>${phone}</var-value>-->
+                <!--</var>-->
+
+            <!--</field>-->
+
+            <!--<field property="vendorForm.externalOrgDetailForm.phoneForm.number" depends="mask">-->
+                <!--<arg0 key="vendor.extOrgDetail.phone"/>-->
+                <!--<var>-->
+                    <!--<var-name>mask</var-name>-->
+                    <!--<var-value>${phone}</var-value>-->
+                <!--</var>-->
+            <!--</field>-->
+            
+            <field property="vendorForm.externalOrgDetailForm.orgEffectiveDate" depends="date">
+                <arg key="vendor.extOrgDetail.effectiveDate"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="vendorForm.externalOrgDetailForm.orgEndDate" depends="date">
+                <arg key="vendor.extOrgDetail.endDate"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="vendorForm.externalOrgDetailForm.emailAddressForm.startDate" depends="date">
+                <arg key="vendor.email.startDate"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="vendorForm.externalOrgDetailForm.emailAddressForm.endDate" depends="date">
+                <arg key="vendor.email.endDate"/>
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="currentCity" depends="validwhen">
+                <arg0 key="city"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'maintainMailingAddresses') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="currentState" depends="validwhen">
+                <arg0 key="state"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'maintainMailingAddresses') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="currentZip" depends="validwhen,mask">
+                <arg0 key="zip"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'maintainMailingAddresses') or (*this* != null))</var-value>
+                </var>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^\d{5}(-\d{4})?$</var-value>
+                </var>
+            </field>
+
+<!--        Add/Edit Vendor Contract     -->
+            <field property="currentContractNumber" depends="validwhen" >
+                <arg0 key="vendor.contractNumber" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'maintainVendorContracts') or (*this* != null))</var-value>
+                </var>
+            </field>
+
+            <field property="currentContractStartDate" depends="date" >
+                <arg0 key="vendor.contractStartDate" />
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+            <field property="currentContractEndDate" depends="date">
+                <arg0 key="vendor.contractEndDate" />
+                <var>
+                    <var-name>datePattern</var-name>
+                    <var-value>MM/dd/yyyy</var-value>
+                </var>
+            </field>
+
+            <field property="vendorForm.externalOrgDetailForm.personForm.firstName" depends="validwhen" >
+                <arg0 key="vendor.primaryRepresentative.firstName" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((vendorForm.externalOrgDetailForm.personForm.lastName == null )or (*this* != null))</var-value>
+                </var>
+
+            </field>
+            <field property="vendorForm.externalOrgDetailForm.personForm.lastName" depends="validwhen" >
+                <arg0 key="vendor.primaryRepresentative.lastName" />
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((vendorForm.externalOrgDetailForm.personForm.firstName == null )or (*this* != null))</var-value>
+                </var>
+            </field>
+
+        </form>
+        
+        <form name="viewAddToOrderForm">
+        
+            <field property="selectedReqLnItemFormsEmpty" depends="validwhensimple" >
+                <arg0 key="order.selectedReqLnItemFormsEmpty"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(selectedReqLnItemFormsEmpty == 'false')</var-value>
+                </var>
+            </field>
+            
+        </form>
+        
+        <form name="orderForm">
+        
+            <field property="vendor" depends="required">
+                <arg key="vendor"/>
+            </field>
+            
+            <field property="validBillToAddress" depends="validwhen" >
+                <arg0 key="order.billToAddress"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((purchaseOrderNumber == null) or (validBillToAddress == 'true'))</var-value>
+                </var>
+            </field>
+            
+            <field property="orderLineItemsEmpty" depends="validwhensimple" >
+                <arg0 key="order.orderLineItemsEmpty"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((purchaseOrderNumber == null) or (orderLineItemsEmpty == 'false'))</var-value>
+                </var>
+            </field>
+            
+        </form>
+        
+        <form name="viewAddToOrderLineItemForm">
+        
+            <field property="selectedReqLnItemFormsEmpty" depends="validwhensimple" >
+                <arg0 key="order.selectedReqLnItemFormsEmpty"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(selectedReqLnItemFormsEmpty == 'false')</var-value>
+                </var>
+            </field>
+            <field property="orderLineItemKey" depends="validwhen">
+                <arg key="order.selectedOrderLineItem"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((cmd != 'addToOrderLineItem') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+        </form>
+        
+        <form name="orderLineItemForm">
+        
+            <field property="quantity" depends="required">
+                <arg key="orderLineItem.quantity"/>
+            </field>
+            
+            <field property="buyUnit" depends="required">
+                <arg key="orderLineItem.buyUnit"/>
+            </field>
+            
+            <field property="buyUnitCost" depends="required">
+                <arg key="orderLineItem.buyUnitCost"/>
+            </field>
+
+            <field property="assetsType" depends="assetTypeSelection">
+                <arg key="orderLineItem.assetType"/>
+            </field>
+            
+        </form>
+        
+        <form name="purchasingRequestForm">
+        
+            <field property="selectedRequestor" depends="required">
+                <arg key="request.requestor"/>
+            </field>
+
+            <field property="requestLineItemForm.category" depends="validwhen" >
+                <arg0 key="requestLineItem.category"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.itemDescription" depends="validwhen" >
+                <arg0 key="requestLineItem.itemDescription"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.quantity" depends="required,integer" >
+                <arg0 key="requestLineItem.quantity"/>
+            </field>
+            
+            <field property="requestLineItemForm.unit" depends="validwhen" >
+                <arg0 key="requestLineItem.unit"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.itemCost" depends="validwhen,float" >
+                <arg0 key="requestLineItem.itemCost"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <!--
+            <field property="requestLineItemForm.suggestedVendorSummary" depends="validwhen" >
+                <arg0 key="requestLineItem.vendor"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            -->
+            <!--
+            <field property="requestLineItemForm.fundingSourceForms" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSources"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(hasFundingSources == 'true')</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.fundingSourceForm.orgBudget" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSource.orgBudget"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasFundingSourceForm == 'false') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="fundingSourceForm.amount" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSource.amount"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasFundingSourceForm == 'false') or (*this* != null))</var-value>
+                </var>
+            </field>
+            -->
+        </form>
+        
+        <form name="purchasingRequestLineItemForm">
+
+            <field property="requestLineItemForm.categoryId" depends="required" >
+                <arg0 key="requestLineItem.category"/>
+            </field>
+        
+            <field property="requestLineItemForm.itemDescription" depends="validwhen" >
+                <arg0 key="requestLineItem.itemDescription"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.quantity" depends="required,integer" >
+                <arg0 key="requestLineItem.quantity"/>
+            </field>
+            
+            <field property="requestLineItemForm.unit" depends="validwhen" >
+                <arg0 key="requestLineItem.unit"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="requestLineItemForm.itemCost" depends="validwhen,float" >
+                <arg0 key="requestLineItem.itemCost"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <!--
+            <field property="requestLineItemForm.suggestedVendorSummary" depends="validwhen" >
+                <arg0 key="requestLineItem.vendor"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasItem == 'true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            -->
+            <!-- 
+            <field property="requestLineItemForm.fundingSourceForms" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSources"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>(hasFundingSources == 'true')</var-value>
+                </var>
+            </field>
+            
+            <field property="fundingSourceForm.orgBudget" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSource.orgBudget"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasFundingSourceForm == 'false') or (*this* != null))</var-value>
+                </var>
+            </field>
+            
+            <field property="fundingSourceForm.amount" depends="validwhen" >
+                <arg0 key="requestLineItem.fundingSource.amount"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((hasFundingSourceForm == 'false') or (*this* != null))</var-value>
+                </var>
+            </field>
+            -->
+        </form>
+        
+        <form name="purchasingRequestLineItemFundingSourceForm">
+           <field property="requestLineItemForm.fundingSourceForm.orgBudget" depends="required" >
+                <arg0 key="requestLineItem.fundingSource.orgBudget"/>
+            </field>
+            
+            <field property="requestLineItemForm.fundingSourceForm.amount" depends="required,float" >
+                <arg0 key="requestLineItem.fundingSource.amount"/>
+            </field> 
+        </form>
+
+        <form name="purchaseItemForm">
+            <field property="categoryId" depends="required">
+                <arg key="inventory.category"/>
+            </field>
+            <field property="description" depends="required">
+                <arg key="inventory.description"/>
+            </field>
+            <field property="dispenseUnitId" depends="required">
+                <arg key="inventory.dispenseUnit"/>
+            </field>
+            <field property="contractStartDate" depends="date">
+                <arg key="vendor.contractStartDate"/>
+            </field>
+            <field property="contractEndDate" depends="date">
+                <arg key="vendor.contractEndDate"/>
+            </field>
+            <field property="contractNumber" depends="validwhen">
+                <arg key="vendor.contractNumber"/>
+                <var>
+                    <var-name>test</var-name>
+                    <var-value>((contractNotRequired=='true') or (*this* != null))</var-value>
+                </var>
+            </field>
+            <field property="hazardous" depends="required">
+                <arg key="inventory.hazardous"/>
+            </field>
+        </form>
+        <form name="purchaseItemAddVendorForm">
+            <field property="categoryId" depends="required">
+                <arg key="inventory.category"/>
+            </field>
+            <field property="description" depends="required">
+                <arg key="inventory.description"/>
+            </field>
+            <field property="dispenseUnitId" depends="required">
+                <arg key="inventory.dispenseUnit"/>
+            </field>
+        </form>
+        
+    </formset>
+</form-validation>

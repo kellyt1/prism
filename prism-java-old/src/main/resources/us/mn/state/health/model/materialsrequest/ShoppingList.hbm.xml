@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="us.mn.state.health.model.materialsrequest">
+
+    <class name="ShoppingList"
+           table="MATERIALS_SHOPPING_LIST_TBL"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="shoppingListId"
+            type="long"
+            column="SHOPPING_LIST_ID">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="comment"
+                  column="COMMNT"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="name"
+                  column="NAME"
+                  type="string"
+                  not-null="true"/>
+
+        <many-to-one name="owner"
+                     class="us.mn.state.health.model.common.User"
+                     column="OWNER_ID"
+                     cascade="none"
+                     not-null="true"/>
+
+        <set name="shoppingListCatLineItems"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true" order-by="SH_LST_ID asc">
+            <key column="SH_LST_ID"/>
+            <one-to-many class="ShoppingListCatalogLineItem"/>
+        </set>
+
+        <set name="shoppingListNonCatLineItems"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true" order-by="SH_LST_ID asc">
+            <key column="SH_LST_ID"/>
+            <one-to-many class="ShoppingListNonCatalogLineItem"/>
+        </set>
+
+    </class>
+
+    <query name="findShoppingListsWithUserId">
+        <![CDATA[
+            select shl from ShoppingList as shl
+            where shl.owner.personId = :userId
+            order by shl.name
+        ]]>
+    </query>
+
+    <query name="findShoppingListByIdEagerLoadItem">
+        <![CDATA[
+            select s from ShoppingList s
+            join s.shoppingListCatLineItems as slci
+                left join fetch slci.item i
+                left join fetch i.status status
+                where s.shoppingListId = :id
+        ]]>
+    </query>
+
+    <query name="countCatItemsForShoppingListId">
+        <![CDATA[
+            select s.shoppingListCatLineItems.size from ShoppingList s
+                where s.shoppingListId = :id
+        ]]>
+    </query>
+
+</hibernate-mapping>

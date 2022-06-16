@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the ItemAvailability class
+-->
+<hibernate-mapping package="us.mn.state.health.model.inventory">
+
+    <class name="OrderFormula"
+       table="ORDER_FORMULA_TBL"
+       lazy="true">
+    
+        <!-- id property. -->
+        <id name="orderFormulaId"
+            type="long"
+            column="ORDER_FORMULA_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+        <!-- orderCost -->
+        <property   name="orderCost"
+                    column="ORDER_COST"
+                    type="double"
+                    not-null="true"/>
+                    
+        <!-- leadTimeDays -->
+        <property   name="leadTimeDays"
+                    column="LEAD_TIME"
+                    type="integer"
+                    not-null="true"/>
+                    
+        <!-- category. a category should have only one order formula entry  -->
+        <many-to-one name="category"
+                     class="us.mn.state.health.model.common.Category"
+                     column="CATEGORY_ID"
+                     cascade="none"
+                     not-null="true"
+                     unique="true" />
+                    
+        <!-- insertedBy.  The username of person who inserted this record -->
+        <property   name="insertedBy"
+                    column="INSERTED_BY"
+                    type="string"  />
+        
+        <!-- insertionDate. We can't change the creation time, so map it with update="false". -->
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+        
+        <!-- lastUpdatedBy.  The username of person who inserted this record -->            
+        <property   name="lastUpdatedBy"
+                    column="LAST_UPDATED_BY"
+                    type="string"  />
+                
+        <!-- lastUpdatedDate. We can't change the creation time, so map it with update="false". -->
+        <property name="lastUpdatedDate"
+                  column="LAST_UPDATED_DATE"
+                  type="date" />
+    </class>
+
+    <query name="findOrderFormulaByCategoryCode">
+        <![CDATA[
+            from OrderFormula as orderFormula 
+            where orderFormula.category.categoryCode = :categoryCode
+        ]]>
+    </query>
+    
+</hibernate-mapping>

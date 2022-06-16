@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.legacySystem.common.ExternalOrgASAP"
+           table="ASAP_ORG_TBL"
+           lazy="false" batch-size="100" >
+        <composite-id name="externalOrgASAPId"
+                      class="us.mn.state.health.model.legacySystem.common.ExternalOrgASAP$ExternalOrgASAPId">
+            <key-property name="lastOderDate" column="lastord" type="date"/>
+            <key-property name="name" column="name" type="string"/>
+        </composite-id>
+        <property name="address1" column="addr1" type="string"/>
+        <property name="address2" column="addr2" type="string"/>
+        <property name="city" column="city" type="string"/>
+        <property name="state" column="st" type="string"/>
+        <property name="zipCode" column="zip" type="string"/>
+        <property name="telephone" column="tele" type="string"/>
+        <property name="attention" column="attn" type="string"/>
+        <property name="type" column="type" type="string"/>
+    </class>
+</hibernate-mapping>

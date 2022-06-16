@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean name="requestDetacher"
+		class="us.mn.state.health.domain.service.materialsrequest.viewRequests.hibernateImpl.HibernateRequestDetacher"
+		lazy-init="true" />
+
+
+
+	<bean name="findRequestsService"
+		class="us.mn.state.health.domain.service.materialsrequest.FindRequestsServiceImpl"
+		lazy-init="true">
+		<constructor-arg ref="requestRepository" />
+		<constructor-arg ref="requestDetacher" />
+	</bean>
+</beans>

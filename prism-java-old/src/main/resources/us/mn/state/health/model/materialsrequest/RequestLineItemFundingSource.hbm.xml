@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the RequestLineItemFundingSource class
+-->
+<hibernate-mapping package="us.mn.state.health.model.materialsrequest">
+
+    <class name="RequestLineItemFundingSource"
+           table="MATERIALS_RLI_FND_SRC_TBL"
+           lazy="true">
+        
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- id property. -->
+        <id name="requestLineItemFundingSourceId"
+            type="long"
+            column="RLI_FUNDING_SOURCE_ID" unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+        
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+        
+        <many-to-one name="orgBudget"
+                     class="us.mn.state.health.model.common.OrgBudget"
+                     column="ORG_BDGT_ID"
+                     cascade="none"
+                     not-null="true" 
+                     lazy="false" />
+                     
+        <property name="amount"
+                  column="AMOUNT"
+                  type="double"
+                  not-null="true" />
+                  
+       <many-to-one name="requestLineItem"
+                     class="RequestLineItem"
+                     column="REQUEST_LINE_ITEM_ID"
+                     cascade="save-update"
+                     not-null="true" />
+    </class>
+
+</hibernate-mapping>

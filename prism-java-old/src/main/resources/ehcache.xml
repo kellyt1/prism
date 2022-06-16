@@ -1,0 +1,261 @@
+<ehcache>
+
+    <!-- Sets the path to the directory where cache .data files are created.
+
+         If the path is a Java System Property it is replaced by
+         its value in the running VM.
+
+         The following properties are translated:
+         user.home - User's home directory
+         user.dir - User's current working directory
+         java.io.tmpdir - Default temp file path -->
+    <!--    <diskStore path="/export/project/cacheData" /> -->
+    <!--    JMP changed path for new server 11/20/2006 -->
+
+    <!--<diskStore path="ehcache.data"/>-->
+
+    <!--<diskStore path="/export/project/cacheData"/>-->
+    <!--<diskStore path="/var/lib/tomcat5.5/appdata/cacheData"/>-->
+    <diskStore path="java.io.tmpdir/cacheData"/>
+    <!--<diskStore path="/cacheData"/>-->
+
+
+    <!--
+        Default Cache configuration. These will applied to caches programmatically created through
+        the CacheManager.
+
+        The following attributes are required:
+
+        maxElementsInMemory            - Sets the maximum number of objects that will be created in memory
+        eternal                        - Sets whether elements are eternal. If eternal,  timeouts are ignored and the
+                                         element is never expired.
+        overflowToDisk                 - Sets whether elements can overflow to disk when the in-memory cache
+                                         has reached the maxInMemory limit.
+
+        The following attributes are optional:
+        timeToIdleSeconds              - Sets the time to idle for an element before it expires.
+                                         i.e. The maximum amount of time between accesses before an element expires
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that an Element can idle for infinity.
+                                         The default value is 0.
+        timeToLiveSeconds              - Sets the time to live for an element before it expires.
+                                         i.e. The maximum time between creation time and when an element expires.
+                                         Is only used if the element is not eternal.
+                                         Optional attribute. A value of 0 means that and Element can live for infinity.
+                                         The default value is 0.
+        diskPersistent                 - Whether the disk store persists between restarts of the Virtual Machine.
+                                         The default value is false.
+        diskExpiryThreadIntervalSeconds- The number of seconds between runs of the disk expiry thread. The default value
+                                         is 120 seconds.
+        -->
+
+    <defaultCache
+            maxElementsInMemory="8000"
+            eternal="false"
+            overflowToDisk="true"
+            timeToIdleSeconds="43200"
+            timeToLiveSeconds="86400"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            />
+
+    <!-- Hibernate Caches -->
+    <cache name="org.hibernate.cache.StandardQueryCache"
+           maxElementsInMemory="8000"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"/>
+
+    <cache name="org.hibernate.cache.UpdateTimestampsCache"
+           maxElementsInMemory="8000"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"/>
+
+    <cache name="us.mn.state.health.model.common.Category"
+           maxElementsInMemory="50"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.ExternalOrgDetail"
+           maxElementsInMemory="3000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.ExtOrgDetailEmailAddress"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.ExtOrgDetailMailingAddress"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="1300"
+           timeToLiveSeconds="3600"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Facility"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Group"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.MailingAddress"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="3600"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Manufacturer"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.OrgBudget"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Person"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.PersonEmailAddressLink"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Phone"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Position"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+
+    <cache name="us.mn.state.health.model.common.PositionFacility"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Priority"
+           maxElementsInMemory="15"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Status"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.StatusType"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.common.Vendor"
+           maxElementsInMemory="3000"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.inventory.ActionRequestType"
+           maxElementsInMemory="50"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.inventory.ClassCode"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="43200"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.inventory.OrderFormula"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="7200"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.inventory.Unit"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="43600"
+           timeToLiveSeconds="86400"
+           overflowToDisk="true"
+            />
+
+    <cache name="us.mn.state.health.model.inventory.StockQtyChangeReasonRef"
+           maxElementsInMemory="10" eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+           overflowToDisk="true"/>
+
+    <cache name="us.mn.state.health.model.inventory.CycleCountPriority"
+           maxElementsInMemory="20" eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200"
+           overflowToDisk="true"/>
+</ehcache>

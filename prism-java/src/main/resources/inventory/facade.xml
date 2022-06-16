@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean name="inventoryReportsFacadeTarget"
+          class="us.mn.state.health.facade.inventory.InventoryReportsFacadeImpl"
+          lazy-init="true">
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="categoryRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="stockItemFacilityRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="InventoryReportsService"/>
+        </constructor-arg>
+    </bean>
+    <bean id="stockItemFacadeTarget"
+          class="us.mn.state.health.facade.inventory.StockItemFacadeImpl"
+          lazy-init="true">
+        <property name="stockItemService">
+            <ref bean="stockItemService"/>
+        </property>
+        <property name="mailService">
+            <ref bean="mailService"/>
+        </property>
+        <property name="userRepository">
+            <ref bean="userRepository"/>
+        </property>
+        <property name="groupRepository">
+            <ref bean="groupRepository"/>
+        </property>
+        <property name="stockItemRepository">
+            <ref bean="stockItemRepository"/>
+        </property>
+    </bean>
+    <bean id="fillStockRequestsFacadeTarget"
+          class="us.mn.state.health.facade.inventory.fillstockrequests.FillStockRequestsFacadeImpl" lazy-init="true">
+        <constructor-arg ref="userRepository"/>
+        <constructor-arg ref="priorityRepository"/>
+        <constructor-arg ref="categoryRepository"/>
+        <constructor-arg ref="statusRepository"/>
+        <constructor-arg ref="stockItemFacilityRepository"/>
+        <constructor-arg ref="requestRepository"/>
+    </bean>
+
+    <bean id="editStockItemFacadeTarget"
+          class="us.mn.state.health.facade.inventory.editStockItem.EditStockItemFacadeImpl" lazy-init="true">
+        <constructor-arg ref="stockItemRepository"/>
+        <constructor-arg ref="userRepository"/>
+        <constructor-arg ref="unitRepository"/>
+        <constructor-arg ref="orgBudgetRepository"/>
+        <constructor-arg ref="stockItemFacilityRepository"/>
+        <constructor-arg ref="categoryRepository"/>
+        <constructor-arg ref="objectCodeRepository"/>
+        <constructor-arg ref="vendorRepository"/>
+        <constructor-arg ref="statusRepository"/>
+        <constructor-arg ref="stockQtyChangeReasonRefRepository"/>
+        <constructor-arg ref="manufacturerRepository"/>
+        <constructor-arg ref="cycleCountPriorityRepository"/>
+        <constructor-arg ref="hazardousRepository"/>
+        <constructor-arg ref="stockItemService"/>
+    </bean>
+</beans>

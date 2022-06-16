@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+Mapping file for the OrgBudget class.
+-->
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="OrgBudget"
+           table="ORG_BDGT_TBL_VIEW"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- Common id property. -->
+        <id name="orgBudgetId"
+            type="long"
+            column="ORG_BDGT_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="appropriationCode"
+                  column="APPR_CODE"
+                  type="string"/>
+
+        <property name="budgetAccountCode"
+                  column="BDGT_ACCOUNT_CODE"
+                  type="string"/>
+
+        <property name="comments"
+                  column="COMMENTS"
+                  type="string"/>
+
+        <property name="effectiveDate"
+                  column="EFFECTIVE_DATE"
+                  type="date"/>
+
+        <property name="endDate"
+                  column="END_DATE"
+                  type="date"/>
+
+        <property name="fedEndDate"
+                  column="FED_END_DATE"
+                  type="date"/>
+
+        <property name="fundCode"
+                  column="FUND_CODE"
+                  type="string"/>
+
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"/>
+
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+
+        <property name="name"
+                  column="ORG_BDGT_NAME"
+                  type="string"/>
+
+        <property name="orgBudgetCode"
+                  column="ORG_BDGT_CODE"
+                  type="string"/>
+
+        <property name="programCode"
+                  column="PROGRAM_CODE"
+                  type="string"/>
+
+        <property name="provisions"
+                  column="PROVISIONS"
+                  type="string"/>
+
+        <property name="orgBudgetCodeDisplay"
+                  column="ORGDISPLAY"
+                  type="string"/>
+
+        <property name="reportCategory"
+                  column="REPORT_CATEGORY"
+                  type="string"/>
+
+        <property name="realOrgIndicator"
+                  column="realOrg_Indicator"
+                  type="string"/>
+
+        <many-to-one name="managerGroup"
+                     class="Group"
+                     column="MANAGER_GROUP_ID"
+                     cascade="save-update"/>
+
+        <property name="deptId"
+                  column="DEPT_ID"
+                  type="string"/>
+
+        <property name="projectId"
+                  column="PROJECT_ID"
+                  type="string"/>
+
+        <property name="sourceType"
+                  column="SOURCE_TYPE"
+                  type="string"/>
+
+        <!--<set name="rptCategories"-->
+             <!--cascade="none"-->
+             <!--lazy="true"-->
+             <!--where="END_DATE is null and trunc(sysdate) >= to_date(REP_CAT_BEGIN_DATE,'mm/dd/yy')"-->
+                <!-->-->
+            <!--<key column="REP_CAT_ORG_BDGT" property-ref="orgBudgetCode" not-null="false"/>-->
+            <!--<one-to-many class="ReportCategory" not-found="ignore"/>-->
+        <!--</set>-->
+    </class>
+
+	<!-- and TO_DATE(ReportCategory.repCatEndDate,'mm/dd/yy') >= sysdate-1 -->
+    <query name="findRptCategoriesByOrg">
+        <![CDATA[
+            select ReportCategory
+            from ReportCategory as ReportCategory
+            where ReportCategory.repCatOrgBdgt = :orgBdgtCode
+                  and ReportCategory.endDate is null
+            order by ReportCategory.repCatApprCode
+        ]]>
+    </query>
+
+
+    <query name="findRptCategoriesByAppropriationCode">
+        <![CDATA[
+            select ReportCategory
+            from ReportCategory as ReportCategory
+            where ReportCategory.repCatApprCode = :appropriationCode
+                  and (ReportCategory.repCatOrgBdgt = :orgCode
+                        or ReportCategory.repCatOrgBdgt is null)
+                  and ReportCategory.endDate is null
+            order by ReportCategory.repCatApprCode
+        ]]>
+    </query>
+
+    <query name="findOrgBudgetByOrgBudgetCode">
+        <![CDATA[
+            select orgBdgt
+            from OrgBudget as orgBdgt
+            where orgBdgt.orgBudgetCode = :orgBdgtCode
+            order by orgBdgt.orgBudgetCode
+        ]]>
+    </query>
+
+    <query name="findAllPurchaseOrgBudgets">
+        <![CDATA[
+            select orgBdgt
+            from OrgBudget as orgBdgt
+            where orgBdgt.endDate >= sysdate-1
+            and provisions is null
+            and orgBdgt.orgBudgetId in (
+                Select bus.orgBudgetId
+                from BusinessRulesORCL as bus, Group as grp inner join grp.personGroupLinks as pgl
+                where (bus.endDate is null or bus.endDate > sysdate -1)
+                and bus.orgBudgetId is not null
+                and grp.groupName = bus.primaryEvaluator
+            )
+            order by orgBdgt.deptId,orgBdgt.endDate desc , orgBdgt.orgBudgetCode asc,  orgBdgt.orgBudgetCodeDisplay asc, orgBdgt.projectId
+        ]]>
+    </query>
+
+    <query name="findAllByBudgetManager">
+        <![CDATA[
+            select orgBdgt
+            from OrgBudget as orgBdgt
+            where orgBdgt.managerGroup in (select g
+                                           from Group as g
+                                           join g.personGroupLinks as pgl
+                                           where pgl.person = :budgetManager)  
+            order by orgBdgt.orgBudgetCode
+        ]]>
+    </query>
+
+</hibernate-mapping>

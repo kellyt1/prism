@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean name="InventoryReportsService"
+          class="us.mn.state.health.domain.service.inventory.InventoryReportsServiceImpl"
+          lazy-init="true">
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+    </bean>
+    <bean id="stockItemService"
+          class="us.mn.state.health.domain.service.inventory.StockItemServiceImpl">
+        <constructor-arg>
+            <ref bean="statusRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="stockItemRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="categoryRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="stockItemFacilityRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="unitRepository"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="vendorRepository"/>
+        </constructor-arg>
+    </bean>
+</beans>

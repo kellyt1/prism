@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.inventory.ItemVendorLinkHistory"
+           table="ITEM_VENDOR_LINK_HISTORY"
+           lazy="true">
+
+        <id name="itemVendorLinkHistoryId"
+            type="long"
+            column="ITEM_VENDOR_LINK_HISTORY_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <many-to-one name="vendor"
+                     class="us.mn.state.health.model.common.Vendor"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="none"
+                     column="VENDOR_ID"/>
+
+        <many-to-one name="stockItem"
+                     class="us.mn.state.health.model.inventory.StockItem"
+                     insert="false"
+                     update="false"
+                     not-null="true"
+                     cascade="none"
+                     column="ITEM_ID"/>
+
+        <many-to-one name="vendorContract"
+                     class="us.mn.state.health.model.common.VendorContract"
+                     insert="true"
+                     update="true"
+                     not-null="false"
+                     cascade="save-update"
+                     column="VENDOR_CONTRACT_ID"/>
+
+        <many-to-one name="buyUnit"
+                     class="us.mn.state.health.model.inventory.Unit"
+                     insert="true"
+                     update="true"
+                     not-null="false"
+                     cascade="none"
+                     column="BUY_UNIT_ID"/>
+
+        <property name="insertedBy" type="string" column="INSERTED_BY"/>
+        <property name="vendorCatalogNbr" type="string" column="VENDOR_CATALOG_NBR"/>
+        <property name="buyUnitCost" type="double" column="BUY_UNIT_COST"/>
+        <property name="primaryVendor" type="yes_no" column="PRIMARY_VENDOR"/>
+        <property name="discount" type="double" not-null="false" column="DISCOUNT"/>
+        <property name="updatedBy" type="string" column="LAST_UPDATED_BY"/>
+        <property name="updateDate" type="date" column="LAST_UPDATED_DATE"/>
+        <property name="insertionDate" type="date" column="INSERTION_DATE"/>
+        <property name="dispenseUnitsPerBuyUnit" type="integer" column="DISPENSE_UNITS_PER_BUY_UNIT"/>
+    </class>
+</hibernate-mapping>

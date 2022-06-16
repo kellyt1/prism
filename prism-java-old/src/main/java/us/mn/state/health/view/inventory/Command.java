@@ -1,0 +1,42 @@
+package us.mn.state.health.view.inventory;
+
+public class Command  {
+    public static final String BUY_UNIT_SELECT = "SelectBuyUnit";
+    public static final String FACILITY_SELECT = "SelectFacility";
+    public static final String LOCATION_ADD = "AddLocation";
+    public static final String LOCATION_REMOVE = "RemoveLocation";
+    public static final String STATUS_CHANGE = "ChangeStatus";
+    public static final String VENDOR_ADD = "AddVendor";
+    public static final String VENDOR_REMOVE = "RemoveVendor";
+    public static final String VENDOR_SELECT = "SelectVendor";
+    public static final String ADD_FUNDING_SOURCE = "addFundingSource";
+    public static final String CANCEL = "cancel";
+    public static final String ADD_TO_CART = "addToCart";
+    public static final String ADD_TO_SHOPPING_LIST = "addToShoppingList";
+    public static final String CHECKOUT = "checkout";
+    public static final String VIEW_CHECKOUT = "viewCheckout";
+    public static final String SAVE_CART = "saveCart";
+    public static final String SELECT_DELIVERY_METHOD = "selectDeliveryMethod";
+    public static final String CANCEL_ADVANCED_DELIVERY_METHOD = "cancelAdvancedDeliveryOptions";
+    public static final String SHOW_DETAIL = "showDetail";
+    public static final String HIDE_DETAIL = "hideDetail";
+    public static final String ADD_NOTE = "addNote";
+    public static final String ADD_QUOTE = "addQuote";
+    public static final String PRINT_PICK_LIST = "printPickList";
+    public static final String PRINT_PACKING_SLIPS = "printPackingSlips";
+    public static final String PRINT_DELIVERY_TICKET = "printDeliveryTicket";
+    public static final String PRINT_DELIVERY_RECEIPT = "printDeliveryReceipt";
+    public static final String PRINT_MAILING_LABELS = "printMailingLabels";
+    public static final String SELECT_CATEGORY="SelectCategory";
+    public static final String SAVE_ORDER_FORMULA = "SaveOrderFormula";
+    public static final String SHOW_NOTES = "showNotes";
+    public static final String HIDE_NOTES = "hideNotes";
+    public static final String CLOSE_RLI = "closeRLI";
+    public static final String CHANGE_DELIVERY_INFO = "changeDeliveryInfo";
+    public static final String REMOVE_DELIVERY_INFO = "removeDeliveryInfo";
+    public static final String RELOAD = "reload";
+    public static final String RESET = "reset";
+    public static final String UPLOAD_FILE = "uploadFile";
+    public static final String ADD_TO_ORDER_LINE_ITEM = "addToOrderLineItem";
+    public static final String RECEIVE_ORDER = "receiveOrder";
+}

@@ -1,0 +1,14 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<!-- This is the configuration file for Request Actions -->
+<struts-config>
+    <action-mappings>
+        <!--Begin fill stock request actions-->
+        <action path="/receiving/searchOrdersForReceiving"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                name="searchOrdersForm2"
+                scope="request"
+                parameter="advancedSearchOrders">
+            <forward name="success" path="/receiving/searchOrdersForReceiving.jsp"/>
+        </action>
+    </action-mappings>
+</struts-config>

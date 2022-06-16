@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.legacySystem.inventory.StkItemLocation"
+           table="STK_LOCATION_FROM_FLOW_TBL" batch-size="32" lazy="false">
+        <composite-id name="stkItemLocationId"
+                      class="us.mn.state.health.model.legacySystem.inventory.StkItemLocation$StkItemLocationId"
+                      unsaved-value="any">
+            <key-property name="icnbr" access="field" column="icnbr"/>
+            <key-property name="locationCode" access="field" column="location"/>
+        </composite-id>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="Facility"
+           table="FACILITY_TBL"
+           lazy="true">
+
+        <cache usage="read-write"/>
+
+        <id name="facilityId"
+            type="long"
+            column="FACILITY_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <many-to-one name="parent"
+                     class="Facility"
+                     column="FACILITY_ID_PARENT"
+                     cascade="none"
+                     not-null="true"/>
+
+        <set name="children"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true">
+            <key column="FACILITY_ID_PARENT"/>
+            <one-to-many class="Facility"/>
+        </set>
+
+        <property name="facilityCode"
+                  column="FACILITY_CODE"
+                  type="string"/>
+
+        <property name="facilityName"
+                  column="FACILITY_NAME"
+                  type="string"/>
+
+        <property name="facilityType"
+                  column="FACILITY_TYPE"
+                  type="string"/>
+
+        <property name="endDate"
+                  column="END_DATE"
+                  type="date"/>
+
+        <many-to-one name="mailingAddress"
+                     class="MailingAddress"
+                     column="MAILING_ADDR_ID"
+                     cascade="save-update"
+                     update="false"/>
+
+        <!-- StockItemFacility subclass mapping to its own table.-->
+        <joined-subclass name="us.mn.state.health.model.inventory.StockItemFacility"
+                         table="STOCK_ITEM_FACILITY_TBL"
+                         lazy="true">
+
+            <key column="FACILITY_ID"/>
+
+            <set name="stockItemLocations"
+                 inverse="true"
+                 cascade="all,delete-orphan">
+                <key column="FACILITY_ID"/>
+                <one-to-many class="us.mn.state.health.model.inventory.StockItemLocation"/>
+            </set>
+        </joined-subclass>
+
+    </class>
+
+    <query name="findFacilitiesByType">
+        <![CDATA[
+                select facility 
+                from Facility as facility
+                where facility.facilityType = :facilityType
+                and facility.endDate is null
+                order by facility.facilityName
+            ]]>
+    </query>
+
+    <query name="findStockItemFacilitiesByType">
+        <![CDATA[
+                select stockItemFacility 
+                from StockItemFacility as stockItemFacility
+                where stockItemFacility.facilityType = :facilityType
+                and stockItemFacility.endDate is null
+            ]]>
+    </query>
+
+</hibernate-mapping>

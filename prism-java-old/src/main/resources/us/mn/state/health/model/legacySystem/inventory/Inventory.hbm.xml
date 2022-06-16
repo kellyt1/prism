@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="us.mn.state.health.model.legacySystem.inventory.Inventory"
+        table="INVTRY_DBF_final"
+        lazy="true">
+        <id name="icnbr"
+            type="string"
+            column="ICNBR">
+        </id>
+
+        <property name="itemDescription"
+            type="string"
+            column="item">
+        </property>
+
+        <property name="dispenseUnit"
+            type="string"
+            column="UNIT">
+        </property>
+
+        <property name="ropDate"
+            type="date"
+            column="ROPDATE">
+        </property>
+
+        <property name="rop"
+            type="string"
+            column="ROP">
+        </property>
+
+        <property name="roq"
+            type="string"
+            column="ROQ">
+        </property>
+
+        <property name="location"
+            type="string"
+            column="LOC">
+        </property>
+
+        <property name="p"
+            type="string"
+            column="P">
+        </property>
+
+        <property name="space"
+            type="string"
+            column="SPACE">
+        </property>
+
+        <property name="hazardous"
+            type="string"
+            column="HZRD">
+        </property>
+
+        <property name="hold"
+            type="string"
+            column="hold">
+        </property>
+
+        <property name="stag"
+            type="string"
+            column="stag">
+        </property>
+
+        <property name="bnbr"
+            type="string"
+            column="BNBR">
+        </property>
+
+        <property name="inac"
+            type="string"
+            column="INAC">
+        </property>
+
+        <property name="outac"
+            type="string"
+            column="OUTAC">
+        </property>
+
+        <property name="cost"
+            type="string"
+            column="COST">
+        </property>
+
+        <property name="onhand"
+            type="string"
+            column="ONHAND">
+        </property>
+
+        <property name="belowrop"
+            type="string"
+            column="BELOWROP">
+        </property>
+
+        <property name="onorder"
+            type="string"
+            column="onorder">
+        </property>
+
+        <property name="so"
+            type="string"
+            column="SO">
+        </property>
+
+        <property name="docnbr"
+            type="string"
+            column="DOCNBR">
+        </property>
+
+        <property name="buyDate"
+            type="string"
+            column="BUYDATE">
+        </property>
+
+        <property name="ordered"
+            type="string"
+            column="ORDERED">
+        </property>
+
+        <joined-subclass
+            name="us.mn.state.health.model.legacySystem.inventory.Purchase"
+            table="PRCHFLE_DBF_final">
+
+            <key column="VICNBR"/>
+            <property name="vendorId1"
+                type="string"
+                column="IDNBR"
+                insert="false"
+                update="false">
+            </property>
+            <property name="vendorId2"
+                type="string"
+                column="ALTIDNBR2"
+                insert="false"
+                update="false">
+            </property>
+            <property name="vendorId3"
+                type="string"
+                column="ALTIDNBR3"
+                insert="false"
+                update="false">
+            </property>
+
+            <property name="itemNbr"
+                type="string"
+                column="ITEMNBR">
+            </property>
+
+            <property name="retCost"
+                type="string"
+                column="RETCOST">
+            </property>
+
+            <property name="discount"
+                type="string"
+                column="DISCOUNT">
+            </property>
+
+            <property name="ourCost"
+                type="string"
+                column="OURCOST">
+            </property>
+
+            <property name="buyROP"
+                type="string"
+                column="BUYROP">
+            </property>
+
+            <property name="buyUnit"
+                type="string"
+                column="UNIT">
+            </property>
+
+            <property name="cont"
+                type="string"
+                column="CONT">
+            </property>
+
+            <property name="expDate"
+                type="string"
+                column="EXPDATE">
+            </property>
+
+            <property name="delivery"
+                type="string"
+                column="DELIVERY">
+            </property>
+
+            <property name="code"
+                type="string"
+                column="CODE">
+            </property>
+
+            <property name="usage"
+                type="string"
+                column="USAGE">
+            </property>
+
+            <property name="eoq"
+                type="string"
+                column="EOQ">
+            </property>
+
+            <property name="itemNbr2"
+                type="string"
+                column="ITEMNBR2">
+            </property>
+
+            <property name="itemNbr3"
+                type="string"
+                column="ITEMNBR3">
+            </property>
+
+            <property name="count"
+                type="string"
+                column="COUNT">
+            </property>
+
+            <property name="lastSODate"
+                type="string"
+                column="SODATE">
+            </property>
+
+            <property name="lastROPDate"
+                type="string"
+                column="ROPDATE">
+            </property>
+
+            <property name="mismatch"
+                type="string"
+                column="MISMATCH">
+            </property>
+
+            <property name="created"
+                type="string"
+                column="CREATED">
+            </property>
+
+            <property name="history"
+                type="string"
+                column="HISTORY">
+            </property>
+
+
+<!--            <many-to-one name="vendor1"-->
+<!--                column="IDNBR"-->
+<!--                class="us.mn.state.health.model.legacySystem.inventory.Vendr"-->
+<!--                cascade="all"-->
+<!--                unique="true"-->
+<!--                lazy="true"-->
+<!--                outer-join="false" -->
+<!--                />-->
+<!-- -->
+<!--            <many-to-one name="vendor2"-->
+<!--                column="ALTIDNBR2"-->
+<!--                class="us.mn.state.health.model.legacySystem.inventory.Vendr"-->
+<!--                cascade="all"-->
+<!--                unique="true"-->
+<!--                lazy="true"-->
+<!--                outer-join="false"-->
+<!--                />-->
+<!-- -->
+<!--            <many-to-one name="vendor3"-->
+<!--                column="ALTIDNBR3"-->
+<!--                class="us.mn.state.health.model.legacySystem.inventory.Vendr"-->
+<!--                cascade="all"-->
+<!--                unique="true"-->
+<!--                lazy="true"-->
+<!--                outer-join="false"-->
+<!--                />-->
+
+
+        </joined-subclass>
+
+    </class>
+</hibernate-mapping>

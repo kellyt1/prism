@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the StockItemActionRequest class
+-->
+<hibernate-mapping package="us.mn.state.health.model.inventory">
+
+    <class name="StockItemActionRequest"
+           table="STOCK_ITEM_ACTION_REQUEST_TBL"
+           lazy="true">
+
+        <!-- id property. -->
+        <id name="stockItemActionRequestId"
+            type="long"
+            column="STOCK_ITEM_ACTION_REQUEST_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking. -->
+        <version name="version"
+                 column="VERSION"/>
+
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <!-- requestReason. -->
+        <property name="requestReason"
+                  column="REQUEST_REASON"
+                  type="string"/>
+
+        <many-to-one name="qtyOnHandChangeReason"
+                     class="StockQtyChangeReasonRef"
+                     column="STOCK_QTY_CHANGE_REASON_REF_ID"
+                     not-null="false"
+                     cascade="none"
+                     update="true"/>
+
+        <many-to-one name="qtyOnHandChangeOrgBudget"
+                     class="us.mn.state.health.model.common.OrgBudget"
+                     column="QTY_ON_HAND_CHANGE_ORG_BDGT_ID"
+                     not-null="false"
+                     cascade="none"
+                     update="false"/>
+
+        <!-- requestedDate. We can't change the creation time, so map it with update="false". -->
+        <property name="requestedDate"
+                  column="REQUESTED_DATE"
+                  type="java.sql.Timestamp"
+                  update="false"
+                  not-null="true"/>
+
+        <!-- requestor. -->
+        <many-to-one name="requestor"
+                     class="us.mn.state.health.model.common.Person"
+                     column="REQUESTED_BY"
+                     not-null="true"
+                     cascade="none"
+                     update="false"/>
+
+        <!-- specialInstructions. -->
+        <property name="specialInstructions"
+                  column="SPECIAL_INSTRUCTIONS"
+                  type="string"/>
+
+        <property name="suggestedVendorName"
+                  column="SUGGESTED_VENDOR_NAME"
+                  type="string"/>
+
+        <property name="vendorCatalogNbr"
+                  column="VENDOR_CATALOG_NBR"
+                  type="string"/>
+
+        <property name="vendorCost"
+                  column="VENDOR_COST"
+                  type="double"/>
+
+
+        <property name="discardStock"
+                  column="DISCARD_CURRENT_STOCK"
+                  type="yes_no"
+                  not-null="false"/>
+
+        <!-- status -->
+        <many-to-one name="status"
+                     class="us.mn.state.health.model.common.Status"
+                     column="STATUS_ID"
+                     cascade="none"
+                     not-null="true"/>
+
+        <!-- this will be null when adding new stock item - potentialStockItem should never be nullable -->
+        <many-to-one name="stockItem"
+                     class="StockItem"
+                     column="ITEM_ID"
+                     not-null="false"
+                     cascade="none"
+                     update="true"/>
+
+        <!-- potentialStockItem -->
+        <many-to-one name="potentialStockItem"
+                     class="StockItem"
+                     column="POTENTIAL_ITEM_ID"
+                     not-null="false"
+                     cascade="all"/>
+
+        <!-- stockItemActionRequestType (i.e, New, status change (On-Hold, Deactivate, Reactivate) -->
+        <many-to-one name="actionRequestType"
+                     column="ACTION_REQUEST_TYPE_ID"
+                     class="ActionRequestType"
+                     cascade="none"
+                     not-null="true"/>
+
+        <many-to-one name="suggestedVendor"
+                     column="SUGGESTED_VENDOR_ID"
+                     class="us.mn.state.health.model.common.Vendor"
+                     cascade="none"
+                     not-null="false"/>
+
+        <set name="requestEvaluations"
+             cascade="all,delete-orphan"
+             inverse="false"
+             batch-size="32"
+             lazy="false">
+            <key column="STOCK_ITEM_ACTION_REQ_ID"/>
+            <one-to-many class="StockItemActionRequestEvaluation"/>
+        </set>
+
+    </class>
+
+    <query name="findSIARByActionRequestType">
+        <![CDATA[
+            from StockItemActionRequest as siar
+            where siar.actionRequestType.actionRequestTypeId = :typeId 
+            order by siar.requestedDate
+        ]]>
+    </query>
+
+    <query name="findSIARByActionRequestTypeCode">
+        <![CDATA[
+            from StockItemActionRequest as siar
+            where siar.actionRequestType.code = :typeCode 
+            order by siar.requestedDate
+        ]]>
+    </query>
+
+    <query name="findSIARByActionRequestTypeCodeAndStatusCode">
+        <![CDATA[
+            from StockItemActionRequest as siar
+            where siar.actionRequestType.code = :actionRequestTypeCode 
+            and siar.status.statusCode = :statusCode
+            order by siar.requestedDate
+        ]]>
+    </query>
+
+    <query name="findAllStockItemActionRequests">
+        <![CDATA[
+            from StockItemActionRequest as siar
+        ]]>
+    </query>
+
+    <query name="findSIARByEvaluatorAndStatusCode">
+        <![CDATA[
+            select distinct r 
+            from StockItemActionRequest as r
+             join r.requestEvaluations as reqEval
+            where r.status.statusCode = 'WFA' 
+             and reqEval.evaluationDecision.statusType.code = 'SIA' 
+             and reqEval.evaluationDecision.statusCode = :statusCode
+             and reqEval.evaluatorGroup in (select g
+                                            from Group as g
+                                             join g.personGroupLinks as pgl
+                                            where pgl.person = :evaluator)  
+        ]]>
+    </query>
+
+</hibernate-mapping>

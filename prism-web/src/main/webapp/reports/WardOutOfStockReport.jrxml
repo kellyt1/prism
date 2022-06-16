@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="WardOutOfStockReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     CATEGORY_TBL."CATEGORY_CODE" || '-' || lpad(STOCK_ITEM_TBL."ICNBR",4,0) AS STOCK_ITEM_FULLICNBR,
+     MATERIALS_REQUEST_TBL."TRACKING_NUMBER" AS MATERIALS_REQUEST_TBL_TRACKING,
+     MATERIALS_REQUEST_TBL."DATE_REQUESTED" AS MATERIALS_REQUEST_TBL_DATE_REQ,
+     MATERIALS_REQ_LINE_ITEM_TBL."QUANTITY" AS MATERIALS_REQ_LINE_ITEM_TBL_QU,
+     STOCK_ITEM_TBL."QTY_ON_HAND" AS STOCK_ITEM_TBL_QTY_ON_HAND,
+     ITEM_TBL."DESCRIPTION" AS ITEM_TBL_DESCRIPTION,
+     MATERIALS_REQ_LINE_ITEM_TBL."ITEM_DESCRIPTION" AS MATERIALS_REQ_LINE_ITEM_TBL_IT,
+     PERSON_TBL."FIRST_NAME" AS PERSON_TBL_FIRST_NAME,
+     PERSON_TBL."LAST_NAME" AS PERSON_TBL_LAST_NAME,
+     ORG_BDGT_TBL."ORG_BDGT_CODE" AS ORG_BDGT_TBL_ORG_BDGT_CODE,
+     ORG_BDGT_TBL."ORG_BDGT_NAME" AS ORG_BDGT_TBL_ORG_BDGT_NAME,
+decode(
+(select count(*)
+                            from MATERIALS_REQ_LINE_ITEM_TBL m
+                            where m.ITEM_ID = STOCK_ITEM_ID
+                            and m.STATUS_ID in (select s.STATUS_ID
+                                                from STATUS_TBL s
+                                                where s.STATUS_CODE in ('WFP', 'ORD', 'RCP') ) ),'0','No','Yes') as ONORDER
+
+FROM
+     "PRISM_OWNER"."MATERIALS_REQUEST_TBL" MATERIALS_REQUEST_TBL
+     INNER JOIN "PRISM_OWNER"."MATERIALS_REQ_LINE_ITEM_TBL" MATERIALS_REQ_LINE_ITEM_TBL ON MATERIALS_REQUEST_TBL."REQUEST_ID" = MATERIALS_REQ_LINE_ITEM_TBL."REQUEST_ID"
+     INNER JOIN "PRISM_OWNER"."STOCK_ITEM_TBL" STOCK_ITEM_TBL ON MATERIALS_REQ_LINE_ITEM_TBL."ITEM_ID" = STOCK_ITEM_TBL."STOCK_ITEM_ID"
+     INNER JOIN "PRISM_OWNER"."ITEM_TBL" ITEM_TBL ON ITEM_TBL."ITEM_ID" = STOCK_ITEM_TBL."STOCK_ITEM_ID"
+     INNER JOIN "PRISM_OWNER"."CATEGORY_TBL" CATEGORY_TBL ON ITEM_TBL."CATEGORY_ID" = CATEGORY_TBL."CATEGORY_ID"
+     left JOIN "PRISM_OWNER"."MATERIALS_RLI_FND_SRC_TBL" MATERIALS_RLI_FND_SRC_TBL ON MATERIALS_REQ_LINE_ITEM_TBL."REQUEST_LINE_ITEM_ID" = MATERIALS_RLI_FND_SRC_TBL."REQUEST_LINE_ITEM_ID"
+     left JOIN "ADMIN_DB"."ORG_BDGT_TBL" ORG_BDGT_TBL ON MATERIALS_RLI_FND_SRC_TBL."ORG_BDGT_ID" = ORG_BDGT_TBL."ORG_BDGT_ID"
+     INNER JOIN "ADMIN_DB"."PERSON_TBL" PERSON_TBL ON STOCK_ITEM_TBL."PRIMARY_CONTACT" = PERSON_TBL."PERSON_ID"
+WHERE
+     MATERIALS_REQ_LINE_ITEM_TBL.status_id = 65651
+     and MATERIALS_REQ_LINE_ITEM_TBL.quantity > STOCK_ITEM_tbl."QTY_ON_HAND"
+order by
+     CATEGORY_TBL."CATEGORY_CODE", STOCK_ITEM_TBL."ICNBR", MATERIALS_REQUEST_TBL."TRACKING_NUMBER"]]>
+	</queryString>
+	<field name="STOCK_ITEM_FULLICNBR" class="java.lang.String"/>
+	<field name="MATERIALS_REQUEST_TBL_TRACKING" class="java.lang.String"/>
+	<field name="MATERIALS_REQUEST_TBL_DATE_REQ" class="java.sql.Timestamp"/>
+	<field name="MATERIALS_REQ_LINE_ITEM_TBL_QU" class="java.math.BigDecimal"/>
+	<field name="STOCK_ITEM_TBL_QTY_ON_HAND" class="java.math.BigDecimal"/>
+	<field name="ITEM_TBL_DESCRIPTION" class="java.lang.String"/>
+	<field name="MATERIALS_REQ_LINE_ITEM_TBL_IT" class="java.lang.String"/>
+	<field name="PERSON_TBL_FIRST_NAME" class="java.lang.String"/>
+	<field name="PERSON_TBL_LAST_NAME" class="java.lang.String"/>
+	<field name="ORG_BDGT_TBL_ORG_BDGT_CODE" class="java.lang.String"/>
+	<field name="ORG_BDGT_TBL_ORG_BDGT_NAME" class="java.lang.String"/>
+	<field name="ONORDER" class="java.lang.String"/>
+	<group name="STOCK_ITEM_FULLICNBR">
+		<groupExpression><![CDATA[$F{STOCK_ITEM_FULLICNBR}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="0" width="81" height="22" forecolor="#000000" backcolor="#FFFFFF"/>
+					<textElement>
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{STOCK_ITEM_FULLICNBR}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="325" y="0" width="135" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{PERSON_TBL_FIRST_NAME}.trim()+' '+$F{PERSON_TBL_LAST_NAME}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToTallestObject" x="81" y="0" width="230" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ITEM_TBL_DESCRIPTION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="460" y="2" width="92" height="20"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{ORG_BDGT_TBL_ORG_BDGT_CODE} + "\n" + $F{ONORDER}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="58">
+			<line>
+				<reportElement x="0" y="8" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="51" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="65" y="13" width="424" height="35"/>
+				<textElement textAlignment="Center">
+					<font size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Back-ordered Stock Items]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="81" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ICNBR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="325" y="0" width="107" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Primary Contact]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="81" y="0" width="244" height="18" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="460" y="0" width="92" height="37" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Org Code
+On Order]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="18" width="66" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MRQ Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="18" width="77" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Request Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="18" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quantity Requested]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="37" width="551" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23">
+			<textField>
+				<reportElement x="25" y="0" width="83" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATERIALS_REQUEST_TBL_TRACKING}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="77" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{MATERIALS_REQUEST_TBL_DATE_REQ}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{MATERIALS_REQ_LINE_ITEM_TBL_QU}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26">
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="516" y="6" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="342" y="6" width="170" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER} + " of "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="1" y="6" width="209" height="19" forecolor="#000000" backcolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

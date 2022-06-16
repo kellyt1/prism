@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <bean id="stockItemFacilityRepository"
+          class="us.mn.state.health.domain.repository.inventory.hibernate.HibernateStockItemFacilityRepositoryImpl"
+          lazy-init="true">
+        <constructor-arg ref="hibernateTemplate"/>
+    </bean>
+    <bean id="stockItemRepository"
+          class="us.mn.state.health.domain.repository.inventory.hibernate.HibernateStockItemRepositoryImpl">
+        <constructor-arg>
+            <ref bean="hibernateTemplate"/>
+        </constructor-arg>
+        <constructor-arg>
+            <ref bean="hibernateQueryExecutor"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="objectCodeRepository"
+          class="us.mn.state.health.domain.repository.inventory.hibernate.ObjectCodeRepositoryImpl">
+        <constructor-arg>
+            <ref bean="hibernateTemplate"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="stockQtyChangeReasonRefRepository"
+          class="us.mn.state.health.domain.repository.inventory.hibernate.StockQtyChangeReasonRefRepositoryImpl">
+        <constructor-arg>
+            <ref bean="hibernateTemplate"/>
+        </constructor-arg>
+    </bean>
+    <bean id="cycleCountPriorityRepository"
+          class="us.mn.state.health.domain.repository.inventory.hibernate.CycleCountPriorityRepositoryImpl">
+        <constructor-arg>
+            <ref bean="hibernateTemplate"/>
+        </constructor-arg>
+    </bean>
+</beans>

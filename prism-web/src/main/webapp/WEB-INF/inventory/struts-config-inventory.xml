@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+        "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<!-- This is the Struts config file for Materials Management Inventory related Actions -->
+<struts-config>
+    <action-mappings>
+        <!-- action prepares view to reorder stock items -->
+        <action path="/viewReorderStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemsForm"
+                scope="session"
+                validate="false"
+                parameter="viewReorderStockItems">
+            <forward name="success" path="/inventory/viewReorderStockItems.jsp"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action prepares view to reorder stock items -->
+        <action path="/searchStockItemsForReorder"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemsForm"
+                scope="session"
+                validate="false"
+                parameter="searchStockItemsForReorder">
+            <forward name="success" path="/inventory/viewReorderStockItems.jsp"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action adds stock items to reorder list (synonomous with shopping cart) -->
+        <action path="/addToReorderList"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemsForm"
+                scope="session"
+                validate="false"
+                parameter="addToReorderList">
+            <forward name="success" path="/viewReorderStockItems.do"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action adds stock items to reorder list (synonomous with shopping cart) -->
+        <action path="/removeRLIFormFromReorderList"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemReorderRequestForm"
+                scope="session"
+                validate="false"
+                parameter="removeRLIFormFromReorderList">
+            <forward name="success" path="/viewStockReorderCheckout.do"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action prepares view to reorder stock items -->
+        <action path="/viewStockReorderCheckout"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemReorderRequestForm"
+                scope="session"
+                validate="false"
+                parameter="viewStockReorderCheckout">
+            <forward name="success" path="/inventory/viewStockReorderCheckout.jsp"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action prepares view to reorder stock items -->
+        <action path="/cancelReorderStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemReorderRequestForm"
+                scope="session"
+                validate="false"
+                parameter="cancelReorderStockItems">
+            <forward name="success" path="/viewReorderStockItems.do"/>
+        </action>
+
+        <!-- action prepares view to reorder stock item -->
+        <action path="/reorderStockItem"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemReorderRequestForm"
+                scope="session"
+                validate="true"
+                parameter="reorderStockItem"
+                input="/inventory/viewStockReorderCheckout.jsp">
+            <forward name="success" path="/inventory/reorderStockItemConfirmation.jsp"/>
+            <forward name="failure" path="/inventory/error.jsp"/>
+            <forward name="loginRequired" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- action that handles the generation of pick lists for stock clerks -->
+        <action path="/generatePickList"
+                type="us.mn.state.health.matmgmt.action.StockRequestAction"
+                name="requestFormCollection"
+                scope="session"
+                validate="false"
+                parameter="generatePickList">
+            <forward name="success" path="/inventory/pickList.jsp"/>
+        </action>
+
+        <action path="/fillStockRequests"
+                type="us.mn.state.health.matmgmt.action.StockRequestAction"
+                name="requestFormCollection"
+                input="/inventory/pickList.jsp"
+                validate="true"
+                scope="session"
+                parameter="fillStockRequests">
+            <forward name="success" path="/inventory/index.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <!-- Action that handles modifications to Item Categories -->
+        <action path="/maintainCategory"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="categoryForm"
+                scope="session"
+                parameter="maintainCategory"
+                validate="false">
+            <forward name="success" path="/viewInventoryMaintenanceItems.do"/>
+        </action>
+
+        <action path="/evaluateStockItemActionRequest"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="evaluateStockItemActionRequestForm"
+                input="/inventory/evaluateStockItemActionRequest.jsp"
+                validate="true"
+                scope="session"
+                parameter="evaluateStockItemActionRequest">
+            <forward name="success" path="/viewStockItemActionRequests.do"/>
+            <forward name="reload" path="/inventory/evaluateStockItemActionRequest.jsp"/>
+            <forward name="failure" path="/securityManager/noaccess.jsp"/>
+        </action>
+
+        <action path="/requestNewStockItem"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemActionRequestForm"
+                scope="session"
+                parameter="requestNewStockItem"
+                input="/inventory/requestNewStockItem.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/confirmStockItemActionRequest.jsp"/>
+        </action>
+
+        <!-- Action that handles selecting Item Category -->
+        <action path="/selectCategory"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="inventoryMaintenanceForm"
+                scope="session"
+                parameter="selectCategory"
+                validate="false">
+            <forward name="success" path="/inventory/maintenance.jsp"/>
+        </action>
+
+        <!-- Action that handles selecting Item Category -->
+        <action path="/selectStockItemFacility"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="inventoryMaintenanceForm"
+                scope="session"
+                parameter="selectStockItemFacility"
+                validate="false">
+            <forward name="success" path="/inventory/evaluateStockItemActionRequest.jsp"/>
+        </action>
+
+        <action path="/viewEvaluateStockItemActionRequest"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="evaluateStockItemActionRequestForm"
+                scope="session"
+                validate="false"
+                parameter="viewEvaluateStockItemActionRequest">
+            <forward name="success" path="/inventory/evaluateStockItemActionRequest.jsp"/>
+        </action>
+
+        <!-- Action that prepares view of Maintenance Items such as Units, 
+      Categories, etc -->
+        <action path="/viewInventoryMaintenanceItems"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="inventoryMaintenanceForm"
+                scope="session"
+                parameter="viewInventoryMaintenanceItems"
+                validate="false">
+            <forward name="success" path="/inventory/evaluateStockItemActionRequest.jsp"/>
+        </action>
+
+        <!-- Action that handles modifications to Item Categories -->
+        <action path="/viewEditCategory"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="categoryForm"
+                scope="session"
+                parameter="viewEditCategory"
+                validate="false">
+            <forward name="success" path="/inventory/maintainCategory.jsp"/>
+        </action>
+
+        <!-- Action that handles preparing new Item Category View -->
+        <action path="/viewNewCategory"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="categoryForm"
+                scope="session"
+                parameter="viewNewCategory"
+                validate="false">
+            <forward name="success" path="/inventory/maintainCategory.jsp"/>
+        </action>
+        <!--        Action that shows all the stock items-->
+        <action path="/viewStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemsForm"
+                scope="request"
+                parameter="viewStockItems"
+                validate="false">
+            <forward name="success" path="/inventory/viewStockItems.jsp"/>
+        </action>
+
+        <action path="/searchStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="searchCatalogForm"
+                scope="request"
+                parameter="searchStockItems"
+                validate="false">
+            <forward name="success" path="/inventory/searchStockItems.jsp"/>
+        </action>
+
+        <action path="/viewAdvancedSearchStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="advancedSearchStockItemsForm"
+                scope="session"
+                parameter="viewAdvancedSearchStockItems"
+                validate="false">
+            <forward name="success" path="/inventory/advancedSearchStockItems.jsp"/>
+        </action>
+
+        <action path="/advancedSearchStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="advancedSearchStockItemsForm"
+                scope="session"
+                parameter="advancedSearchStockItems"
+                validate="false">
+            <forward name="success" path="/inventory/advancedSearchStockItems.jsp"/>
+        </action>
+
+        <!-- Action that prepares view of My Stock Items -->
+        <action path="/viewMyStockItems"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemsForm"
+                scope="request"
+                parameter="viewMyStockItems"
+                validate="false">
+            <forward name="success" path="/inventory/myStockItems.jsp"/>
+        </action>
+
+        <!-- Action that prepares view of new Stock Item -->
+        <action path="/viewRequestNewStockItem"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemActionRequestForm"
+                scope="session"
+                parameter="viewRequestNewStockItem"
+                validate="false">
+            <forward name="success" path="/inventory/requestNewStockItem.jsp"/>
+        </action>
+
+        <action path="/viewStockItemActionRequests"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                name="stockItemActionRequestsForm"
+                scope="session"
+                parameter="viewStockItemActionRequests">
+            <forward name="success" path="/inventory/viewStockItemActionRequests.jsp"/>
+        </action>
+
+        <action path="/viewMaintainOrderFormula"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="orderFormulaMaintainanceForm"
+                scope="session"
+                parameter="viewMaintainOrderFormula"
+                validate="false">
+            <forward name="success" path="/inventory/orderFormulaMaintainance.jsp"/>
+        </action>
+
+        <action path="/maintainOrderFormula"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="orderFormulaMaintainanceForm"
+                scope="session"
+                parameter="maintainOrderFormula"
+                input="/inventory/orderFormulaMaintainance.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/orderFormulaMaintainance.jsp"/>
+        </action>
+
+        <action path="/viewSearchAllItems"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="advancedSearchAllItemsForm"
+                scope="session"
+                parameter="viewSearchAllItems"
+                validate="false">
+            <forward name="fixedAsset" path="/inventory/assets/fixedAssets/searchItems.jsp"/>
+            <forward name="sensitiveAsset" path="/inventory/assets/sensitiveAssets/searchItems.jsp"/>
+        </action>
+
+        <action path="/searchAllItems"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="advancedSearchAllItemsForm"
+                scope="session"
+                parameter="searchAllItems"
+                validate="false">
+            <forward name="fixedAsset" path="/inventory/assets/fixedAssets/searchItems.jsp"/>
+            <forward name="sensitiveAsset" path="/inventory/assets/sensitiveAssets/searchItems.jsp"/>
+        </action>
+
+        <action path="/viewAddNewFixedAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="fixedAssetForm"
+                scope="session"
+                parameter="viewAddNewFixedAsset"
+                validate="false">
+            <forward name="success" path="/inventory/assets/fixedAssets/addNewFixedAsset.jsp"/>
+        </action>
+
+        <action path="/addNewFixedAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="fixedAssetForm"
+                scope="session"
+                parameter="addNewFixedAsset"
+                input="/inventory/assets/fixedAssets/addNewFixedAsset.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/assets/index.jsp"/>
+            <forward name="reload" path="/inventory/assets/fixedAssets/addNewFixedAsset.jsp"/>
+        </action>
+
+        <action path="/viewSearchFixedAssets"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="assetSearchForm"
+                scope="session"
+                parameter="viewSearchFixedAssets"
+                validate="false">
+            <forward name="success" path="/inventory/assets/fixedAssets/searchFixedAssets.jsp"/>
+        </action>
+
+        <action path="/searchFixedAssets"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="assetSearchForm"
+                scope="session"
+                parameter="searchFixedAssets"
+                input="/inventory/assets/fixedAssets/searchFixedAssets.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/assets/fixedAssets/searchFixedAssets.jsp"/>
+        </action>
+
+        <action path="/viewEditFixedAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="fixedAssetForm"
+                scope="session"
+                parameter="viewEditFixedAsset"
+                validate="false">
+            <forward name="success" path="/inventory/assets/fixedAssets/editFixedAsset.jsp"/>
+        </action>
+
+        <action path="/editFixedAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="fixedAssetForm"
+                scope="session"
+                parameter="editFixedAsset"
+                input="/inventory/assets/fixedAssets/editFixedAsset.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/assets/index.jsp"/>
+            <forward name="reload" path="/inventory/assets/fixedAssets/editFixedAsset.jsp"/>
+        </action>
+
+        <!-- Sensitive Asset Action mappings  -->
+        <action path="/viewAddNewSensitiveAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="sensitiveAssetForm"
+                scope="session"
+                parameter="viewAddNewSensitiveAsset"
+                validate="false">
+            <forward name="success" path="/inventory/assets/sensitiveAssets/addNewSensitiveAsset.jsp"/>
+        </action>
+
+        <action path="/addNewSensitiveAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="sensitiveAssetForm"
+                scope="session"
+                parameter="addNewSensitiveAsset"
+                validate="true"
+                input="/inventory/assets/sensitiveAssets/addNewSensitiveAsset.jsp">
+            <forward name="success" path="/inventory/assets/index.jsp"/>
+            <forward name="reload" path="/inventory/assets/sensitiveAssets/addNewSensitiveAsset.jsp"/>
+        </action>
+
+        <action path="/viewSearchSensitiveAssets"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="assetSearchForm"
+                scope="session"
+                parameter="viewSearchSensitiveAssets"
+                validate="false">
+            <forward name="success" path="/inventory/assets/sensitiveAssets/searchSensitiveAssets.jsp"/>
+        </action>
+
+        <action path="/searchSensitiveAssets"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="assetSearchForm"
+                scope="session"
+                parameter="searchSensitiveAssets"
+                validate="false">
+            <forward name="success" path="/inventory/assets/sensitiveAssets/searchSensitiveAssets.jsp"/>
+        </action>
+
+        <action path="/viewEditSensitiveAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="sensitiveAssetForm"
+                scope="session"
+                parameter="viewEditSensitiveAsset"
+                validate="false">
+            <forward name="success" path="/inventory/assets/sensitiveAssets/editSensitiveAsset.jsp"/>
+        </action>
+
+        <action path="/editSensitiveAsset"
+                type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"
+                name="sensitiveAssetForm"
+                scope="session"
+                parameter="editSensitiveAsset"
+                input="/inventory/assets/sensitiveAssets/editSensitiveAsset.jsp"
+                validate="true">
+            <forward name="success" path="/inventory/index.jsp"/>
+            <forward name="reload" path="/inventory/assets/sensitiveAssets/editSensitiveAsset.jsp"/>
+        </action>
+
+        <action path="/getVendorsNameLike"
+                type="us.mn.state.health.matmgmt.action.ajax.CommonAjaxAction"
+                parameter="getVendorsNameLike"
+                validate="false"
+                scope="request">
+        </action>
+
+        <action path="/inventory/getStockItemIsOnOrderInformation"
+                type="us.mn.state.health.matmgmt.action.ajax.InventoryAjaxAction"
+                parameter="getStockItemIsOnOrderInformation"
+                validate="false"
+                scope="request">
+            <forward name="success" path="/inventory/viewStockItemIsOnOrderInfoPopup.jsp"/>
+        </action>
+
+        <action path="/inventory/getRequestLineItems"
+                type="us.mn.state.health.matmgmt.action.ajax.InventoryAjaxAction"
+                parameter="getRequestLineItems"
+                validate="false"
+                scope="request">
+            <forward name="success" path="/inventory/viewRequestLineItemsPopup.jsp"/>
+        </action>
+
+        <!--<action path="/viewStockItemsBelowROPNotOnOrder"-->
+        <!--type="us.mn.state.health.matmgmt.action.InventoryMaintenanceAction"-->
+        <!--parameter="viewStockItemsBelowROPNotOnOrder"-->
+        <!--scope="session"-->
+        <!--name="stockItemsReportForm">-->
+        <!--<forward name="success" path="/inventory/reports/stockItemsBelowROP.jsp"/>-->
+        <!--</action>-->
+
+        <action path="/inventory/reports/viewStockItemsBelowROPNotOnOrder"
+                type="org.springframework.web.struts.DelegatingActionProxy"
+                parameter="viewStockItemsBelowROPNotOnOrder"
+                scope="session"
+                name="stockItemsReportForm">
+            <forward name="success" path="/inventory/reports/stockItemsBelowROP.jsp"/>
+        </action>
+        <action path="/viewInventoryReports"
+                type="us.mn.state.health.matmgmt.action.StockItemAction"
+                scope="request"
+                parameter="viewInventoryReports"
+                validate="false">
+            <forward name="success" path="/inventory/reports/index.jsp"/>
+        </action>
+
+    </action-mappings>
+    <!-- Messages related only to Inventory concerns -->
+    <!--<message-resources parameter="ApplicationResources_inventory" key="inventoryMessages"/>-->
+</struts-config>

@@ -1,0 +1,10 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans>
+
+        <form-bean name="searchRequestsForm"
+                   type="us.mn.state.health.web.struts.view.materialsrequest.SearchMaterialRequestsForm"/>
+
+    </form-beans>
+
+</struts-config>

@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!--
+The mapping for the RequestLineItem class
+-->
+<hibernate-mapping package="us.mn.state.health.model.purchasing">
+
+    <class name="Order"
+           table="MATERIALS_ORDER_TBL"
+           lazy="true">
+
+        <!--Disabled the cache temporarly-->
+        <!--<cache usage="nonstrict-read-write"/>-->
+
+        <!-- id property. -->
+        <id name="orderId"
+            type="long"
+            column="ORDER_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- A versioned entity, for managed versioning for optimistic locking.-->
+        <version name="version"
+                 column="VERSION"/>
+
+        <property name="otherBillToAddress"
+                  column="OTHER_BILL_TO_ADDR"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="remitToAddress"
+                  column="REMIT_TO_ADDR"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="vendorInstructions"
+                  column="VENDOR_INSTRUCTIONS"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="purchaseOrderNumber"
+                  column="PO_NUMBER"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="purchaseOrderNumberType"
+                  column="PO_NUMBER_TYPE"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  not-null="true"/>
+
+        <property name="otherShipToAddress"
+                  column="OTHER_SHIP_TO_ADDR"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="suspenseDate"
+                  column="SUSPENSE_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <!--<property name="lastUpdated"-->
+                  <!--column="LAST_UPDATED"-->
+                  <!--type="date"-->
+                  <!--not-null="false"/>-->
+
+        <many-to-one name="purchaser"
+                     class="us.mn.state.health.model.common.Person"
+                     column="PURCHASER_ID"
+                     cascade="none"
+                     not-null="true"/>
+
+        <many-to-one name="billToAddress"
+                     class="us.mn.state.health.model.common.MailingAddress"
+                     column="BILL_TO_ADDR_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="shipToAddress"
+                     class="us.mn.state.health.model.common.MailingAddress"
+                     column="SHIP_TO_ADDR_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="vendor"
+                     class="us.mn.state.health.model.common.Vendor"
+                     column="VENDOR_ID"
+                     cascade="none"
+                     not-null="true"/>
+
+        <many-to-one name="vendorContract"
+                     class="us.mn.state.health.model.common.VendorContract"
+                     column="VENDOR_CONTRACT_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="vendorAccount"
+                     class="us.mn.state.health.model.common.VendorAccount"
+                     column="VENDOR_ACCOUNT_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <many-to-one name="vendorAddress"
+                     class="us.mn.state.health.model.common.MailingAddress"
+                     column="VENDOR_MLNG_ADDR_ID"
+                     cascade="none"
+                     not-null="false"/>
+
+        <list name="orderLineItems"
+              cascade="all,delete-orphan"
+              inverse="true"
+              batch-size="32"
+              lazy="false">
+            <!--<cache usage="nonstrict-read-write"/>-->
+            <key column="ORDER_ID" not-null="true"/>
+            <list-index column="LINE_ITEM_NUMBER" base="1"/>
+            <one-to-many class="OrderLineItem"/>
+        </list>
+
+        <set name="orderNotes"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             order-by="ORDER_NOTE_ID DESC">
+            <cache usage="nonstrict-read-write"/>
+            <key column="ORDER_ID"/>
+            <one-to-many class="OrderNote"/>
+        </set>
+
+        <set name="requestLineItems"
+             cascade="save-update"
+             inverse="false"
+             lazy="true">
+            <key column="ORDER_ID"/>
+            <one-to-many class="us.mn.state.health.model.materialsrequest.RequestLineItem"/>
+        </set>
+
+    </class>
+
+    <query name="findOrderByRequestLineItemId">
+        <![CDATA[
+            select o from Order o
+                join o.requestLineItems r
+                where r.requestLineItemId= :rliId
+        ]]>
+    </query>
+
+</hibernate-mapping>

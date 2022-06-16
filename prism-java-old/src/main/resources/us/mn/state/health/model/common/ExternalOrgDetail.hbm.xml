@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="ExternalOrgDetail"
+           table="EXTERNAL_ORG_TBL"
+           lazy="true">
+
+        <cache usage="nonstrict-read-write"/>
+
+        <!-- Common id property. -->
+        <id name="orgId"
+            type="long"
+            column="ORG_ID"
+            unsaved-value="null">
+            <generator class="sequence">
+                <param name="sequence">ENTERPRISE_SEQ</param>
+            </generator>
+        </id>
+
+        <!-- comments -->
+        <property name="comments"
+                  column="COMMENTS"
+                  type="string"
+                  not-null="false"/>
+
+        <!-- insertedBy.  -->
+        <property name="insertedBy"
+                  column="INSERTED_BY"
+                  type="string"/>
+
+        <!-- insertionDate. We can't change the creation time, so map it with update="false". -->
+        <property name="insertionDate"
+                  column="INSERTION_DATE"
+                  type="date"
+                  update="false"/>
+
+        <!-- orgDescription -->
+        <property name="orgDescription"
+                  column="ORG_DESC"
+                  type="string"
+                  not-null="false"/>
+
+        <!-- orgEffectiveDate. -->
+        <property name="orgEffectiveDate"
+                  column="START_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <!-- orgEndDate -->
+        <property name="orgEndDate"
+                  column="END_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <!-- orgName -->
+        <property name="orgName"
+                  column="ORG_NAME"
+                  type="string"
+                  not-null="false"/>
+
+        <!-- upper orgName - convenient property defined by formula to make possible unsensitive case order
+        by with Criteria API; because we used access="field" we don't have to implement the getters and setters,
+        so it's invisible for our java code-->
+        <property name="upperOrgName" insert="false" lazy="true" update="false" access="field">
+            <formula>(upper(ORG_NAME))</formula>
+        </property>
+
+        <!-- orgShortName -->
+        <property name="orgShortName"
+                  column="ORG_SHORT_NAME"
+                  type="string"
+                  not-null="false"/>
+
+        <!-- terminatedBy. unidirectional many-to-one association to Person. -->
+        <property name="terminatedBy"
+                  column="TERMINATED_BY"
+                  type="string"/>
+
+        <!-- terminationDate. -->
+        <property name="terminationDate"
+                  column="TERMINATION_DATE"
+                  type="date"
+                  not-null="false"/>
+
+        <property name="webAddress"
+                  column="WEB_ADDRESS"
+                  type="string"
+                  not-null="false"/>
+
+        <property name="orgCode"
+                  column="ORG_CODE"
+                  type="string"/>
+
+        <set name="reps"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true">
+            <key column="ORG_ID"/>
+            <one-to-many class="ExternalOrgDetailRep"/>
+        </set>
+
+        <set name="emailAddresses"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             where="CONTACT_MECHANISM_ID in (select e.EMAIL_ID from EMAIL_TBL e where e.email_id = CONTACT_MECHANISM_ID)">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="ExtOrgDetailEmailAddress"/>
+        </set>
+
+        <set name="mailingAddresses"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             where="CONTACT_MECHANISM_ID in (select m.ADDRESS_ID from MAILING_ADDRESS_TBL m where m.address_id = CONTACT_MECHANISM_ID AND m.END_DATE is null)  AND ((end_date is null) or (END_DATE > sysdate))">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="ExtOrgDetailMailingAddress"/>
+        </set>
+
+        <set name="phones"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             where="CONTACT_MECHANISM_ID in (select t.TELEPHONE_ID from TELEPHONE_TBL t where t.telephone_id = CONTACT_MECHANISM_ID and t.END_DATE is null) and DEVICE_TYPE in ('LAND_PHONE','CELLPHONE') and ((END_DATE is null) or (END_DATE > sysdate)) and ((TERMINATION_DATE is null) or (TERMINATION_DATE > sysdate))">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="ExtOrgDetailPhone"/>
+        </set>
+
+        <set name="faxes"
+             cascade="all,delete-orphan"
+             inverse="true"
+             lazy="true"
+             where="CONTACT_MECHANISM_ID in (select t.TELEPHONE_ID from TELEPHONE_TBL t where t.telephone_id = CONTACT_MECHANISM_ID and t.END_DATE is null) and DEVICE_TYPE in ('FAX') and ((END_DATE is null) or (END_DATE > sysdate)) and ((TERMINATION_DATE is null) or (TERMINATION_DATE > sysdate))">
+            <key column="ENTITY_TARGET_ID"/>
+            <one-to-many class="ExtOrgDetailPhone"/>
+        </set>
+    </class>
+
+    <query name="findByOrgName">
+        <![CDATA[
+            select extOrg 
+            from ExternalOrgDetail as extOrg 
+            where lower(extOrg.orgName) = :name            
+        ]]>
+    </query>
+
+</hibernate-mapping>

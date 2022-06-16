@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<MenuConfig>
+    <Displayers>
+        <Displayer name="Velocity" type="net.sf.navigator.displayer.VelocityMenuDisplayer"/>
+    </Displayers>
+
+    <Menus>
+        <Menu name="SCOMPAdmin" location="/index.jsp" title="Admin" roles="PRISM-DEVELOPERS,PRISM-IT-PURCHASE-ADMIN">
+            <Item name="EVALUATEREQUESTS2" location="/viewMaterialsRequests.do" title="Evaluate Requests" roles="PRISM-DEVELOPERS,PRISM-IT-PURCHASE-ADMIN"/>
+            <Item name="MANAGEITEMS2" location="/viewAdvancedSearchItemsPurchasing.do" title="Manage Purchase Items" roles="PRISM-DEVELOPERS,PRISM-IT-PURCHASE-ADMIN"/>
+            <Item name="TabbedHome3" title="PRISM" location="/index.jsp?skin=reset" roles="PRISM-DEVELOPERS"/>
+        </Menu>
+        <Menu name="SCOMP" location="/browseCatalog.do?selectedCategory=600000" title="Request" roles="ROLE_PRISM_USER">
+            <Item name="CATALOG" title="Catalog">
+            <Item name="SCOMP2" location="/browseCatalog.do?selectedCategory=600001" title="Computers">
+                <Item name="SCOMP2A" location="/browseCatalog.do?selectedCategory=600003" title="Desktops"/>
+                <Item name="SCOMP2B" location="/browseCatalog.do?selectedCategory=600004" title="Laptops"/>
+                <Item name="SCOMP2C" location="/browseCatalog.do?selectedCategory=600012" title="Laptop cases"/>
+                <Item name="SCOMP2D" location="/browseCatalog.do?selectedCategory=600031" title="Tablets"/>
+            </Item>
+            <Item name="SCOMP3" location="/browseCatalog.do?selectedCategory=600010" title="Computer Accessories">
+                <Item name="SCOMP3I" location="/browseCatalog.do?selectedCategory=600015" title="Cables and Adapters"/>
+                <Item name="SCOMP3J" location="/browseCatalog.do?selectedCategory=600101" title="Headsets"/>
+                <Item name="SCOMP3A" location="/browseCatalog.do?selectedCategory=600007" title="Mice and Keyboards"/>
+                <Item name="SCOMP3F" location="/browseCatalog.do?selectedCategory=600011" title="Miscellaneous"/>
+                <Item name="SCOMP3B" location="/browseCatalog.do?selectedCategory=600005" title="Monitors and Privacy Filters"/>
+                <Item name="SCOMP3C" location="/browseCatalog.do?selectedCategory=600006" title="Printers and Fax Machines"/>
+                <Item name="SCOMP3G" location="/browseCatalog.do?selectedCategory=600013" title="Printer Maintenance Kits"/>
+                <Item name="SCOMP3H" location="/browseCatalog.do?selectedCategory=600014" title="Printers and Fax Toners"/>
+                <Item name="SCOMP3D" location="/browseCatalog.do?selectedCategory=600008" title="Projectors"/>
+                <Item name="SCOMP3E" location="/browseCatalog.do?selectedCategory=600009" title="USB Drives"/>
+            </Item>
+                <Item name="SCOMP4A" location="/browseCatalog.do?selectedCategory=600029" title="Software (New Purchase)"/>
+            </Item>
+            <Item name="NONCATALOG" title="Non-Catalog">
+                <Item name="SCOMP4C" location="/viewAddNonCatalogItemToCart.do?categoryId=600100" title="Non-Standard (License Renewals/Equipment/Maintenance/Repairs)"/>
+                <Item name="SCOMP4B" location="/viewAddContractToCart.do?categoryId=600030" title="IT Contracts"/>
+                <Item name="SCOMP4D" location="/viewAddWanToCart.do?categoryId=600102" title="WAN/Computing Services"/>
+                <Item name="SCOMPSTAFF" location="/viewAddStaffToCart.do?categoryId=600032" title="MNIT Salary Budget Builder"/>
+            </Item>
+        </Menu>
+
+        <Menu name="SCOMPView" location="/index.jsp" title="View" roles="ROLE_PRISM_USER">
+            <Item name="MYREQUESTS2" location="/viewMyRequests.do" title="My Requests"/>
+            <Item name="VIEWCART2" location="/viewShoppingCart.do" title="Cart"/>
+            <Item name="VIEWSHOPPINGLIST2" location="/viewMaintainShoppingLists.do" title="My Shopping Lists"/>
+            <Item name="SHOPPINGLISTSALL_SCOMP" location="/viewMaintainShoppingListsAll.do?skin=PRISM2" title="Shared PARIT Shopping Lists"/>
+        </Menu>
+
+        <Menu name="Request" location="?ARequest" title="Request Goods and Services"
+              roles="ROLE_PRISM_USER">
+            <!--<Item name="BROWSECATALOG" location="/browseCatalog.do?cmd=reset" title="Browse Catalog"/>-->
+            <Item name="SHOPPINGLISTSALL" location="/viewMaintainShoppingListsAll.do" title="All Shopping Lists"/>
+            <Item name="ADDNONCATALOG" location="/viewAddNonCatalogItemToCart.do?requestType=reset" title="Add Non-Catalog Item to Cart"/>
+            <Item name="MYREQUESTS" location="/viewMyRequests.do" title="View My Requests"/>
+            <Item name="ALLREQUESTS" location="/viewAdvancedSearchRequests.do" title="View All Requests"/>
+            <Item name="SEARCHORDERS2" location="/finance/searchOrdersForFinance.do" title="Search/View Orders"/>
+            <Item name="EVALUATEREQUESTS" location="/viewMaterialsRequests.do" title="Evaluate Requests"/>
+            <Item name="VIEWCART" location="/viewShoppingCart.do" title="View Cart"/>
+            <Item name="CHECKOUT" location="/viewCheckout.do" title="Checkout"/>
+            <Item name="DELIVERYADDRESS" location="/viewAddNewAddressStep1.do?module=requesting" title="Add Delivery Address"/>
+        </Menu>
+
+        <Menu name="Purchasing" title="Purchasing" location="?APurchasing" roles="PRISM-BUYER">
+            <Item name="CREATEORDER" location="/viewSearchPurchasingRequestLineItems.do" title="Create/Add to Order"/>
+            <Item name="EDITORDER" location="/purchasing/searchOrdersForPurchasing.do" title="Edit Order"/>
+            <Item name="EDITMNITORDER" location="/purchasing/searchOrdersForPurchasingMNIT.do" title="Edit MNIT Order"/>
+            <Item name="MAINTAINADDRESS" location="/viewAddNewAddressStep1.do?module=purchasing" title="Maintain Addresses"/>
+            <Item name="MANAGEITEMS" location="/viewAdvancedSearchItemsPurchasing.do" title="Manage Purchase Items"/>
+        </Menu>
+        <Menu name="PurchasingMNIT" title="MNIT Purchasing" location="?APurchasingMNIT" roles="PRISM-FINANCE">
+            <!--<Item name="VIEWORDER" location="/purchasing/searchOrdersForPurchasingMNIT.do" title="View Order"/>-->
+            <Item name="SEARCHORDERS" location="/finance/searchOrdersForFinance.do" title="Search/View Orders"/>
+        </Menu>
+
+        <Menu name="Editor" title="Editor" location="?AEditor" roles="PRISM-EDITOR">
+            <Item name="SEARCHORDER" location="/viewSearchPurchasingRequestLineItems2.do" title="Search Request"/>
+            <Item name="VIEWORDER" location="/editor/searchOrdersForEditor.do" title="View Order"/>
+        </Menu>
+
+        <Menu name="Finance" title="Finance" location="?AFinance" roles="PRISM-FINANCE">
+            <Item name="SEARCHORDERS" location="/finance/searchOrdersForFinance.do" title="Search/View Orders"/>
+        </Menu>
+
+        <Menu name="Inventory" title="Inventory" location="?AInventory" roles="ROLE_PRISM_USER">
+            <Item name="SWIFTRESTOCK" location="/viewAddNonCatalogItemToCart.do?requestType=SWIFT" title="Order or Restock SWIFT Inventory Item"/>
+            <Item name="MAINTAINSTOCKITEMS" location="/viewStockItems.do" title="Maintain Stock Items" roles="PRISM-BUYER,PRISM-RECEIVING-STAFF,PRISM-FACILITIES-MANAGEMENT-GROUP"/>
+            <!--<Item name="FILLSTOCKREQUESTS" location="/inventory/advancedSearchOpenStockRequests.do" title="Fill Stock Requests" roles="PRISM-STOCK-PICKER,PRISM-STOCK-CONTROLLER"/>-->
+            <!--<Item name="EVALUATESTOCKACTIONREQUESTS" location="/viewStockItemActionRequests.do" title="Evaluate Stock Action Requests" roles="PRISM-BUYER,PRISM-STOCK-CONTROLLER"/>-->
+
+            <Item name="MANAGEASSETS" title="Manage Assets" roles="PRISM-BUYER,PRISM-RECEIVING-STAFF,PRISM-FACILITIES-MANAGEMENT-GROUP">
+                <Item name="MANAGEASSETS1" location="/viewSearchAllItems.do?forward=fixedAsset" title="Add New Fixed Asset"/>
+                <Item name="MANAGEASSETS2" location="/viewSearchFixedAssets.do" title="Edit Existing Fixed Asset"/>
+                <Item name="MANAGEASSETS3" location="/viewSearchAllItems.do?forward=sensitiveAsset" title="Add New Sensitive Asset"/>
+                <Item name="MANAGEASSETS4" location="/viewSearchSensitiveAssets.do" title="Edit Existing Sensitive Asset"/>
+            </Item>
+            <!--<Item name="MYSTOCKITEM" location="/viewMyStockItems.do" title="My Stock Items" roles="PRISM-BUYER,PRISM-RECEIVING-STAFF,PRISM-FACILITIES-MANAGEMENT-GROUP"/>-->
+            <!--<Item name="REQUESTNEWSTOCKITEM" location="/viewRequestNewStockItem.do" title="Request New Stock Item"/>-->
+            <!--<Item name="REORDERSTOCKITEM" location="/viewReorderStockItems.do" title="Re-Order Stock Items"/>-->
+        </Menu>
+
+        <Menu name="Shipping" title="Shipping" location="/shipping/index.jsp" roles="PRISM-SHIPPING"/>
+
+        <Menu name="Receiving" title="Receiving" location="?Receiving" roles="PRISM-RECEIVING-STAFF">
+            <Item name="RECEIVORDER" location="/receiving/searchOrdersForReceiving.do" title="Receive Orders"/>
+            <Item name="DELIVERYRECEIPTREPORT" location="/viewCreateDeliveryReceipt.do" title="Delivery Receipt Report"/>
+        </Menu>
+
+        <Menu name="GeneralAdmin" title="Admin" location="?GeneralAdmin" roles="PRISM-BUYER,PRISM-STOCK-CONTROLLER">
+            <Item name="MANAGEVENDORS" location="/viewMaintainVendors.do" title="Manage Vendors"/>
+            <Item name="MAINTAINORDERFORMULA" location="/viewMaintainOrderFormula.do" title="Maintain Order Formulas"/>
+            <Item name="TabbedHome2" title="IT Purchasing" location="/index.jsp?skin=PRISM2"/>
+            <Item name="SYSTEMADMIN" title="System" roles="PRISM-DEVELOPERS">
+                <Item name="SYSTEMADMIN_1" location="/selectIndexes.do" title="Work with Lucene Indexes"/>
+                <Item name="SYSTEMADMIN_2" location="/selectCacheToEvict.do" title="Selectively Clear Cached Objects"/>
+                <Item name="SYSTEMADMIN_3" title="Web Server Logs">
+                    <Item name="SYSTEMADMIN_3D" location="https://wslog02.health.state.mn.us:8000/" title="splunk" target="_blank"/>
+                    <Item name="SYSTEMADMIN_LOGLEVEL" title="Log Levels">
+                        <Item name="SYSTEMADMIN_LOGLEVEL_1" location="/setLogLevel?level=DISPLAY" title="Show Current PRISM Log Levels"/>
+                        <Item name="SYSTEMADMIN_LOGLEVEL_2" location="/setLogLevel?level=DEFAULT" title="Set PRISM Log Level to DEFAULT"/>
+                        <Item name="SYSTEMADMIN_LOGLEVEL_3" location="/setLogLevel?level=ERROR" title="Set PRISM Log Level to ERROR"/>
+                        <Item name="SYSTEMADMIN_LOGLEVEL_4" location="/setLogLevel?level=WARN" title="Set PRISM Log Level to WARN"/>
+                        <Item name="SYSTEMADMIN_LOGLEVEL_5" location="/setLogLevel?level=INFO" title="Set PRISM Log Level to INFO"/>
+                        <Item name="SYSTEMADMIN_LOGLEVEL_6" location="/setLogLevel?level=DEBUG" title="Set PRISM Log Level to DEBUG"/>
+                    </Item>
+                </Item>
+                <Item name="SYSTEMADMIN_4" location="http://fyi.health.state.mn.us/login/fusebox/extparty/index.cfm?fuseaction=AppUsage" title="View PRISM Usage" target="_blank"/>
+                <Item name="SYSTEMADMIN_5" location="/changePrismNotifications.do" title="Change Prism Notification Messages"/>
+                <Item name="SYSTEMADMIN_6" location="/changeBudgetBuilderLink.do" title="Change Budget Builder Link"/>
+                <Item name="SYSTEMADMIN_7" location="/viewPrismUpTime" title="View PRISM Startup and Shutdown Times"/>
+                <Item name="SYSTEMADMIN_8" location="/loadPurchaseItems.do" title="Batch Load New Purchase Items" target="_blank"/>
+                <Item name="SYSTEMADMIN_9" location="/updatePurchaseItems.do" title="Batch Update Purchase Items" target="_blank"/>
+            </Item>
+        </Menu>
+
+        <Menu name="Reports" title="Reports" roles="ROLE_PRISM_USER">
+            <Item name="MNITREPORT1" title="MRQ REPORTS">
+                <Item name="APPROVALHISTORY" location="/queryMRQInfo.do" title="General information about an MRQ"/>
+            </Item>
+
+            <Item name="PURCHASEITEMS" title="Purchased Item Reports">
+                <Item name="PURCHASEITEMTRANSACTIONS" location="/requests/reports/purchaseitemtransactions.jsp" title="Purchase Item Transactions"/>
+                <Item name="ASSETVIEWREPORT" location="/readyAssetsViewReport.do" title="Assets Since Date Report"/>
+            </Item>
+            <Item name="HISTORICALSTOCKITEMS" title="Historical Stock Item Reports">
+                <Item name="STOCKITEMREPORT" location="http://fyi.health.state.mn.us/login/fusebox/prismreport/index.cfm?fuseaction=StockItemsReport&amp;bypass=true&amp;username=prismrpt" title="Stock Items Report"/>
+                <Item name="USAGEREPORT" location="http://fyi.health.state.mn.us/login/fusebox/prismreport/index.cfm?fuseaction=ReportFilter&amp;bypass=true&amp;username=prismrpt" title="Usage Report"/>
+                <Item name="STOCKITEMSOUTFUNDED" location="/requests/reports/stockitemouttransactions.jsp" title="View stock item OUT transactions (for items NOT funded by the Indirect funding source ONLY)"/>
+                <Item name="STOCKITEMSOUTINDIRECT" location="/requests/reports/stockitemouttransactionswithoutfs.jsp" title="View stock item OUT transactions (for items with NO cost or funded by the Indirect funding source ONLY)"/>
+                <Item name="STOCKITEMSIN" location="/requests/reports/stockitemintransactions.jsp" title="View stock item IN transactions "/>
+                <Item name="FISHCONSUMPTION" location="/requests/reports/fishconsumption.jsp" title="Fish Consumption Guidelines Requestors"/>
+            </Item>
+        </Menu>
+
+        <Menu name="Help" title="Help">
+            <Item name="PRISM_Doc" location="http://wiki.health.state.mn.us/pub/Know/AppDev/PRISM_tutorial.doc" title="PRISM User Guide" target="_blank"/>
+            <Item name="FAQ" location="http://wiki.health.state.mn.us/bin/view/Know/PrismFAQ" title="FAQs" target="_blank"/>
+            <Item name="Versions" location="http://wiki.health.state.mn.us/bin/view/Know/PrismVersions" title="Versions" target="_blank"/>
+            <Item name="About" location="/help/index.jsp" title="About"/>
+        </Menu>
+
+        <Menu name="SCOMP_TabbedHelp" title="Help">
+            <Item name="SCOMP_PARIT_Doc" location="http://wiki.health.state.mn.us/pub/Know/AppDev/parituserguide.doc" title="PARIT User Guide" target="_blank"/>
+            <Item name="SCOMP_FAQ" location="http://wiki.health.state.mn.us/bin/view/Know/ITPurchasingFAQ" title="FAQs" target="_blank"/>
+            <Item name="SCOMP_Versions" location="http://wiki.health.state.mn.us/bin/view/Know/PrismVersions" title="Versions" target="_blank"/>
+            <Item name="SCOMP_About" location="/help/index.jsp" title="About"/>
+        </Menu>
+    </Menus>
+</MenuConfig>

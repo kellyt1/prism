@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+			"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="us.mn.state.health.model.common">
+
+    <class name="PersonGroupLink"
+           table="ENTITY_TARGET_GROUP_LINK"
+           lazy="true" where="((end_date is null) or (END_DATE > sysdate))" >
+
+        <composite-id name="personGroupLinkId"
+            class="PersonGroupLink$PersonGroupLinkId"
+            unsaved-value="any">
+
+            <key-property name="personId"
+                access="field"
+                column="ENTITY_TARGET_ID"/>
+
+            <key-property name="groupId"
+                access="field"
+                column="GROUP_ID"/>
+        </composite-id>
+
+        <!-- person -->
+        <many-to-one name="person"
+            class="Person"
+            insert="false"
+            update="false"
+            not-null="true"
+            cascade="save-update"
+            column="ENTITY_TARGET_ID"/>
+
+        <many-to-one name="group"
+            class="Group"
+            insert="false"
+            update="false"
+            not-null="true"
+            cascade="save-update"
+            column="GROUP_ID"/>
+
+        <property name="startDate"
+            column="START_DATE"
+            type="date"
+            update="false"/>
+
+        <property name="endDate"
+            column="END_DATE"
+            type="date"
+            update="false"/>
+
+        <property name="relationshipType"
+            type="string"
+            column="RELATIONSHIP_TYPE"/>
+
+        <property name="insertedBy"
+            type="string"
+            column="INSERTED_BY"/>
+
+        <property name="insertionDate"
+            column="INSERTION_DATE"
+            type="date"/>
+
+        <property name="terminatedBy"
+            type="string"
+            column="TERMINATED_BY"/>
+
+        <property name="terminationDate"
+            column="TERMINATION_DATE"
+            type="date"/>
+
+    </class>
+
+</hibernate-mapping>

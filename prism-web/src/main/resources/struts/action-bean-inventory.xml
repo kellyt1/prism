@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<!--
+  Define the Struts Actions as Spring beans
+  Each bean has to have the same name as the action path
+  -->
+<beans>
+    <bean name="/inventory/reports/viewStockItemsBelowROPNotOnOrder" class="us.mn.state.health.web.struts.action.InventoryMaintenanceAction">
+        <property name="inventoryReportsFacade" ref="inventoryReportsFacade"/>
+    </bean>
+
+    <bean name="/inventory/advancedSearchOpenStockRequests" class="us.mn.state.health.web.struts.fillstockrequests.FillStockRequestsAction">
+        <property name="fillStockRequestsFacade" ref="fillStockRequestsFacade"/>
+    </bean>
+
+    <bean name="/generatePickListForAdvancedSearchOpenStockRequestsTemp" class="us.mn.state.health.web.struts.fillstockrequests.FillStockRequestsAction">
+        <property name="fillStockRequestsFacade" ref="fillStockRequestsFacade"/>
+    </bean>
+
+    <bean name="/inventory/editStockItem" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/editMyStockItem" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/getStockItemOnOrderInfo" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/getStockItemHistory" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/getStockItemQtyAdjustmentHistory" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/getStockItemLocationHistory" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/getItemVendorLinkHistory" class="us.mn.state.health.web.struts.editstockitem.EditStockItemAction">
+        <property name="editStockItemFacade" ref="editStockItemFacade"/>
+    </bean>
+
+    <bean name="/inventory/downloadFileAction"
+          class="us.mn.state.health.web.struts.editstockitem.DownloadFileAction">
+    </bean>
+</beans>
