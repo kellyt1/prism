@@ -177,7 +177,7 @@
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
-            <version>4.8.0</version>
+            <version>6.20.0</version>
             <exclusions>
                 <exclusion>
                     <artifactId>commons-collections</artifactId>
