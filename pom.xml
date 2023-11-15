@@ -11,8 +11,8 @@
     <properties>
         <!--Only use numbers in the version, use of strings makes Maven fail to resolve module dependencies correctly-->
         <prismVersion>2.14.2</prismVersion>
-        <resteasy.version>3.0.14.Final</resteasy.version>
-        <keycloak.version>2.5.1.Final</keycloak.version>
+        <resteasy.version>3.0.21.Final</resteasy.version>
+        <keycloak.version>8.0.0</keycloak.version>
     </properties>
 
     <scm>
